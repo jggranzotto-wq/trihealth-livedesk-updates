@@ -2,10 +2,10 @@
   "usd_cad_fallback": 1.3989,
   "btc_cad_stop": 113000,
   "poll_ms": 4000,
-  "cash_usd": 549.26,
+  "cash_usd": 495.47,
   "snapshot_total_usd": 728.0,
-  "snapshot_at": "2026-10-30T08:33:00-04:00",
-  "note": "Desk open: USELESS, PUMP. Cash ~$549.26. PEPE grid above range (likely sold to USD). DOGE grid active. SHIB/BONK/ARB/SUI grids ended Oct 28. Prior desk lots stopped out ~21:45 ET Oct 29.",
+  "snapshot_at": "2026-10-30T11:00:00-04:00",
+  "note": "Desk open: USELESS, PUMP, PENGU. Cash ~$495.47. PEPE grid above range (likely sold to USD). DOGE grid active. SHIB/BONK/ARB/SUI grids ended Oct 28. Prior desk lots stopped out ~21:45 ET Oct 29.",
   "positions": [
     {
       "symbol": "USELESS",
@@ -34,13 +34,28 @@
       "opened": "2026-10-29T22:20:00-04:00",
       "trail_activate_pct": 0.12,
       "trail_activate_price": 0.0043688
+    },
+    {
+      "symbol": "PENGU",
+      "binance": "PENGUUSDT",
+      "cryptocom": "PENGU_USD",
+      "qty": 7442.6,
+      "entry": 0.007245,
+      "stop": 0.00681,
+      "stop_limit": 0.006742,
+      "stop_qty": 7440,
+      "stop_id": "4611686018429190815",
+      "notional_usd": 54.19,
+      "opened": "2026-10-30T11:00:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.0081144
     }
   ],
   "holdings": [
     {
       "symbol": "USD",
       "kind": "cash",
-      "qty": 549.26,
+      "qty": 495.47,
       "note": "free USD"
     },
     {
@@ -88,12 +103,30 @@
     }
   ],
   "watch": [
-    { "symbol": "BTC", "binance": "BTCUSDT" },
-    { "symbol": "ETH", "binance": "ETHUSDT" },
-    { "symbol": "SOL", "binance": "SOLUSDT" },
-    { "symbol": "PEPE", "binance": "PEPEUSDT" },
-    { "symbol": "DOGE", "binance": "DOGEUSDT" },
-    { "symbol": "SHIB", "binance": "SHIBUSDT" }
+    {
+      "symbol": "BTC",
+      "binance": "BTCUSDT"
+    },
+    {
+      "symbol": "ETH",
+      "binance": "ETHUSDT"
+    },
+    {
+      "symbol": "SOL",
+      "binance": "SOLUSDT"
+    },
+    {
+      "symbol": "PEPE",
+      "binance": "PEPEUSDT"
+    },
+    {
+      "symbol": "DOGE",
+      "binance": "DOGEUSDT"
+    },
+    {
+      "symbol": "SHIB",
+      "binance": "SHIBUSDT"
+    }
   ],
   "grids": {
     "DOGE": {
