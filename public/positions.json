@@ -1,1 +1,110 @@
-{}
+{
+  "usd_cad_fallback": 1.3989,
+  "btc_cad_stop": 113000,
+  "poll_ms": 4000,
+  "cash_usd": 549.26,
+  "snapshot_total_usd": 728.0,
+  "snapshot_at": "2026-10-30T08:33:00-04:00",
+  "note": "Desk open: USELESS, PUMP. Cash ~$549.26. PEPE grid above range (likely sold to USD). DOGE grid active. SHIB/BONK/ARB/SUI grids ended Oct 28. Prior desk lots stopped out ~21:45 ET Oct 29.",
+  "positions": [
+    {
+      "symbol": "USELESS",
+      "binance": "USELESSUSDT",
+      "cryptocom": "USELESS_USD",
+      "qty": 434.815,
+      "entry": 0.123915,
+      "stop": 0.11648,
+      "stop_limit": 0.115315,
+      "stop_id": "4611686018429188459",
+      "notional_usd": 54.15,
+      "opened": "2026-10-29T22:08:55-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.13879
+    },
+    {
+      "symbol": "PUMP",
+      "binance": "PUMPUSDT",
+      "cryptocom": "PUMP_USD",
+      "qty": 13731,
+      "entry": 0.0039007,
+      "stop": 0.0036667,
+      "stop_limit": 0.00363,
+      "stop_id": "4611686018429188539",
+      "notional_usd": 53.83,
+      "opened": "2026-10-29T22:20:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.0043688
+    }
+  ],
+  "holdings": [
+    {
+      "symbol": "USD",
+      "kind": "cash",
+      "qty": 549.26,
+      "note": "free USD"
+    },
+    {
+      "symbol": "SHIB",
+      "binance": "SHIBUSDT",
+      "cryptocom": "SHIB_USD",
+      "qty": 3992150
+    },
+    {
+      "symbol": "BONK",
+      "binance": "BONKUSDT",
+      "cryptocom": "BONK_USD",
+      "qty": 6301950,
+      "note": "older lot · no stop"
+    },
+    {
+      "symbol": "DOGE",
+      "binance": "DOGEUSDT",
+      "cryptocom": "DOGE_USD",
+      "qty": 195.12,
+      "qty_approx": true,
+      "value_snapshot_usd": 14.38,
+      "note": "qty ≈ $14.38 / spot at snapshot"
+    },
+    {
+      "symbol": "PEPE",
+      "binance": "PEPEUSDT",
+      "cryptocom": "PEPE_USD",
+      "qty": 2236443,
+      "qty_approx": true,
+      "value_snapshot_usd": 10.31,
+      "note": "qty ≈ snapshot; PEPE grid above range / likely sold out"
+    },
+    {
+      "symbol": "VVS",
+      "binance": "",
+      "cryptocom": "VVS_USD",
+      "qty": 2221200
+    },
+    {
+      "symbol": "ELON",
+      "binance": "",
+      "cryptocom": "ELON_USD",
+      "qty": 68655000
+    }
+  ],
+  "watch": [
+    { "symbol": "BTC", "binance": "BTCUSDT" },
+    { "symbol": "ETH", "binance": "ETHUSDT" },
+    { "symbol": "SOL", "binance": "SOLUSDT" },
+    { "symbol": "PEPE", "binance": "PEPEUSDT" },
+    { "symbol": "DOGE", "binance": "DOGEUSDT" },
+    { "symbol": "SHIB", "binance": "SHIBUSDT" }
+  ],
+  "grids": {
+    "DOGE": {
+      "range_low": 0.075,
+      "range_high": 0.084,
+      "stop": 0.072
+    },
+    "PEPE": {
+      "range_low": 4.4e-06,
+      "range_high": 5.1e-06,
+      "stop": 4.2e-06
+    }
+  }
+}

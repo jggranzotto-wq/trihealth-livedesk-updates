@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: trihealth-livedesk-updates
+    runtime: static
+    repo: https://github.com/jggranzotto-wq/trihealth-livedesk-updates
+    branch: main
+    buildCommand: "true"
+    staticPublishPath: ./public
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
