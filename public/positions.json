@@ -2,10 +2,10 @@
   "usd_cad_fallback": 1.3989,
   "btc_cad_stop": 113000,
   "poll_ms": 4000,
-  "cash_usd": 291.41,
+  "cash_usd": 237.45,
   "snapshot_total_usd": 669.14,
-  "snapshot_at": "2026-10-31T10:44:06-04:00",
-  "note": "Desk open: PUMP, PENGU, FLR, QNT, PEPE, BEAMX, AAVE (7; FLR/QNT/PEPE/BEAMX/AAVE user-approved overrides). AAVE 10:40 ET. Stops tightened to ~2% below spot. Cash ~$291.41. DOGE grid active. BONK 6.3M held, no stop.",
+  "snapshot_at": "2026-10-31T11:45:19-04:00",
+  "note": "Desk open: PUMP, PENGU, FLR, QNT, PEPE, BEAMX, AAVE, NEAR (8). P&L since buy shown live. Realized +$1.26 USELESS close 06:52 ET. NEAR filled 11:43 ET. Stops ~2% below spot (NEAR at \u22126%). Cash ~$237.45. DOGE grid active. BONK 6.3M held, no stop.",
   "positions": [
     {
       "symbol": "PUMP",
@@ -20,7 +20,8 @@
       "opened": "2026-10-29T22:20:00-04:00",
       "trail_activate_pct": 0.12,
       "trail_activate_price": 0.0043688,
-      "stop_qty": 13700
+      "stop_qty": 13700,
+      "cost_usd": 53.83
     },
     {
       "symbol": "PENGU",
@@ -35,7 +36,8 @@
       "notional_usd": 54.19,
       "opened": "2026-10-30T11:00:00-04:00",
       "trail_activate_pct": 0.12,
-      "trail_activate_price": 0.0081144
+      "trail_activate_price": 0.0081144,
+      "cost_usd": 54.19
     },
     {
       "symbol": "FLR",
@@ -50,7 +52,8 @@
       "notional_usd": 53.98,
       "opened": "2026-10-30T22:14:47-04:00",
       "trail_activate_pct": 0.12,
-      "trail_activate_price": 0.006785
+      "trail_activate_price": 0.006785,
+      "cost_usd": 53.98
     },
     {
       "symbol": "QNT",
@@ -65,7 +68,8 @@
       "notional_usd": 54.1,
       "opened": "2026-10-31T09:17:14-04:00",
       "trail_activate_pct": 0.12,
-      "trail_activate_price": 224.395
+      "trail_activate_price": 224.395,
+      "cost_usd": 54.1
     },
     {
       "symbol": "PEPE",
@@ -80,7 +84,8 @@
       "notional_usd": 53.83,
       "opened": "2026-10-31T09:46:38-04:00",
       "trail_activate_pct": 0.12,
-      "trail_activate_price": 5.5821e-06
+      "trail_activate_price": 5.5821e-06,
+      "cost_usd": 53.83
     },
     {
       "symbol": "BEAMX",
@@ -95,7 +100,8 @@
       "notional_usd": 53.85,
       "opened": "2026-10-31T09:49:43-04:00",
       "trail_activate_pct": 0.12,
-      "trail_activate_price": 0.00562632
+      "trail_activate_price": 0.00562632,
+      "cost_usd": 53.85
     },
     {
       "symbol": "AAVE",
@@ -110,14 +116,31 @@
       "notional_usd": 53.95,
       "opened": "2026-10-31T10:40:02-04:00",
       "trail_activate_pct": 0.12,
-      "trail_activate_price": 151.4352
+      "trail_activate_price": 151.4352,
+      "cost_usd": 53.95
+    },
+    {
+      "symbol": "NEAR",
+      "binance": "NEARUSDT",
+      "cryptocom": "NEAR_USD",
+      "qty": 12.0395,
+      "entry": 4.4598,
+      "stop": 4.1922,
+      "stop_limit": 4.1503,
+      "stop_qty": 12.0,
+      "stop_id": "4611686018429193225",
+      "notional_usd": 53.96,
+      "cost_usd": 53.96361,
+      "opened": "2026-10-31T11:43:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 4.994976
     }
   ],
   "holdings": [
     {
       "symbol": "USD",
       "kind": "cash",
-      "qty": 291.41,
+      "qty": 237.45,
       "note": "free USD"
     },
     {
@@ -187,5 +210,19 @@
       "range_high": 0.084,
       "stop": 0.072
     }
-  }
+  },
+  "closed": [
+    {
+      "symbol": "USELESS",
+      "qty": 434.815,
+      "entry": 0.123915,
+      "exit": 0.12714,
+      "notional_usd": 54.15,
+      "exit_usd": 55.17876,
+      "realized_pnl_usd": 1.26,
+      "closed_at": "2026-10-31T06:52:02-04:00",
+      "note": "trailing stop filled"
+    }
+  ],
+  "realized_pnl_usd": 1.26
 }
