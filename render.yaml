@@ -9,4 +9,13 @@ services:
     headers:
       - path: /*
         name: Cache-Control
-        value: no-cache
+        value: "no-store, no-cache, must-revalidate, max-age=0"
+      - path: /positions.json
+        name: Cache-Control
+        value: "no-store, no-cache, must-revalidate, max-age=0"
+      - path: /version.json
+        name: Cache-Control
+        value: "no-store, no-cache, must-revalidate, max-age=0"
+      - path: /scan.json
+        name: Cache-Control
+        value: "no-store, no-cache, must-revalidate, max-age=0"
