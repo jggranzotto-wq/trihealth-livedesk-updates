@@ -2,10 +2,10 @@
   "usd_cad_fallback": 1.3989,
   "btc_cad_stop": 113000,
   "poll_ms": 4000,
-  "cash_usd": 453.04,
+  "cash_usd": 345.36,
   "snapshot_total_usd": 728.0,
-  "snapshot_at": "2026-10-31T09:19:06-04:00",
-  "note": "Desk open: PUMP, PENGU, FLR, QNT (4; QNT user-approved 4th). QNT bought 09:17 ET. USELESS stop filled 06:52 ET (~+$1.26). Cash ~$453.04. DOGE grid active. BONK 6.3M held, no stop.",
+  "snapshot_at": "2026-10-31T09:55:00-04:00",
+  "note": "Desk open: PUMP, PENGU, FLR, QNT, PEPE, BEAMX (6; FLR/QNT/PEPE/BEAMX user-approved overrides). PEPE 09:46 ET, BEAMX 09:49 ET. Cash ~$345.36. DOGE grid active. BONK 6.3M held, no stop.",
   "positions": [
     {
       "symbol": "PUMP",
@@ -66,13 +66,43 @@
       "opened": "2026-10-31T09:17:14-04:00",
       "trail_activate_pct": 0.12,
       "trail_activate_price": 224.395
+    },
+    {
+      "symbol": "PEPE",
+      "binance": "PEPEUSDT",
+      "cryptocom": "PEPE_USD",
+      "qty": 10746000,
+      "entry": 4.984e-06,
+      "stop": 4.685e-06,
+      "stop_limit": 4.638e-06,
+      "stop_qty": 10740000,
+      "stop_id": "4611686018429193115",
+      "notional_usd": 53.83,
+      "opened": "2026-10-31T09:46:38-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 5.5821e-06
+    },
+    {
+      "symbol": "BEAMX",
+      "binance": "BEAMXUSDT",
+      "cryptocom": "BEAMX_USD",
+      "qty": 10666.4,
+      "entry": 0.0050235,
+      "stop": 0.0047221,
+      "stop_limit": 0.0046749,
+      "stop_qty": 10660,
+      "stop_id": "4611686018429193120",
+      "notional_usd": 53.85,
+      "opened": "2026-10-31T09:49:43-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.00562632
     }
   ],
   "holdings": [
     {
       "symbol": "USD",
       "kind": "cash",
-      "qty": 453.04,
+      "qty": 345.36,
       "note": "free USD"
     },
     {
@@ -96,15 +126,6 @@
       "qty_approx": true,
       "value_snapshot_usd": 14.38,
       "note": "qty \u2248 $14.38 / spot at snapshot"
-    },
-    {
-      "symbol": "PEPE",
-      "binance": "PEPEUSDT",
-      "cryptocom": "PEPE_USD",
-      "qty": 2236443,
-      "qty_approx": true,
-      "value_snapshot_usd": 10.31,
-      "note": "qty \u2248 snapshot; PEPE grid above range / likely sold out"
     },
     {
       "symbol": "VVS",
@@ -150,11 +171,6 @@
       "range_low": 0.075,
       "range_high": 0.084,
       "stop": 0.072
-    },
-    "PEPE": {
-      "range_low": 4.4e-06,
-      "range_high": 5.1e-06,
-      "stop": 4.2e-06
     }
   }
 }
