@@ -2,10 +2,10 @@
   "usd_cad_fallback": 1.3989,
   "btc_cad_stop": 113000,
   "poll_ms": 4000,
-  "cash_usd": 507.14,
+  "cash_usd": 453.04,
   "snapshot_total_usd": 728.0,
-  "snapshot_at": "2026-10-31T06:56:33-04:00",
-  "note": "Desk open: PUMP, PENGU, FLR (3). USELESS stop filled 06:52 ET (~+$1.26). Cash ~$507.14. PEPE grid ended (+$2.04). DOGE grid active. BONK 6.3M held, no stop.",
+  "snapshot_at": "2026-10-31T09:19:06-04:00",
+  "note": "Desk open: PUMP, PENGU, FLR, QNT (4; QNT user-approved 4th). QNT bought 09:17 ET. USELESS stop filled 06:52 ET (~+$1.26). Cash ~$453.04. DOGE grid active. BONK 6.3M held, no stop.",
   "positions": [
     {
       "symbol": "PUMP",
@@ -51,13 +51,28 @@
       "opened": "2026-10-30T22:14:47-04:00",
       "trail_activate_pct": 0.12,
       "trail_activate_price": 0.006785
+    },
+    {
+      "symbol": "QNT",
+      "binance": "QNTUSDT",
+      "cryptocom": "QNT_USD",
+      "qty": 0.26865,
+      "entry": 200.3528,
+      "stop": 188.332,
+      "stop_limit": 186.448,
+      "stop_qty": 0.268,
+      "stop_id": "4611686018429193083",
+      "notional_usd": 54.1,
+      "opened": "2026-10-31T09:17:14-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 224.395
     }
   ],
   "holdings": [
     {
       "symbol": "USD",
       "kind": "cash",
-      "qty": 507.14,
+      "qty": 453.04,
       "note": "free USD"
     },
     {
