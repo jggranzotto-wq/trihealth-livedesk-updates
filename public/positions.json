@@ -2,10 +2,10 @@
  "usd_cad_fallback": 1.3989,
  "btc_cad_stop": 113000,
  "poll_ms": 4000,
- "cash_usd": 285.02,
+ "cash_usd": 336.86,
  "snapshot_total_usd": 669.14,
  "snapshot_at": "2026-10-31T11:45:19-04:00",
- "note": "Desk open: PUMP, PENGU, FLR, QNT, PEPE, AAVE, AVAX (7). Stopped: INJ -2.04, BEAMX 16:10 -2.92, NEAR 16:30 -1.42. Cash $285.02. DOGE grid active. BONK 6.3M held, no stop.",
+ "note": "Desk open: PUMP, PENGU, FLR, QNT, AAVE, AVAX (6). Stopped: PEPE Nov1 07:30 -1.69, INJ -2.04, BEAMX 16:10 -2.92, NEAR 16:30 -1.42. Cash $336.86. DOGE grid active. BONK 6.3M held, no stop.",
  "positions": [
   {
    "symbol": "PUMP",
@@ -70,22 +70,6 @@
    "trail_activate_pct": 0.12,
    "trail_activate_price": 224.395,
    "cost_usd": 54.1
-  },
-  {
-   "symbol": "PEPE",
-   "binance": "PEPEUSDT",
-   "cryptocom": "PEPE_USD",
-   "qty": 10746000,
-   "entry": 4.984e-06,
-   "stop": 4.855e-06,
-   "stop_limit": 4.806e-06,
-   "stop_qty": 10740000,
-   "stop_id": "4611686018429193298",
-   "notional_usd": 53.83,
-   "opened": "2026-10-31T09:46:38-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 5.5821e-06,
-   "cost_usd": 53.83
   },
   {
    "symbol": "AAVE",
@@ -312,6 +296,38 @@
     ]
    ],
    "dust_qty": 0.0395
+  },
+  {
+   "symbol": "PEPE",
+   "binance": "PEPEUSDT",
+   "cryptocom": "PEPE_USD",
+   "qty": 10746000,
+   "entry": 4.984e-06,
+   "stop": 4.855e-06,
+   "stop_limit": 4.806e-06,
+   "stop_qty": 10740000,
+   "stop_id": "4611686018429193298",
+   "notional_usd": 53.83,
+   "opened": "2026-10-31T09:46:38-04:00",
+   "trail_activate_pct": 0.12,
+   "trail_activate_price": 5.5821e-06,
+   "cost_usd": 53.83,
+   "exit_price": 4.851e-06,
+   "exit_qty": 10740000,
+   "gross_usd": 52.1,
+   "fees_usd": 0.26,
+   "net_proceeds_usd": 51.84,
+   "realized_pnl_usd": -1.69,
+   "realized_pnl_pct": -3.2,
+   "closed_at": "2026-11-01T07:30:00-05:00",
+   "close_reason": "stop triggered",
+   "fills": [
+    [
+     10740000,
+     4.851e-06
+    ]
+   ],
+   "dust_qty": 1105500
   }
  ],
  "realized_pnl_usd": -5.12
