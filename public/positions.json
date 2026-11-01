@@ -2,27 +2,11 @@
   "usd_cad_fallback": 1.3989,
   "btc_cad_stop": 113000,
   "poll_ms": 4000,
-  "cash_usd": 387.64,
-  "snapshot_total_usd": 669.14,
-  "snapshot_at": "2026-11-01T14:04:00-05:00",
-  "note": "Desk open: PUMP, FLR, QNT, AVAX, ARB, CRO (6). Stopped: AAVE Nov1 14:00 -0.87, PENGU 13:19 -0.51, PEPE 07:30 -1.69, INJ -2.04, BEAMX -2.92, NEAR -1.42. Cash $387.64. DOGE grid active. BONK 6.3M held, no stop.",
+  "cash_usd": 496.04,
+  "snapshot_total_usd": 657.85,
+  "snapshot_at": "2026-11-01T14:20:00-05:00",
+  "note": "Desk open: FLR, AVAX, CRO (3). Stopped Nov1: PUMP 14:09 +2.88, ARB 14:09 -1.61, QNT 12:59 -1.11, AAVE 14:00 -0.87, PENGU 13:19 -0.51, PEPE 07:30 -1.69. Prior: INJ -2.04, BEAMX -2.92, NEAR -1.42. Cash $496.04. DOGE grid active. BONK 6.3M held, no stop.",
   "positions": [
-    {
-      "symbol": "PUMP",
-      "binance": "PUMPUSDT",
-      "cryptocom": "PUMP_USD",
-      "qty": 13731,
-      "entry": 0.0039007,
-      "stop": 0.0041508,
-      "stop_limit": 0.0041093,
-      "stop_id": "4611686018429193294",
-      "notional_usd": 53.83,
-      "opened": "2026-10-29T22:20:00-04:00",
-      "trail_activate_pct": 0.12,
-      "trail_activate_price": 0.0043688,
-      "stop_qty": 13700,
-      "cost_usd": 53.83
-    },
     {
       "symbol": "FLR",
       "binance": "",
@@ -40,22 +24,6 @@
       "cost_usd": 53.98
     },
     {
-      "symbol": "QNT",
-      "binance": "QNTUSDT",
-      "cryptocom": "QNT_USD",
-      "qty": 0.26865,
-      "entry": 200.3528,
-      "stop": 197.274,
-      "stop_limit": 195.301,
-      "stop_qty": 0.268,
-      "stop_id": "4611686018429193129",
-      "notional_usd": 54.1,
-      "opened": "2026-10-31T09:17:14-04:00",
-      "trail_activate_pct": 0.12,
-      "trail_activate_price": 224.395,
-      "cost_usd": 54.1
-    },
-    {
       "symbol": "AVAX",
       "binance": "AVAXUSDT",
       "cryptocom": "AVAX_USD",
@@ -71,23 +39,6 @@
       "trail_activate_price": 9.7451,
       "cost_usd": 53.86,
       "peak": 8.897
-    },
-    {
-      "symbol": "ARB",
-      "binance": "ARBUSDT",
-      "cryptocom": "ARB_USD",
-      "qty": 324.37,
-      "entry": 0.165702,
-      "stop": 0.161663,
-      "stop_limit": 0.160046,
-      "stop_qty": 324,
-      "stop_id": "4611686018429194522",
-      "notional_usd": 54.02,
-      "opened": "2026-11-01T11:06:00-05:00",
-      "trail_activate_pct": 0.12,
-      "trail_activate_price": 0.185586,
-      "cost_usd": 54.02,
-      "peak": 0.165702
     },
     {
       "symbol": "CRO",
@@ -111,7 +62,7 @@
     {
       "symbol": "USD",
       "kind": "cash",
-      "qty": 387.64,
+      "qty": 496.04,
       "note": "free USD"
     },
     {
@@ -398,7 +349,109 @@
       "dust_qty": 5e-06,
       "status": "closed",
       "peak": 140.497
+    },
+    {
+      "symbol": "QNT",
+      "binance": "QNTUSDT",
+      "cryptocom": "QNT_USD",
+      "qty": 0.26865,
+      "entry": 200.3528,
+      "stop": 197.274,
+      "stop_limit": 195.301,
+      "stop_qty": 0.268,
+      "stop_id": "4611686018429193129",
+      "notional_usd": 54.1,
+      "opened": "2026-10-31T09:17:14-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 224.395,
+      "cost_usd": 54.1,
+      "exit_price": 197.15,
+      "exit_qty": 0.268,
+      "gross_usd": 52.8362,
+      "fees_usd": 0.2563,
+      "net_proceeds_usd": 52.5799,
+      "realized_pnl_usd": -1.11,
+      "realized_pnl_pct": -2.05,
+      "closed_at": "2026-11-01T12:59:00-05:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          0.268,
+          197.15
+        ]
+      ],
+      "dust_qty": 0.00065,
+      "status": "closed",
+      "peak": 207.367
+    },
+    {
+      "symbol": "PUMP",
+      "binance": "PUMPUSDT",
+      "cryptocom": "PUMP_USD",
+      "qty": 13731,
+      "entry": 0.0039007,
+      "stop": 0.0041508,
+      "stop_limit": 0.0041093,
+      "stop_id": "4611686018429193294",
+      "notional_usd": 53.83,
+      "opened": "2026-10-29T22:20:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.0043688,
+      "stop_qty": 13700,
+      "cost_usd": 53.83,
+      "exit_price": 0.0041307,
+      "exit_qty": 13700,
+      "gross_usd": 56.5906,
+      "fees_usd": 0.2745,
+      "net_proceeds_usd": 56.3161,
+      "realized_pnl_usd": 2.88,
+      "realized_pnl_pct": 5.35,
+      "closed_at": "2026-11-01T14:09:00-05:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          13700,
+          0.0041307
+        ]
+      ],
+      "dust_qty": 31,
+      "status": "closed",
+      "peak": 0.0042921
+    },
+    {
+      "symbol": "ARB",
+      "binance": "ARBUSDT",
+      "cryptocom": "ARB_USD",
+      "qty": 324.37,
+      "entry": 0.165702,
+      "stop": 0.161663,
+      "stop_limit": 0.160046,
+      "stop_qty": 324,
+      "stop_id": "4611686018429194522",
+      "notional_usd": 54.02,
+      "opened": "2026-11-01T11:06:00-05:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.185586,
+      "cost_usd": 54.02,
+      "peak": 0.165702,
+      "exit_price": 0.161523,
+      "exit_qty": 324,
+      "gross_usd": 52.3335,
+      "fees_usd": 0.2538,
+      "net_proceeds_usd": 52.0797,
+      "realized_pnl_usd": -1.61,
+      "realized_pnl_pct": -2.98,
+      "closed_at": "2026-11-01T14:09:00-05:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          324,
+          0.161523
+        ]
+      ],
+      "dust_qty": 0.37,
+      "status": "closed"
     }
   ],
-  "realized_pnl_usd": -6.5
+  "realized_pnl_usd": -6.34
 }
