@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><title>Tri-Health Live Desk updates</title>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tri-Health Live Desk updates</title>
 <style>body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#111}
-code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{background:#f4f4f4;padding:1rem;overflow:auto}</style>
+code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{background:#f4f4f4;padding:1rem;overflow:auto}
+.card{border:1px solid #ddd;border-radius:12px;padding:1rem 1.2rem;margin:1rem 0;background:#fafafa}
+</style>
 </head><body>
 <h1>Tri-Health Live Desk — updates</h1>
+<div class="card">
+<strong>Phone / Android</strong><br/>
+Open the mobile app: <a href="/m/"><strong>https://trihealth-livedesk-updates.onrender.com/m/</strong></a><br/>
+Then Chrome menu → <em>Install app</em> or <em>Add to Home screen</em>.
+</div>
 <p>Current version: <strong>1.2.5</strong> · <a href="version.json">version.json</a> · <a href="positions.json">positions.json</a> · <a href="scan.json">scan.json</a></p>
 <p>Downloads: <a href="TriHealth-LiveDesk.exe">TriHealth-LiveDesk.exe</a> · <a href="TriHealth-LiveDesk-console.exe">console</a></p>
 <p>The Windows app checks <code>version.json</code> at startup and every 10 minutes, verifies SHA-256, swaps the exe, and restarts. Positions refresh from <code>positions.json</code> about every 30 seconds. Scanner pulls <code>scan.json</code> about every 60 seconds.</p>

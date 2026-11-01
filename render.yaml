@@ -19,3 +19,9 @@ services:
       - path: /scan.json
         name: Cache-Control
         value: "no-store, no-cache, must-revalidate, max-age=0"
+      - path: /m/*
+        name: Cache-Control
+        value: "no-store, no-cache, must-revalidate, max-age=0"
+      - path: /m/index.html
+        name: Cache-Control
+        value: "no-store, no-cache, must-revalidate, max-age=0"

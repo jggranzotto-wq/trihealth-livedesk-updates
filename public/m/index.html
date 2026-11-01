@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0f14" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="LiveDesk" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+<title>Tri-Health Live Desk</title>
+<style>
+  :root {
+    --bg: #0b0f14; --panel: #121821; --border: #1e2a38; --text: #e8eef6;
+    --muted: #8b9bb0; --green: #3dd68c; --red: #ff6b6b; --amber: #f0b429;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%; }
+  body { padding: 12px 12px calc(72px + var(--safe-b)); min-height: 100dvh; }
+  h1 { font-size: 1.15rem; margin: 0; font-weight: 700; }
+  .sub { color: var(--muted); font-size: 0.75rem; margin-top: 2px; line-height: 1.35; }
+  .hdr { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .btn {
+    background: #182230; border: 1px solid #3a5168; color: var(--text);
+    border-radius: 999px; padding: 8px 14px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; white-space: nowrap; -webkit-tap-highlight-color: transparent;
+  }
+  .btn:disabled { opacity: 0.55; }
+  .btn:active { filter: brightness(1.15); }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .metric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+  .metric .label { color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .metric .value { font-size: 1.2rem; font-variant-numeric: tabular-nums; margin-top: 4px; font-weight: 700; }
+  .metric .detail { color: var(--muted); font-size: 0.7rem; margin-top: 2px; }
+  .pos { color: var(--green); } .neg { color: var(--red); } .amber { color: var(--amber); }
+  .cards { display: flex; flex-direction: column; gap: 8px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .card.near { border-color: rgba(255,107,107,0.45); background: rgba(255,107,107,0.08); }
+  .card.atstop { border-color: rgba(255,60,60,0.7); background: rgba(255,60,60,0.16); }
+  .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .sym { font-weight: 700; font-size: 1.05rem; }
+  .pnl { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 10px; font-size: 0.8rem; }
+  .grid2 .k { color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .grid2 .v { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .empty { padding: 18px; color: var(--muted); background: var(--panel); border: 1px dashed var(--border); border-radius: 12px; text-align: center; }
+  .note { margin-top: 10px; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+  .note strong { color: var(--text); }
+  .status { color: var(--muted); font-size: 0.72rem; margin-top: 12px; display: flex; align-items: center; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .dot.err { background: var(--red); }
+  .err { color: var(--red); font-size: 0.8rem; margin-top: 6px; }
+  .tabs {
+    position: fixed; left: 0; right: 0; bottom: 0; padding: 8px 12px calc(8px + var(--safe-b));
+    background: rgba(11,15,20,0.92); backdrop-filter: blur(10px); border-top: 1px solid var(--border);
+    display: flex; gap: 8px; z-index: 20;
+  }
+  .tab {
+    flex: 1; text-align: center; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--muted); font-weight: 700; font-size: 0.9rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab.active { color: var(--text); border-color: #3a5168; background: #182230; }
+  .view { display: none; } .view.active { display: block; }
+  .scan-row {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 12px; margin-bottom: 8px;
+  }
+  .scan-row.pass { border-color: rgba(61,214,140,0.4); background: rgba(61,214,140,0.08); }
+  .scan-row.near { border-color: rgba(240,180,41,0.35); background: rgba(240,180,41,0.07); }
+  .scan-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.68rem;
+    font-weight: 700; letter-spacing: 0.03em;
+  }
+  .badge.pass { background: rgba(61,214,140,0.2); color: var(--green); }
+  .badge.fail { background: rgba(255,107,107,0.15); color: var(--red); }
+  .badge.blocked, .badge.held { background: rgba(240,180,41,0.18); color: var(--amber); }
+  .install-hint {
+    display: none; margin-bottom: 12px; padding: 10px 12px; border-radius: 12px;
+    background: #182230; border: 1px solid #3a5168; font-size: 0.8rem; color: var(--muted); line-height: 1.4;
+  }
+  .install-hint strong { color: var(--text); }
+  .install-hint.show { display: block; }
+  .tiny { font-size: 0.7rem; color: var(--muted); }
+  .section-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <div>
+      <h1>Tri-Health Live Desk</h1>
+      <div class="sub" id="sub">Read-only · Binance + Crypto.com · no keys</div>
+    </div>
+    <button type="button" class="btn" id="btnRefresh">Refresh</button>
+  </div>
+
+  <div class="install-hint" id="installHint">
+    <strong>Add to Home Screen:</strong> Chrome menu → Install app / Add to Home screen. Opens like a native app.
+  </div>
+
+  <div class="view active" id="viewDesk">
+    <div class="metrics" id="metrics"></div>
+    <div class="section-title">Open positions</div>
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="deskEmpty" style="display:none">No open desk positions</div>
+    <div class="note" id="note"></div>
+  </div>
+
+  <div class="view" id="viewScan">
+    <div class="scan-meta" id="scanMeta"></div>
+    <div id="scanList"></div>
+    <div class="empty" id="scanEmpty" style="display:none">No scan data yet</div>
+    <div class="tiny" id="scanUpdated" style="margin-top:8px"></div>
+  </div>
+
+  <div class="status"><span class="dot" id="dot"></span><span id="updated">Starting…</span></div>
+  <div class="err" id="err"></div>
+
+  <div class="tabs">
+    <button type="button" class="tab active" id="tabDesk" data-view="desk">Desk</button>
+    <button type="button" class="tab" id="tabScan" data-view="scan">Scanner</button>
+  </div>
+
+<script>
+const POS_URL = "../positions.json";
+const SCAN_URL = "../scan.json";
+const POLL_MS = 60000;
+const CG_IDS = {
+  FLR: "flare-networks",
+  ARB: "arbitrum",
+  AVAX: "avalanche-2",
+  AAVE: "aave",
+  QNT: "quant-network",
+  PENGU: "pudgy-penguins",
+  PUMP: "pump-fun",
+  BTC: "bitcoin",
+  ETH: "ethereum",
+  SOL: "solana",
+  DOGE: "dogecoin",
+  SHIB: "shiba-inu",
+  PEPE: "pepe",
+  BONK: "bonk"
+};
+
+let CFG = { positions: [], cash_usd: 0, usd_cad_fallback: 1.3989, closed: [], note: "" };
+let scanData = null;
+let priceSource = "…";
+let ccCache = null, ccCacheAt = 0;
+let usdCad = 1.3989;
+let activeView = "desk";
+
+function bust(url) { return url + (url.includes("?") ? "&" : "?") + "t=" + Date.now(); }
+async function fetchJSON(url, opts) {
+  const r = await fetch(bust(url), Object.assign({ cache: "no-store" }, opts || {}));
+  if (!r.ok) throw new Error(url + " " + r.status);
+  return r.json();
+}
+function fmtPrice(n) {
+  if (n == null || isNaN(n)) return "—";
+  if (n >= 1000) return n.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  if (n >= 1) return n.toFixed(4);
+  if (n >= 0.01) return n.toFixed(5);
+  if (n >= 0.0001) return n.toFixed(7);
+  return Number(n).toPrecision(4);
+}
+function fmtUsd(n) {
+  if (n == null || isNaN(n)) return "—";
+  return (n < 0 ? "-" : "") + "$" + Math.abs(n).toFixed(2);
+}
+function fmtPct(n) { return (n > 0 ? "+" : "") + n.toFixed(2) + "%"; }
+function cls(n) { return n >= 0 ? "pos" : "neg"; }
+function fmtET(iso) {
+  if (!iso) return "—";
+  try {
+    return new Date(iso).toLocaleString("en-CA", {
+      timeZone: "America/Toronto", month: "short", day: "numeric",
+      hour: "numeric", minute: "2-digit", hour12: true
+    }) + " ET";
+  } catch (_) { return iso; }
+}
+function positionCost(p) {
+  if (p.cost_usd != null && !isNaN(Number(p.cost_usd))) return Number(p.cost_usd);
+  if (p.notional_usd != null && !isNaN(Number(p.notional_usd))) return Number(p.notional_usd);
+  return (Number(p.qty) || 0) * (Number(p.entry) || 0);
+}
+
+async function loadPositions() {
+  const d = await fetchJSON(POS_URL);
+  CFG = Object.assign({}, CFG, d);
+  if (!Array.isArray(CFG.positions)) CFG.positions = [];
+  if (!Array.isArray(CFG.closed)) CFG.closed = [];
+  usdCad = CFG.usd_cad_fallback || usdCad;
+}
+
+async function loadScan() {
+  try {
+    const d = await fetchJSON(SCAN_URL);
+    if (d && Array.isArray(d.results)) { scanData = d; renderScan(); }
+  } catch (e) {
+    document.getElementById("scanUpdated").textContent = "Scanner fetch failed: " + (e.message || e);
+  }
+}
+
+async function fetchBinanceOne(symbol) {
+  try {
+    const j = await fetchJSON("https://api.binance.com/api/v3/ticker/24hr?symbol=" + symbol);
+    const last = parseFloat(j.lastPrice);
+    if (isNaN(last)) return null;
+    return { last, chg: parseFloat(j.priceChangePercent) || 0 };
+  } catch (_) {
+    try {
+      const j = await fetchJSON("https://data-api.binance.vision/api/v3/ticker/price?symbol=" + symbol);
+      const last = parseFloat(j.price);
+      return isNaN(last) ? null : { last, chg: 0 };
+    } catch (_) { return null; }
+  }
+}
+
+async function fetchCryptoComMap() {
+  const now = Date.now();
+  if (ccCache && now - ccCacheAt < 5000) return ccCache;
+  try {
+    const j = await fetchJSON("https://api.crypto.com/exchange/v1/public/get-tickers");
+    const data = (j.result && j.result.data) || j.data || [];
+    const map = {};
+    for (const row of data) {
+      const name = row.i || row.instrument_name;
+      const px = parseFloat(row.a || row.k || row.last || row.p);
+      if (name && !isNaN(px)) map[name] = px;
+    }
+    ccCache = map; ccCacheAt = now;
+    return map;
+  } catch (_) { return ccCache || {}; }
+}
+
+async function fetchCoinGecko(symbols) {
+  const ids = [...new Set(symbols.map(s => CG_IDS[s]).filter(Boolean))];
+  if (!ids.length) return {};
+  try {
+    const j = await fetchJSON("https://api.coingecko.com/api/v3/simple/price?ids=" + ids.join(",") + "&vs_currencies=usd");
+    const out = {};
+    for (const [sym, id] of Object.entries(CG_IDS)) {
+      if (j[id] && j[id].usd != null) out[sym] = j[id].usd;
+    }
+    return out;
+  } catch (_) { return {}; }
+}
+
+function cryptoComKey(binanceSym) {
+  if (!binanceSym) return null;
+  if (binanceSym.endsWith("USDT")) return binanceSym.slice(0, -4) + "_USDT";
+  if (binanceSym.endsWith("USD")) return binanceSym.slice(0, -3) + "_USD";
+  return binanceSym;
+}
+
+async function getPriceMap(desk) {
+  const needed = [...new Set(desk.map(p => p.binance).filter(Boolean))];
+  const map = {};
+  let hits = 0;
+  const results = await Promise.all(needed.map(async s => [s, await fetchBinanceOne(s)]));
+  for (const [s, t] of results) { if (t) { map[s] = t; hits++; } }
+  let cc = {};
+  try { cc = await fetchCryptoComMap(); } catch (_) {}
+  map.__cc = cc;
+  for (const s of needed) {
+    if (map[s]) continue;
+    const k = cryptoComKey(s);
+    const px = cc[k] ?? (k && cc[k.replace("_USDT", "_USD")]);
+    if (px != null) map[s] = { last: px, chg: 0 };
+  }
+  const missingSyms = desk.filter(p => {
+    if (p.binance && map[p.binance]) return false;
+    if (p.cryptocom && cc[p.cryptocom] != null) return false;
+    return true;
+  }).map(p => p.symbol);
+  const cg = await fetchCoinGecko(missingSyms.concat(["BTC"]));
+  map.__cg = cg;
+  if (hits && hits === needed.length) priceSource = "Binance";
+  else if (hits) priceSource = "Binance+fallback";
+  else if (Object.keys(cc).length) priceSource = "Crypto.com";
+  else priceSource = "CoinGecko";
+  return map;
+}
+
+function resolvePosPrice(p, map) {
+  const b = p.binance;
+  if (b && map[b] && map[b].last != null) return map[b].last;
+  const cc = map.__cc || {};
+  if (p.cryptocom && cc[p.cryptocom] != null) return cc[p.cryptocom];
+  if (b) {
+    const k = cryptoComKey(b);
+    if (k && cc[k] != null) return cc[k];
+    if (k && cc[k.replace("_USDT", "_USD")] != null) return cc[k.replace("_USDT", "_USD")];
+  }
+  if (p.symbol && cc[p.symbol + "_USD"] != null) return cc[p.symbol + "_USD"];
+  if (map.__cg && map.__cg[p.symbol] != null) return map.__cg[p.symbol];
+  return null;
+}
+
+function setView(name) {
+  activeView = name;
+  document.getElementById("viewDesk").classList.toggle("active", name === "desk");
+  document.getElementById("viewScan").classList.toggle("active", name === "scan");
+  document.getElementById("tabDesk").classList.toggle("active", name === "desk");
+  document.getElementById("tabScan").classList.toggle("active", name === "scan");
+}
+
+function statusBadge(st) {
+  const s = String(st || "FAIL").toUpperCase();
+  let c = "fail";
+  if (s === "PASS") c = "pass";
+  else if (s === "BLOCKED" || s === "HELD") c = "blocked";
+  return `<span class="badge ${c}">${s}</span>`;
+}
+
+function renderScan() {
+  const meta = document.getElementById("scanMeta");
+  const list = document.getElementById("scanList");
+  const empty = document.getElementById("scanEmpty");
+  const upd = document.getElementById("scanUpdated");
+  if (!scanData || !Array.isArray(scanData.results)) {
+    meta.innerHTML = ""; list.innerHTML = ""; empty.style.display = "block";
+    upd.textContent = "No scan.json yet";
+    return;
+  }
+  empty.style.display = "none";
+  const thr = scanData.threshold != null ? scanData.threshold : 0.65;
+  const regimeOk = !!scanData.btc_regime_ok;
+  meta.innerHTML = [
+    { label: "Scan", value: fmtET(scanData.scanned_at), detail: scanData.tz || "ET" },
+    { label: "BTC regime", value: regimeOk ? "OK" : "SOFT", detail: regimeOk ? "×1.00" : "×0.85", cls: regimeOk ? "pos" : "amber" },
+    { label: "Pass ≥", value: Number(thr).toFixed(2), detail: "threshold" },
+    { label: "Open", value: String(scanData.open_positions != null ? scanData.open_positions : "?"), detail: (scanData.held_symbols || []).join(", ") },
+  ].map(m => `<div class="metric"><div class="label">${m.label}</div><div class="value ${m.cls||""}">${m.value}</div><div class="detail">${m.detail}</div></div>`).join("");
+
+  list.innerHTML = "";
+  (scanData.results || []).forEach((r, i) => {
+    const total = Number(r.total || 0);
+    const st = String(r.status || "FAIL").toUpperCase();
+    let rowCls = "scan-row";
+    if (st === "PASS" || st === "BLOCKED") rowCls += " pass";
+    else if (total >= 0.55) rowCls += " near";
+    const el = document.createElement("div");
+    el.className = rowCls;
+    el.innerHTML =
+      `<div class="card-top"><div class="sym">#${i+1} ${r.symbol}</div><div>${statusBadge(st)}</div></div>` +
+      `<div class="grid2">` +
+      `<div><div class="k">Score</div><div class="v ${st==="PASS"||st==="BLOCKED"?"pos":(total>=0.55?"amber":"")}">${total.toFixed(3)}</div></div>` +
+      `<div><div class="k">Price</div><div class="v">${fmtPrice(r.price)}</div></div>` +
+      `<div><div class="k">1h</div><div class="v ${cls(r.pct_1h)}">${fmtPct(Number(r.pct_1h||0))}</div></div>` +
+      `<div><div class="k">4h</div><div class="v ${cls(r.pct_4h)}">${fmtPct(Number(r.pct_4h||0))}</div></div>` +
+      `<div><div class="k">24h</div><div class="v ${cls(r.pct_24h)}">${fmtPct(Number(r.pct_24h||0))}</div></div>` +
+      `<div><div class="k">RVol</div><div class="v">${Number(r.relvol||0).toFixed(2)}</div></div>` +
+      `</div>` +
+      `<div class="tiny" style="margin-top:6px">${r.reason || ""} · stop ${fmtPrice(r.suggested_stop)}</div>`;
+    list.appendChild(el);
+  });
+  upd.textContent = "Scanner " + fmtET(scanData.scanned_at) + " · " + (scanData.results||[]).length + " coins · auto 60s";
+}
+
+async function tick(manual) {
+  const btn = document.getElementById("btnRefresh");
+  const errEl = document.getElementById("err");
+  const dot = document.getElementById("dot");
+  if (btn) { btn.disabled = true; btn.textContent = manual ? "Pulling…" : "…"; }
+  try {
+    await loadPositions();
+    const desk = CFG.positions || [];
+    const map = await getPriceMap(desk);
+
+    let totalPnl = 0, totalVal = 0, totalCost = 0, near = 0, atStopN = 0, priced = 0;
+    const cards = document.getElementById("cards");
+    const empty = document.getElementById("deskEmpty");
+    cards.innerHTML = "";
+    if (!desk.length) {
+      empty.style.display = "block";
+    } else {
+      empty.style.display = "none";
+      for (const p of desk) {
+        const price = resolvePosPrice(p, map);
+        const qty = Number(p.qty) || 0;
+        const entry = Number(p.entry) || 0;
+        const stop = Number(p.stop) || 0;
+        const cost = positionCost(p);
+        const card = document.createElement("div");
+        card.className = "card";
+        if (price == null) {
+          card.innerHTML =
+            `<div class="card-top"><div class="sym">${p.symbol}</div><div class="pnl">—</div></div>` +
+            `<div class="grid2">` +
+            `<div><div class="k">Qty</div><div class="v">${qty.toLocaleString("en-US")}</div></div>` +
+            `<div><div class="k">Entry</div><div class="v">${fmtPrice(entry)}</div></div>` +
+            `<div><div class="k">Stop</div><div class="v">${fmtPrice(stop)}</div></div>` +
+            `<div><div class="k">Price</div><div class="v">—</div></div>` +
+            `</div>`;
+          totalCost += cost;
+          cards.appendChild(card);
+          continue;
+        }
+        const value = qty * price;
+        const pnl = value - cost;
+        const pnlPct = cost ? (pnl / cost) * 100 : 0;
+        const dist = price ? ((price - stop) / price) * 100 : 0;
+        const atStop = stop > 0 && price <= stop;
+        const nearStop = stop > 0 && dist <= 2;
+        totalPnl += pnl; totalVal += value; totalCost += cost; priced++;
+        if (nearStop) near++; if (atStop) atStopN++;
+        if (atStop) card.classList.add("atstop");
+        else if (nearStop) card.classList.add("near");
+        card.innerHTML =
+          `<div class="card-top"><div class="sym">${p.symbol}</div>` +
+          `<div class="pnl ${cls(pnl)}">${fmtUsd(pnl)} <span class="tiny ${cls(pnlPct)}">${fmtPct(pnlPct)}</span></div></div>` +
+          `<div class="grid2">` +
+          `<div><div class="k">Qty</div><div class="v">${qty.toLocaleString("en-US")}</div></div>` +
+          `<div><div class="k">Entry</div><div class="v">${fmtPrice(entry)}</div></div>` +
+          `<div><div class="k">Live</div><div class="v">${fmtPrice(price)}</div></div>` +
+          `<div><div class="k">Value</div><div class="v">${fmtUsd(value)}</div></div>` +
+          `<div><div class="k">Stop</div><div class="v">${fmtPrice(stop)}</div></div>` +
+          `<div><div class="k">To stop</div><div class="v ${nearStop||atStop?"neg":""}">${dist.toFixed(2)}%</div></div>` +
+          `</div>`;
+        cards.appendChild(card);
+      }
+    }
+
+    const cash = Number(CFG.cash_usd) || 0;
+    const unPct = totalCost ? (totalPnl / totalCost) * 100 : 0;
+    document.getElementById("metrics").innerHTML = [
+      { label: "Desk P&L", value: desk.length ? fmtUsd(totalPnl) : "—", detail: desk.length ? fmtPct(unPct) + " since buy" : "0 open", cls: desk.length ? cls(totalPnl) : "" },
+      { label: "Cash", value: fmtUsd(cash), detail: "USD free", cls: "" },
+      { label: "Desk value", value: desk.length ? fmtUsd(totalVal) : "—", detail: priced + " priced · cost " + fmtUsd(totalCost), cls: "" },
+      { label: "Open", value: String(desk.length), detail: near || atStopN ? (`near/at stop ${near}/${atStopN}`) : "ok", cls: atStopN ? "neg" : (near ? "amber" : "") },
+    ].map(m => `<div class="metric"><div class="label">${m.label}</div><div class="value ${m.cls}">${m.value}</div><div class="detail">${m.detail}</div></div>`).join("");
+
+    document.getElementById("note").innerHTML = CFG.note ? `<strong>Note</strong> — ${CFG.note}` : "";
+    document.getElementById("sub").textContent =
+      "Read-only · " + priceSource + " · auto 60s · no keys";
+
+    const now = new Date().toLocaleString("en-CA", {
+      timeZone: "America/Toronto", weekday: "short", month: "short", day: "numeric",
+      hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true
+    }) + " ET";
+    document.getElementById("updated").textContent = "Updated " + now + " · " + priceSource;
+    dot.className = "dot";
+    errEl.textContent = "";
+  } catch (e) {
+    dot.className = "dot err";
+    errEl.textContent = "Fetch failed: " + (e && e.message ? e.message : e);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Refresh"; }
+  }
+}
+
+document.getElementById("tabDesk").addEventListener("click", () => setView("desk"));
+document.getElementById("tabScan").addEventListener("click", () => { setView("scan"); renderScan(); });
+document.getElementById("btnRefresh").addEventListener("click", () => { tick(true); loadScan(); });
+
+(function showInstallHint() {
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+  const ua = navigator.userAgent || "";
+  if (!isStandalone && /Android|iPhone|iPad/i.test(ua)) {
+    document.getElementById("installHint").classList.add("show");
+  }
+})();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
+}
+
+(async function boot() {
+  await tick(false);
+  await loadScan();
+  setInterval(() => { tick(false); loadScan(); }, POLL_MS);
+})();
+</script>
+</body>
+</html>
