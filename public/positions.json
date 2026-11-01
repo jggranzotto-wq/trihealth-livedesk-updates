@@ -1,368 +1,404 @@
 {
- "usd_cad_fallback": 1.3989,
- "btc_cad_stop": 113000,
- "poll_ms": 4000,
- "cash_usd": 228.87,
- "snapshot_total_usd": 669.14,
- "snapshot_at": "2026-10-31T11:45:19-04:00",
- "note": "Desk open: PUMP, PENGU, FLR, QNT, AAVE, AVAX, ARB, CRO (8). Stopped: PEPE Nov1 07:30 -1.69, INJ -2.04, BEAMX 16:10 -2.92, NEAR 16:30 -1.42. Cash $228.87. DOGE grid active. BONK 6.3M held, no stop.",
- "positions": [
-  {
-   "symbol": "PUMP",
-   "binance": "PUMPUSDT",
-   "cryptocom": "PUMP_USD",
-   "qty": 13731,
-   "entry": 0.0039007,
-   "stop": 0.0041508,
-   "stop_limit": 0.0041093,
-   "stop_id": "4611686018429193294",
-   "notional_usd": 53.83,
-   "opened": "2026-10-29T22:20:00-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 0.0043688,
-   "stop_qty": 13700,
-   "cost_usd": 53.83
+  "usd_cad_fallback": 1.3989,
+  "btc_cad_stop": 113000,
+  "poll_ms": 4000,
+  "cash_usd": 387.64,
+  "snapshot_total_usd": 669.14,
+  "snapshot_at": "2026-11-01T14:04:00-05:00",
+  "note": "Desk open: PUMP, FLR, QNT, AVAX, ARB, CRO (6). Stopped: AAVE Nov1 14:00 -0.87, PENGU 13:19 -0.51, PEPE 07:30 -1.69, INJ -2.04, BEAMX -2.92, NEAR -1.42. Cash $387.64. DOGE grid active. BONK 6.3M held, no stop.",
+  "positions": [
+    {
+      "symbol": "PUMP",
+      "binance": "PUMPUSDT",
+      "cryptocom": "PUMP_USD",
+      "qty": 13731,
+      "entry": 0.0039007,
+      "stop": 0.0041508,
+      "stop_limit": 0.0041093,
+      "stop_id": "4611686018429193294",
+      "notional_usd": 53.83,
+      "opened": "2026-10-29T22:20:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.0043688,
+      "stop_qty": 13700,
+      "cost_usd": 53.83
+    },
+    {
+      "symbol": "FLR",
+      "binance": "",
+      "cryptocom": "FLR_USD",
+      "qty": 8887.225,
+      "entry": 0.006058,
+      "stop": 0.00595,
+      "stop_limit": 0.00589,
+      "stop_qty": 8880,
+      "stop_id": "4611686018429194516",
+      "notional_usd": 53.98,
+      "opened": "2026-10-30T22:14:47-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.006785,
+      "cost_usd": 53.98
+    },
+    {
+      "symbol": "QNT",
+      "binance": "QNTUSDT",
+      "cryptocom": "QNT_USD",
+      "qty": 0.26865,
+      "entry": 200.3528,
+      "stop": 197.274,
+      "stop_limit": 195.301,
+      "stop_qty": 0.268,
+      "stop_id": "4611686018429193129",
+      "notional_usd": 54.1,
+      "opened": "2026-10-31T09:17:14-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 224.395,
+      "cost_usd": 54.1
+    },
+    {
+      "symbol": "AVAX",
+      "binance": "AVAXUSDT",
+      "cryptocom": "AVAX_USD",
+      "qty": 6.15905,
+      "entry": 8.701,
+      "stop": 8.567,
+      "stop_limit": 8.481,
+      "stop_qty": 6.15,
+      "stop_id": "4611686018429194521",
+      "notional_usd": 53.86,
+      "opened": "2026-11-01T00:35:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 9.7451,
+      "cost_usd": 53.86,
+      "peak": 8.897
+    },
+    {
+      "symbol": "ARB",
+      "binance": "ARBUSDT",
+      "cryptocom": "ARB_USD",
+      "qty": 324.37,
+      "entry": 0.165702,
+      "stop": 0.161663,
+      "stop_limit": 0.160046,
+      "stop_qty": 324,
+      "stop_id": "4611686018429194522",
+      "notional_usd": 54.02,
+      "opened": "2026-11-01T11:06:00-05:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.185586,
+      "cost_usd": 54.02,
+      "peak": 0.165702
+    },
+    {
+      "symbol": "CRO",
+      "binance": "CROUSDT",
+      "cryptocom": "CRO_USD",
+      "qty": 1037.8825,
+      "entry": 0.051841,
+      "stop": 0.04873,
+      "stop_limit": 0.04824,
+      "stop_qty": 1037,
+      "stop_id": "4611686018429194549",
+      "notional_usd": 53.97,
+      "opened": "2026-11-01T12:05:00-05:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.058062,
+      "cost_usd": 53.97,
+      "peak": 0.051841
+    }
+  ],
+  "holdings": [
+    {
+      "symbol": "USD",
+      "kind": "cash",
+      "qty": 387.64,
+      "note": "free USD"
+    },
+    {
+      "symbol": "SHIB",
+      "binance": "SHIBUSDT",
+      "cryptocom": "SHIB_USD",
+      "qty": 3992150
+    },
+    {
+      "symbol": "BONK",
+      "binance": "BONKUSDT",
+      "cryptocom": "BONK_USD",
+      "qty": 6301950,
+      "note": "older lot \u00b7 no stop"
+    },
+    {
+      "symbol": "DOGE",
+      "binance": "DOGEUSDT",
+      "cryptocom": "DOGE_USD",
+      "qty": 195.12,
+      "qty_approx": true,
+      "value_snapshot_usd": 14.38,
+      "note": "qty \u2248 $14.38 / spot at snapshot"
+    },
+    {
+      "symbol": "VVS",
+      "binance": "",
+      "cryptocom": "VVS_USD",
+      "qty": 2221200
+    },
+    {
+      "symbol": "ELON",
+      "binance": "",
+      "cryptocom": "ELON_USD",
+      "qty": 68655000
+    }
+  ],
+  "watch": [
+    {
+      "symbol": "BTC",
+      "binance": "BTCUSDT"
+    },
+    {
+      "symbol": "ETH",
+      "binance": "ETHUSDT"
+    },
+    {
+      "symbol": "SOL",
+      "binance": "SOLUSDT"
+    },
+    {
+      "symbol": "PEPE",
+      "binance": "PEPEUSDT"
+    },
+    {
+      "symbol": "DOGE",
+      "binance": "DOGEUSDT"
+    },
+    {
+      "symbol": "SHIB",
+      "binance": "SHIBUSDT"
+    }
+  ],
+  "grids": {
+    "DOGE": {
+      "range_low": 0.075,
+      "range_high": 0.084,
+      "stop": 0.072
+    }
   },
-  {
-   "symbol": "PENGU",
-   "binance": "PENGUUSDT",
-   "cryptocom": "PENGU_USD",
-   "qty": 7442.6,
-   "entry": 0.007245,
-   "stop": 0.007239,
-   "stop_limit": 0.007167,
-   "stop_qty": 7440,
-   "stop_id": "4611686018429193296",
-   "notional_usd": 54.19,
-   "opened": "2026-10-30T11:00:00-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 0.0081144,
-   "cost_usd": 54.19
-  },
-  {
-   "symbol": "FLR",
-   "binance": "",
-   "cryptocom": "FLR_USD",
-   "qty": 8887.225,
-   "entry": 0.006058,
-   "stop": 0.00595,
-   "stop_limit": 0.00589,
-   "stop_qty": 8880,
-   "stop_id": "4611686018429194516",
-   "notional_usd": 53.98,
-   "opened": "2026-10-30T22:14:47-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 0.006785,
-   "cost_usd": 53.98
-  },
-  {
-   "symbol": "QNT",
-   "binance": "QNTUSDT",
-   "cryptocom": "QNT_USD",
-   "qty": 0.26865,
-   "entry": 200.3528,
-   "stop": 197.274,
-   "stop_limit": 195.301,
-   "stop_qty": 0.268,
-   "stop_id": "4611686018429193129",
-   "notional_usd": 54.1,
-   "opened": "2026-10-31T09:17:14-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 224.395,
-   "cost_usd": 54.1
-  },
-  {
-   "symbol": "AAVE",
-   "binance": "AAVEUSDT",
-   "cryptocom": "AAVE_USD",
-   "qty": 0.397005,
-   "entry": 135.21,
-   "stop": 133.708,
-   "stop_limit": 132.371,
-   "stop_qty": 0.397,
-   "stop_id": "4611686018429194519",
-   "notional_usd": 53.95,
-   "opened": "2026-10-31T10:40:02-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 151.4352,
-   "cost_usd": 53.95
-  },
-  {
-   "symbol": "AVAX",
-   "binance": "AVAXUSDT",
-   "cryptocom": "AVAX_USD",
-   "qty": 6.15905,
-   "entry": 8.701,
-   "stop": 8.567,
-   "stop_limit": 8.481,
-   "stop_qty": 6.15,
-   "stop_id": "4611686018429194521",
-   "notional_usd": 53.86,
-   "opened": "2026-11-01T00:35:00-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 9.7451,
-   "cost_usd": 53.86,
-   "peak": 8.897
-  },
-  {
-   "symbol": "ARB",
-   "binance": "ARBUSDT",
-   "cryptocom": "ARB_USD",
-   "qty": 324.37,
-   "entry": 0.165702,
-   "stop": 0.161663,
-   "stop_limit": 0.160046,
-   "stop_qty": 324,
-   "stop_id": "4611686018429194522",
-   "notional_usd": 54.02,
-   "opened": "2026-11-01T11:06:00-05:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 0.185586,
-   "cost_usd": 54.02,
-   "peak": 0.165702
-  },
-  {
-   "symbol": "CRO",
-   "binance": "CROUSDT",
-   "cryptocom": "CRO_USD",
-   "qty": 1037.8825,
-   "entry": 0.051841,
-   "stop": 0.04873,
-   "stop_limit": 0.04824,
-   "stop_qty": 1037,
-   "stop_id": "4611686018429194549",
-   "notional_usd": 53.97,
-   "opened": "2026-11-01T12:05:00-05:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 0.058062,
-   "cost_usd": 53.97,
-   "peak": 0.051841
-  }
- ],
- "holdings": [
-  {
-   "symbol": "USD",
-   "kind": "cash",
-   "qty": 228.87,
-   "note": "free USD"
-  },
-  {
-   "symbol": "SHIB",
-   "binance": "SHIBUSDT",
-   "cryptocom": "SHIB_USD",
-   "qty": 3992150
-  },
-  {
-   "symbol": "BONK",
-   "binance": "BONKUSDT",
-   "cryptocom": "BONK_USD",
-   "qty": 6301950,
-   "note": "older lot \u00b7 no stop"
-  },
-  {
-   "symbol": "DOGE",
-   "binance": "DOGEUSDT",
-   "cryptocom": "DOGE_USD",
-   "qty": 195.12,
-   "qty_approx": true,
-   "value_snapshot_usd": 14.38,
-   "note": "qty \u2248 $14.38 / spot at snapshot"
-  },
-  {
-   "symbol": "VVS",
-   "binance": "",
-   "cryptocom": "VVS_USD",
-   "qty": 2221200
-  },
-  {
-   "symbol": "ELON",
-   "binance": "",
-   "cryptocom": "ELON_USD",
-   "qty": 68655000
-  }
- ],
- "watch": [
-  {
-   "symbol": "BTC",
-   "binance": "BTCUSDT"
-  },
-  {
-   "symbol": "ETH",
-   "binance": "ETHUSDT"
-  },
-  {
-   "symbol": "SOL",
-   "binance": "SOLUSDT"
-  },
-  {
-   "symbol": "PEPE",
-   "binance": "PEPEUSDT"
-  },
-  {
-   "symbol": "DOGE",
-   "binance": "DOGEUSDT"
-  },
-  {
-   "symbol": "SHIB",
-   "binance": "SHIBUSDT"
-  }
- ],
- "grids": {
-  "DOGE": {
-   "range_low": 0.075,
-   "range_high": 0.084,
-   "stop": 0.072
-  }
- },
- "closed": [
-  {
-   "symbol": "USELESS",
-   "qty": 434.815,
-   "entry": 0.123915,
-   "exit": 0.12714,
-   "notional_usd": 54.15,
-   "exit_usd": 55.17876,
-   "realized_pnl_usd": 1.26,
-   "closed_at": "2026-10-31T06:52:02-04:00",
-   "note": "trailing stop filled"
-  },
-  {
-   "symbol": "INJ",
-   "binance": "INJUSDT",
-   "cryptocom": "INJ_USD",
-   "qty": 7.1417,
-   "entry": 7.5448,
-   "stop": 7.358,
-   "stop_limit": 7.284,
-   "stop_qty": 7.14,
-   "stop_id": "4611686018429193302",
-   "notional_usd": 54.02,
-   "cost_usd": 54.02092,
-   "opened": "2026-10-31T12:24:00-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 8.450176,
-   "exit_price": 7.317,
-   "exit_qty": 7.14,
-   "gross_usd": 52.24,
-   "fees_usd": 0.2612,
-   "net_proceeds_usd": 51.98,
-   "realized_pnl_usd": -2.04,
-   "realized_pnl_pct": -3.8,
-   "closed_at": "2026-10-31T13:01:00-04:00",
-   "close_reason": "stop triggered",
-   "fills": [
-    [
-     6.98,
-     7.316
-    ],
-    [
-     0.16,
-     7.339
-    ]
-   ],
-   "dust_qty": 0.005875,
-   "status": "closed"
-  },
-  {
-   "symbol": "BEAMX",
-   "binance": "BEAMXUSDT",
-   "cryptocom": "BEAMX_USD",
-   "qty": 10666.4,
-   "entry": 0.0050235,
-   "stop": 0.0048377,
-   "stop_limit": 0.0047893,
-   "stop_qty": 10660,
-   "stop_id": "4611686018429193133",
-   "notional_usd": 53.85,
-   "opened": "2026-10-31T09:49:43-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 0.00562632,
-   "cost_usd": 53.85,
-   "exit_price": 0.0047893,
-   "exit_qty": 10660,
-   "gross_usd": 51.054,
-   "fees_usd": 0.1276,
-   "net_proceeds_usd": 50.93,
-   "realized_pnl_usd": -2.92,
-   "realized_pnl_pct": -5.4,
-   "closed_at": "2026-10-31T16:10:23-04:00",
-   "close_reason": "stop triggered",
-   "fills": [
-    [
-     10660,
-     0.0047893
-    ]
-   ],
-   "dust_qty": 6.4
-  },
-  {
-   "symbol": "NEAR",
-   "binance": "NEARUSDT",
-   "cryptocom": "NEAR_USD",
-   "qty": 12.0395,
-   "entry": 4.4598,
-   "stop": 4.4071,
-   "stop_limit": 4.363,
-   "stop_qty": 12.0,
-   "stop_id": "4611686018429193301",
-   "notional_usd": 53.96,
-   "cost_usd": 53.96361,
-   "opened": "2026-10-31T11:43:00-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 4.994976,
-   "exit_price": 4.4006,
-   "exit_qty": 12.0,
-   "gross_usd": 52.807,
-   "fees_usd": 0.264,
-   "net_proceeds_usd": 52.54,
-   "realized_pnl_usd": -1.42,
-   "realized_pnl_pct": -2.6,
-   "closed_at": "2026-10-31T16:30:40-04:00",
-   "close_reason": "stop triggered",
-   "fills": [
-    [
-     10.8,
-     4.4006
-    ],
-    [
-     1.2,
-     4.4007
-    ]
-   ],
-   "dust_qty": 0.0395
-  },
-  {
-   "symbol": "PEPE",
-   "binance": "PEPEUSDT",
-   "cryptocom": "PEPE_USD",
-   "qty": 10746000,
-   "entry": 4.984e-06,
-   "stop": 4.855e-06,
-   "stop_limit": 4.806e-06,
-   "stop_qty": 10740000,
-   "stop_id": "4611686018429193298",
-   "notional_usd": 53.83,
-   "opened": "2026-10-31T09:46:38-04:00",
-   "trail_activate_pct": 0.12,
-   "trail_activate_price": 5.5821e-06,
-   "cost_usd": 53.83,
-   "exit_price": 4.851e-06,
-   "exit_qty": 10740000,
-   "gross_usd": 52.1,
-   "fees_usd": 0.26,
-   "net_proceeds_usd": 51.84,
-   "realized_pnl_usd": -1.69,
-   "realized_pnl_pct": -3.2,
-   "closed_at": "2026-11-01T07:30:00-05:00",
-   "close_reason": "stop triggered",
-   "fills": [
-    [
-     10740000,
-     4.851e-06
-    ]
-   ],
-   "dust_qty": 1105500
-  }
- ],
- "realized_pnl_usd": -5.12
+  "closed": [
+    {
+      "symbol": "USELESS",
+      "qty": 434.815,
+      "entry": 0.123915,
+      "exit": 0.12714,
+      "notional_usd": 54.15,
+      "exit_usd": 55.17876,
+      "realized_pnl_usd": 1.26,
+      "closed_at": "2026-10-31T06:52:02-04:00",
+      "note": "trailing stop filled"
+    },
+    {
+      "symbol": "INJ",
+      "binance": "INJUSDT",
+      "cryptocom": "INJ_USD",
+      "qty": 7.1417,
+      "entry": 7.5448,
+      "stop": 7.358,
+      "stop_limit": 7.284,
+      "stop_qty": 7.14,
+      "stop_id": "4611686018429193302",
+      "notional_usd": 54.02,
+      "cost_usd": 54.02092,
+      "opened": "2026-10-31T12:24:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 8.450176,
+      "exit_price": 7.317,
+      "exit_qty": 7.14,
+      "gross_usd": 52.24,
+      "fees_usd": 0.2612,
+      "net_proceeds_usd": 51.98,
+      "realized_pnl_usd": -2.04,
+      "realized_pnl_pct": -3.8,
+      "closed_at": "2026-10-31T13:01:00-04:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          6.98,
+          7.316
+        ],
+        [
+          0.16,
+          7.339
+        ]
+      ],
+      "dust_qty": 0.005875,
+      "status": "closed"
+    },
+    {
+      "symbol": "BEAMX",
+      "binance": "BEAMXUSDT",
+      "cryptocom": "BEAMX_USD",
+      "qty": 10666.4,
+      "entry": 0.0050235,
+      "stop": 0.0048377,
+      "stop_limit": 0.0047893,
+      "stop_qty": 10660,
+      "stop_id": "4611686018429193133",
+      "notional_usd": 53.85,
+      "opened": "2026-10-31T09:49:43-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.00562632,
+      "cost_usd": 53.85,
+      "exit_price": 0.0047893,
+      "exit_qty": 10660,
+      "gross_usd": 51.054,
+      "fees_usd": 0.1276,
+      "net_proceeds_usd": 50.93,
+      "realized_pnl_usd": -2.92,
+      "realized_pnl_pct": -5.4,
+      "closed_at": "2026-10-31T16:10:23-04:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          10660,
+          0.0047893
+        ]
+      ],
+      "dust_qty": 6.4
+    },
+    {
+      "symbol": "NEAR",
+      "binance": "NEARUSDT",
+      "cryptocom": "NEAR_USD",
+      "qty": 12.0395,
+      "entry": 4.4598,
+      "stop": 4.4071,
+      "stop_limit": 4.363,
+      "stop_qty": 12.0,
+      "stop_id": "4611686018429193301",
+      "notional_usd": 53.96,
+      "cost_usd": 53.96361,
+      "opened": "2026-10-31T11:43:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 4.994976,
+      "exit_price": 4.4006,
+      "exit_qty": 12.0,
+      "gross_usd": 52.807,
+      "fees_usd": 0.264,
+      "net_proceeds_usd": 52.54,
+      "realized_pnl_usd": -1.42,
+      "realized_pnl_pct": -2.6,
+      "closed_at": "2026-10-31T16:30:40-04:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          10.8,
+          4.4006
+        ],
+        [
+          1.2,
+          4.4007
+        ]
+      ],
+      "dust_qty": 0.0395
+    },
+    {
+      "symbol": "PEPE",
+      "binance": "PEPEUSDT",
+      "cryptocom": "PEPE_USD",
+      "qty": 10746000,
+      "entry": 4.984e-06,
+      "stop": 4.855e-06,
+      "stop_limit": 4.806e-06,
+      "stop_qty": 10740000,
+      "stop_id": "4611686018429193298",
+      "notional_usd": 53.83,
+      "opened": "2026-10-31T09:46:38-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 5.5821e-06,
+      "cost_usd": 53.83,
+      "exit_price": 4.851e-06,
+      "exit_qty": 10740000,
+      "gross_usd": 52.1,
+      "fees_usd": 0.26,
+      "net_proceeds_usd": 51.84,
+      "realized_pnl_usd": -1.69,
+      "realized_pnl_pct": -3.2,
+      "closed_at": "2026-11-01T07:30:00-05:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          10740000,
+          4.851e-06
+        ]
+      ],
+      "dust_qty": 1105500
+    },
+    {
+      "symbol": "PENGU",
+      "binance": "PENGUUSDT",
+      "cryptocom": "PENGU_USD",
+      "qty": 7442.6,
+      "entry": 0.007245,
+      "stop": 0.007239,
+      "stop_limit": 0.007167,
+      "stop_qty": 7440,
+      "stop_id": "4611686018429193296",
+      "notional_usd": 54.19,
+      "opened": "2026-10-30T11:00:00-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 0.0081144,
+      "cost_usd": 54.19,
+      "exit_price": 0.0072114,
+      "exit_qty": 7440,
+      "gross_usd": 53.6528,
+      "fees_usd": 0.2602,
+      "net_proceeds_usd": 53.3926,
+      "realized_pnl_usd": -0.51,
+      "realized_pnl_pct": -0.94,
+      "closed_at": "2026-11-01T13:19:00-05:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          7440,
+          0.0072114
+        ]
+      ],
+      "dust_qty": 2.6,
+      "status": "closed",
+      "peak": 0.007545
+    },
+    {
+      "symbol": "AAVE",
+      "binance": "AAVEUSDT",
+      "cryptocom": "AAVE_USD",
+      "qty": 0.397005,
+      "entry": 135.21,
+      "stop": 133.708,
+      "stop_limit": 132.371,
+      "stop_qty": 0.397,
+      "stop_id": "4611686018429194519",
+      "notional_usd": 53.95,
+      "opened": "2026-10-31T10:40:02-04:00",
+      "trail_activate_pct": 0.12,
+      "trail_activate_price": 151.4352,
+      "cost_usd": 53.95,
+      "exit_price": 133.656,
+      "exit_qty": 0.397,
+      "gross_usd": 53.0614,
+      "fees_usd": 0.2573,
+      "net_proceeds_usd": 52.8041,
+      "realized_pnl_usd": -0.87,
+      "realized_pnl_pct": -1.61,
+      "closed_at": "2026-11-01T14:00:00-05:00",
+      "close_reason": "stop triggered",
+      "fills": [
+        [
+          0.397,
+          133.656
+        ]
+      ],
+      "dust_qty": 5e-06,
+      "status": "closed",
+      "peak": 140.497
+    }
+  ],
+  "realized_pnl_usd": -6.5
 }
