@@ -2,10 +2,10 @@
  "usd_cad_fallback": 1.3989,
  "btc_cad_stop": 113000,
  "poll_ms": 4000,
- "cash_usd": 226.44,
+ "cash_usd": 172.49,
  "snapshot_total_usd": 657.85,
  "snapshot_at": "2026-11-01T19:04:00-05:00",
- "note": "Desk open: FLR, AVAX, CRO, QNT, BTC, ARB, SUI, ETH (8). ETH bought 19:04 @2279.80. SUI bought 18:41 @0.89971. BTC bought 18:13 @78001.14, ARB 18:13 @0.165447. QNT bought 16:20 @199.6097. Stopped Nov1: PUMP 14:09 +2.88, ARB 14:09 -1.61, QNT 12:59 -1.11, AAVE 14:00 -0.87, PENGU 13:19 -0.51, PEPE 07:30 -1.69. Prior: INJ -2.04, BEAMX -2.92, NEAR -1.42. Cash $226.44. DOGE grid active. BONK 6.3M held, no stop.",
+ "note": "Desk open: FLR, AVAX, CRO, QNT, BTC, ARB, SUI, ETH, ADA (9). ADA bought 20:29 @0.19434. ETH bought 19:04 @2279.80. SUI bought 18:41 @0.89971. BTC bought 18:13 @78001.14, ARB 18:13 @0.165447. QNT bought 16:20 @199.6097. Stopped Nov1: PUMP 14:09 +2.88, ARB 14:09 -1.61, QNT 12:59 -1.11, AAVE 14:00 -0.87, PENGU 13:19 -0.51, PEPE 07:30 -1.69. Prior: INJ -2.04, BEAMX -2.92, NEAR -1.42. Cash $172.49. DOGE grid active. BONK 6.3M held, no stop.",
  "positions": [
   {
    "symbol": "FLR",
@@ -141,13 +141,30 @@
    "trail_activate_price": 2553.376,
    "cost_usd": 53.8,
    "peak": 2279.8
+  },
+  {
+   "symbol": "ADA",
+   "binance": "ADAUSDT",
+   "cryptocom": "ADA_USD",
+   "qty": 276.25364,
+   "entry": 0.19434,
+   "stop": 0.18268,
+   "stop_limit": 0.18085,
+   "stop_qty": 276.2,
+   "stop_id": "4611686018429195806",
+   "notional_usd": 53.95,
+   "opened": "2026-11-01T20:29:00-05:00",
+   "trail_activate_pct": 0.12,
+   "trail_activate_price": 0.217661,
+   "cost_usd": 53.95,
+   "peak": 0.19434
   }
  ],
  "holdings": [
   {
    "symbol": "USD",
    "kind": "cash",
-   "qty": 226.44,
+   "qty": 172.49,
    "note": "free USD"
   },
   {
@@ -161,7 +178,7 @@
    "binance": "BONKUSDT",
    "cryptocom": "BONK_USD",
    "qty": 6301950,
-   "note": "older lot · no stop"
+   "note": "older lot \u00b7 no stop"
   },
   {
    "symbol": "DOGE",
@@ -170,7 +187,7 @@
    "qty": 195.12,
    "qty_approx": true,
    "value_snapshot_usd": 14.38,
-   "note": "qty ≈ $14.38 / spot at snapshot"
+   "note": "qty \u2248 $14.38 / spot at snapshot"
   },
   {
    "symbol": "VVS",
