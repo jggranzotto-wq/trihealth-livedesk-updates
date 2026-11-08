@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tri-Health desk — live</title>
+<link rel="stylesheet" href="analyze.css" />
+<style>
+  :root {
+    --bg: #0b0f14; --panel: #121821; --border: #1e2a38; --text: #e8eef6;
+    --muted: #8b9bb0; --green: #3dd68c; --red: #ff6b6b; --amber: #f0b429;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+    background: var(--bg); color: var(--text); padding: 20px; user-select: none;
+  }
+  h1 { font-size: 1.25rem; margin: 0 0 4px; font-weight: 600; }
+  h2 { font-size: 0.95rem; margin: 18px 0 8px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab {
+    background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 999px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer;
+  }
+  .tab.active { color: var(--text); border-color: #3a5168; background: #182230; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .metric { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .metric .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .metric .value { font-size: 1.35rem; font-variant-numeric: tabular-nums; margin-top: 4px; font-weight: 600; }
+  .metric .detail { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+  .pos { color: var(--green); } .neg { color: var(--red); } .amber { color: var(--amber); }
+  .watch { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 8px; }
+  .chip { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .chip .sym { font-weight: 600; font-size: 0.85rem; }
+  .chip .px { font-variant-numeric: tabular-nums; font-size: 0.95rem; margin-top: 2px; }
+  .chip .chg { font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; font-size: 0.9rem; }
+  th, td { padding: 10px 12px; text-align: right; font-variant-numeric: tabular-nums; border-bottom: 1px solid var(--border); }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; background: #0e141c; }
+  tr.near { background: rgba(255, 107, 107, 0.12); }
+  tr.near td { color: #ffb4b4; }
+  tr.atstop { background: rgba(255, 60, 60, 0.22); }
+  tr.atstop td { color: #ff8a8a; font-weight: 600; }
+  tr.total-row { background: #0e141c; }
+  tr.total-row td { font-weight: 700; border-top: 2px solid #3a5168; border-bottom: none; }
+  .closed-wrap { margin-top: 8px; }
+  .closed-wrap table { font-size: 0.85rem; }
+  tr.scan-pass { background: rgba(61, 214, 140, 0.10); }
+  tr.scan-near { background: rgba(240, 180, 41, 0.10); }
+  tr.scan-row { cursor: pointer; }
+  tr.scan-row:hover { filter: brightness(1.08); }
+  tr.scan-detail td { text-align: left; background: #0e141c; color: var(--muted); font-size: 0.82rem; line-height: 1.5; white-space: pre-wrap; padding: 12px 16px; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem;
+    font-weight: 700; letter-spacing: 0.03em;
+  }
+  .badge.pass { background: rgba(61,214,140,0.2); color: var(--green); }
+  .badge.fail { background: rgba(255,107,107,0.15); color: var(--red); }
+  .badge.blocked, .badge.held { background: rgba(240,180,41,0.18); color: var(--amber); }
+  .formula {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; font-size: 0.85rem; color: var(--muted); line-height: 1.5; margin-bottom: 14px;
+  }
+  .formula strong { color: var(--text); }
+  .formula code { color: #b8d4f0; font-size: 0.8rem; }
+  .scan-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .empty { padding: 16px; color: var(--muted); background: var(--panel); border: 1px dashed var(--border); border-radius: 12px; }
+  .note { margin-top: 12px; padding: 12px 14px; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; color: var(--muted); font-size: 0.85rem; line-height: 1.45; }
+  .note strong { color: var(--text); }
+  .note.warn { border-color: var(--amber); }
+  .note.danger { border-color: var(--red); color: #ffb4b4; }
+  .status-line { color: var(--muted); font-size: 0.8rem; margin-top: 12px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; }
+  .dot.err { background: var(--red); }
+  .err-msg { color: var(--red); font-size: 0.85rem; margin-top: 8px; }
+  .approx { color: var(--amber); font-size: 0.75rem; }
+  .scroll { overflow-x: auto; }
+  .tiny { font-size: 0.72rem; color: var(--muted); }
+  .hdr-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .btn-refresh {
+    background: #182230; border: 1px solid #3a5168; color: var(--text);
+    border-radius: 999px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+  }
+  .btn-refresh:hover { filter: brightness(1.12); }
+  .btn-refresh:disabled { opacity: 0.55; cursor: wait; }
+  .pull-meta { color: var(--muted); font-size: 0.75rem; margin-top: 4px; }
+
+.chart-search { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; align-items:center; }
+.chart-search input { flex:1 1 220px; min-width:0; padding:10px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; user-select:text; }
+.chart-search .chart-go { flex:0 0 auto; font-weight:700; }
+#viewChart .pills { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; align-items:center; }
+#viewChart button { cursor:pointer; padding:8px 12px; color:var(--text); background:var(--panel); border:1px solid var(--border); border-radius:8px; }
+#viewChart button.on { border-color:#5b9fd4; background:#182e45; }
+#viewChart button.chart-star { min-width:42px; font-size:1.05rem; line-height:1; }
+#viewChart button.chart-star.on { color:var(--amber); border-color:var(--amber); background:rgba(240,180,41,0.16); }
+.chart-fav { display:inline-flex; align-items:stretch; }
+#viewChart .chart-fav > button.pill { border-radius:8px 0 0 8px; }
+#viewChart .chart-fav > button.chart-fav-x {
+  border-radius:0 8px 8px 0; border-left:0; padding:8px 9px; color:var(--muted); font-size:1rem; line-height:1;
+}
+#viewChart .chart-fav > button.chart-fav-x:hover { color:var(--red); }
+.chart-quick-label { flex-basis:100%; color:var(--muted); font-size:.8rem; }
+.chart-status { margin:12px 0; min-height:1.1em; }
+.hint { color:var(--muted); font-size:.82rem; margin:0 0 10px; line-height:1.45; }
+.chart-host { height:65vh; min-height:420px; width:100%; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#0b0f14; }
+.chart-fallback { padding:24px; color:#f88; }
+.chart-analysis { user-select:text;
+  --an-bg:#121821; --an-text:#e8eef6; --an-muted:#8b9bb0; --an-line:#1e2a38;
+  --an-soft:#182230; --an-warn:#f0b429; --an-warn-bg:rgba(240,180,41,0.14);
+  --an-bad:#ff8d8d; --an-bad-bg:rgba(255,107,107,0.14); --an-ok:#3dd68c;
+}
+.chart-analyze { background:#182230 !important; color:var(--text) !important; border:1px solid #3a5168 !important; }
+
+</style>
+</head>
+<body>
+  <div class="hdr-row">
+    <div>
+      <h1>Tri-Health desk — live</h1>
+      <div class="sub" id="sub">Read-only · public tickers every 4s · Binance primary · Crypto.com fallback · no keys</div>
+      <div class="pull-meta" id="pullMeta">Holdings: waiting for first remote pull…</div>
+    </div>
+    <button type="button" class="btn-refresh" id="btnRefresh" title="Fetch latest holdings from the update server">Refresh holdings</button>
+  </div>
+
+  <div class="tabs">
+    <button type="button" class="tab active" id="tabDesk" data-view="desk">Desk</button>
+    <button type="button" class="tab" id="tabScan" data-view="scan">Scanner</button>
+    <button type="button" class="tab" id="tabChart" data-view="chart">Chart</button>
+  </div>
+
+  <div class="view active" id="viewDesk">
+    <div class="metrics" id="metrics"></div>
+    <div class="watch" id="watch"></div>
+
+    <h2>Desk positions</h2>
+    <div id="deskWrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th><th>Qty</th><th>Entry</th><th>Price</th><th>Value</th>
+            <th>P&amp;L $</th><th>P&amp;L %</th><th>Stop</th><th>To stop</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="deskEmpty" style="display:none">No open desk positions</div>
+
+    <h2>Closed desk trades</h2>
+    <div class="closed-wrap" id="closedWrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th><th>Qty</th><th>Entry</th><th>Exit</th><th>Cost</th>
+            <th>Proceeds</th><th>Realized $</th><th>Closed</th>
+          </tr>
+        </thead>
+        <tbody id="closedRows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="closedEmpty" style="display:none">No closed desk trades with known P&amp;L</div>
+
+    <h2>Holdings</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Asset</th><th>Qty</th><th>Price</th><th>Value</th><th>Note</th>
+        </tr>
+      </thead>
+      <tbody id="holdRows"></tbody>
+    </table>
+
+    <div class="note" id="btcNote"></div>
+    <div class="note" id="dogeNote"></div>
+    <div class="note" id="pepeNote"></div>
+  </div>
+
+  <div class="view" id="viewScan">
+    <div class="formula" id="scanFormula">
+      <strong>All-coin score</strong> =
+      <code>0.30·momentum + 0.25·trend + 0.25·rel_volume + 0.20·day_range</code>,
+      then × <code>0.85</code> if BTC is below its 1h EMA50.
+      Pass ≥ <strong>0.65</strong>. Hard gates: 24h vol ≥ $250K, spread ≤ 0.3%, not already held; max 3 open positions blocks new buys.
+      Suggested stop = −6%. Click a row for the full working.
+    </div>
+    <div class="scan-meta" id="scanMeta"></div>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Sym</th><th>Price</th><th>1h%</th><th>4h%</th><th>24h%</th>
+            <th>RVol</th><th>Spread</th>
+            <th>Mom</th><th>Trd</th><th>RV</th><th>Day</th>
+            <th>Raw</th><th>×BTC</th><th>Score</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="scanRows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="scanEmpty" style="display:none">No scan data yet — waiting for /api/scan</div>
+    <div class="status-line"><span class="tiny" id="scanUpdated">Scanner idle…</span></div>
+  </div>
+
+  <div class="status-line"><span class="dot" id="dot"></span><span id="updated">Starting…</span></div>
+  <div class="err-msg" id="err"></div>
+
+<div class="view" id="viewChart">
+  <div class="card">
+    <div class="chart-search">
+      <input data-chart-input type="text" inputmode="text" enterkeyhint="search"
+        autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+        aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
+      <button type="button" class="chart-go" data-chart-go>Chart</button>
+      <button type="button" class="chart-go chart-analyze" data-chart-analyze>Analyze</button>
+      <button type="button" class="chart-go chart-star" data-chart-star aria-label="Save favorite" title="Save favorite">☆</button>
+    </div>
+    <div class="pills" data-chart-modes></div>
+    <div class="pills" data-chart-quick></div>
+    <div class="pills" data-chart-favorites hidden></div>
+    <div class="pills" data-chart-tfs></div>
+    <div class="chart-status" data-chart-status></div>
+    <p class="hint">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Paste BINANCE:BTCUSDT or NASDAQ:AAPL to override. Analyze is an educational read of recent candles for the ticker in the box. It never places a trade. The star saves this symbol. Each favorite opens its chart, and × removes it.</p>
+    <div class="chart-analysis" data-chart-analysis hidden></div>
+    <div class="chart-host" data-chart-host></div>
+  </div>
+</div>
+
+
+<script src="chart.js"></script>
+<script src="analyze.js"></script>
+<script src="favorites.js"></script>
+<script>
+const DEFAULT_CFG = {
+  usd_cad_fallback: 1.3989,
+  btc_cad_stop: 113000,
+  poll_ms: 4000,
+  cash_usd: 549.26,
+  snapshot_total_usd: 728,
+  snapshot_at: "2026-10-30T08:33:00-04:00",
+  note: "Desk open: USELESS, PUMP, PENGU. Cash ~$549.26. PEPE grid above range (likely sold to USD). DOGE grid active. SHIB/BONK/ARB/SUI grids ended Oct 28. Prior desk lots stopped out ~21:45 ET Oct 29.",
+  positions: [
+    {"symbol": "USELESS", "binance": "USELESSUSDT", "cryptocom": "USELESS_USD", "qty": 434.815, "entry": 0.123915, "stop": 0.128417, "stop_limit": 0.127132, "stop_id": "4611686018429191106", "notional_usd": 54.15, "opened": "2026-10-29T22:08:55-04:00", "trail_activate_pct": 0.12, "trail_activate_price": 0.13879, "stop_qty": 434},
+    {"symbol": "PUMP", "binance": "PUMPUSDT", "cryptocom": "PUMP_USD", "qty": 13731, "entry": 0.0039007, "stop": 0.0039287, "stop_limit": 0.0038894, "stop_id": "4611686018429192234", "notional_usd": 53.83, "opened": "2026-10-29T22:20:00-04:00", "trail_activate_pct": 0.12, "trail_activate_price": 0.0043688, "stop_qty": 13700},
+    {"symbol": "PENGU", "binance": "PENGUUSDT", "cryptocom": "PENGU_USD", "qty": 7442.6, "entry": 0.007245, "stop": 0.00699, "stop_limit": 0.00692, "stop_qty": 7440, "stop_id": "4611686018429192028", "notional_usd": 54.19, "opened": "2026-10-30T11:00:00-04:00", "trail_activate_pct": 0.12, "trail_activate_price": 0.0081144}
+  ],
+  holdings: [
+    { symbol: "USD", kind: "cash", qty: 549.26, note: "free USD" },
+    { symbol: "SHIB", binance: "SHIBUSDT", cryptocom: "SHIB_USD", qty: 3992150 },
+    { symbol: "BONK", binance: "BONKUSDT", cryptocom: "BONK_USD", qty: 6301950, note: "older lot · no stop" },
+    { symbol: "DOGE", binance: "DOGEUSDT", cryptocom: "DOGE_USD", qty: 195.12, qty_approx: true, value_snapshot_usd: 14.38, note: "qty ≈ $14.38 / spot at snapshot" },
+    { symbol: "PEPE", binance: "PEPEUSDT", cryptocom: "PEPE_USD", qty: 2236443, qty_approx: true, value_snapshot_usd: 10.31, note: "qty ≈ snapshot; PEPE grid above range / likely sold out" },
+    { symbol: "VVS", binance: "", cryptocom: "VVS_USD", qty: 2221200 },
+    { symbol: "ELON", binance: "", cryptocom: "ELON_USD", qty: 68655000 }
+  ],
+  watch: [
+    { symbol: "BTC", binance: "BTCUSDT" },
+    { symbol: "ETH", binance: "ETHUSDT" },
+    { symbol: "SOL", binance: "SOLUSDT" },
+    { symbol: "PEPE", binance: "PEPEUSDT" },
+    { symbol: "DOGE", binance: "DOGEUSDT" },
+    { symbol: "SHIB", binance: "SHIBUSDT" }
+  ],
+  grids: {
+    DOGE: { range_low: 0.075, range_high: 0.084, stop: 0.072 },
+    PEPE: { range_low: 4.4e-06, range_high: 5.1e-06, stop: 4.2e-06 }
+  }
+};
+
+let CFG = JSON.parse(JSON.stringify(DEFAULT_CFG));
+let usdCad = DEFAULT_CFG.usd_cad_fallback;
+let priceSource = "…";
+let pollTimer = null;
+let ccCache = null;
+let ccCacheAt = 0;
+let scanData = null;
+let scanExpanded = null;
+let activeView = "desk";
+
+function fmtPrice(n) {
+  if (n == null || isNaN(n)) return "—";
+  if (n >= 1000) return n.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  if (n >= 1) return n.toFixed(4);
+  if (n >= 0.01) return n.toFixed(5);
+  if (n >= 0.0001) return n.toFixed(7);
+  return Number(n).toPrecision(4);
+}
+function fmtUsd(n) {
+  if (n == null || isNaN(n)) return "—";
+  const s = n < 0 ? "-" : "";
+  return s + "$" + Math.abs(n).toFixed(2);
+}
+function fmtPct(n) { return (n > 0 ? "+" : "") + n.toFixed(2) + "%"; }
+function cls(n) { return n >= 0 ? "pos" : "neg"; }
+function isLocalHosted() { return location.protocol === "http:" || location.protocol === "https:"; }
+function fmtScore(n) {
+  if (n == null || isNaN(n)) return "—";
+  return Number(n).toFixed(3);
+}
+function fmtET(iso) {
+  if (!iso) return "—";
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString("en-CA", {
+      timeZone: "America/Toronto", weekday: "short", year: "numeric", month: "short",
+      day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true,
+    }) + " ET";
+  } catch (_) { return iso; }
+}
+
+async function fetchJSON(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(url + " " + r.status);
+  return r.json();
+}
+
+let lastPullMeta = null;
+
+async function refreshHoldings(manual) {
+  const btn = document.getElementById("btnRefresh");
+  const meta = document.getElementById("pullMeta");
+  if (btn) { btn.disabled = true; btn.textContent = manual ? "Pulling…" : "Refreshing…"; }
+  try {
+    if (!isLocalHosted()) {
+      if (meta) meta.textContent = "Open the .exe host to pull remote holdings (HTML-only mode uses embedded defaults).";
+      return false;
+    }
+    const r = await fetch("/api/refresh-positions?_=" + Date.now(), { cache: "no-store" });
+    const j = await r.json();
+    lastPullMeta = j;
+    if (j && j.config) {
+      CFG = Object.assign({}, DEFAULT_CFG, j.config);
+      if (!Array.isArray(CFG.positions)) CFG.positions = [];
+      if (!Array.isArray(CFG.holdings)) CFG.holdings = DEFAULT_CFG.holdings;
+      usdCad = CFG.usd_cad_fallback || DEFAULT_CFG.usd_cad_fallback;
+    } else {
+      await loadConfig();
+    }
+    const when = j && j.pulled_at ? fmtET(j.pulled_at) : "just now";
+    const n = (CFG.positions || []).length;
+    const cash = CFG.cash_usd != null ? fmtUsd(CFG.cash_usd) : "—";
+    const chg = j && j.changed ? "updated" : "unchanged";
+    const err = j && j.error ? (" · " + j.error) : (!j.ok ? " · pull failed" : "");
+    if (meta) {
+      meta.textContent = "Holdings " + chg + " from server · " + n + " desk lots · cash " + cash +
+        " · last pull " + when + " · app v" + (j.app_version || "?") + err;
+    }
+    await tick();
+    return !!(j && j.ok);
+  } catch (e) {
+    if (meta) meta.textContent = "Holdings pull failed: " + (e && e.message ? e.message : e);
+    return false;
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Refresh holdings"; }
+  }
+}
+
+async function loadConfig() {
+  if (!isLocalHosted()) { CFG = JSON.parse(JSON.stringify(DEFAULT_CFG)); usdCad = CFG.usd_cad_fallback; return; }
+  try {
+    const d = await fetchJSON("/api/config?_=" + Date.now());
+    CFG = Object.assign({}, DEFAULT_CFG, d);
+    if (!Array.isArray(CFG.positions)) CFG.positions = [];
+    if (!Array.isArray(CFG.holdings)) CFG.holdings = DEFAULT_CFG.holdings;
+    usdCad = CFG.usd_cad_fallback || DEFAULT_CFG.usd_cad_fallback;
+  } catch (_) { /* keep defaults */ }
+}
+
+async function fetchBinanceTickers(symbols) {
+  const results = await Promise.all(symbols.map(async s => {
+    const direct = "https://api.binance.com/api/v3/ticker/24hr?symbol=" + s;
+    let j;
+    if (isLocalHosted()) {
+      try { j = await fetchJSON("/api/binance/ticker?symbol=" + s); }
+      catch (_) { j = await fetchJSON(direct); }
+    } else { j = await fetchJSON(direct); }
+    return [s, { last: parseFloat(j.lastPrice), chg: parseFloat(j.priceChangePercent) }];
+  }));
+  return Object.fromEntries(results);
+}
+
+async function fetchBinancePrices(symbols) {
+  const results = await Promise.all(symbols.map(async s => {
+    const direct = "https://api.binance.com/api/v3/ticker/price?symbol=" + s;
+    let j;
+    if (isLocalHosted()) {
+      try { j = await fetchJSON("/api/binance/price?symbol=" + s); }
+      catch (_) { j = await fetchJSON(direct); }
+    } else { j = await fetchJSON(direct); }
+    return [s, { last: parseFloat(j.price), chg: 0 }];
+  }));
+  return Object.fromEntries(results);
+}
+
+async function fetchCryptoComMap() {
+  const now = Date.now();
+  if (ccCache && now - ccCacheAt < 3000) return ccCache;
+  let j;
+  const direct = "https://api.crypto.com/exchange/v1/public/get-tickers";
+  if (isLocalHosted()) {
+    try { j = await fetchJSON("/api/cryptocom/tickers"); }
+    catch (_) { j = await fetchJSON(direct); }
+  } else {
+    j = await fetchJSON(direct);
+  }
+  const data = (j.result && j.result.data) || j.data || [];
+  const map = {};
+  for (const row of data) {
+    const name = row.i || row.instrument_name;
+    const px = parseFloat(row.a || row.k || row.last || row.p);
+    if (name && !isNaN(px)) map[name] = px;
+  }
+  ccCache = map; ccCacheAt = now;
+  return map;
+}
+
+function cryptoComKey(binanceSym) {
+  if (!binanceSym) return null;
+  if (binanceSym.endsWith("USDT")) return binanceSym.slice(0, -4) + "_USDT";
+  if (binanceSym.endsWith("USD")) return binanceSym.slice(0, -3) + "_USD";
+  return binanceSym;
+}
+
+async function fetchBinanceOne(symbol) {
+  try {
+    let j;
+    if (isLocalHosted()) {
+      try { j = await fetchJSON("/api/binance/ticker?symbol=" + symbol); }
+      catch (_) { j = await fetchJSON("https://api.binance.com/api/v3/ticker/24hr?symbol=" + symbol); }
+    } else {
+      j = await fetchJSON("https://api.binance.com/api/v3/ticker/24hr?symbol=" + symbol);
+    }
+    const last = parseFloat(j.lastPrice);
+    if (isNaN(last)) return null;
+    return { last, chg: parseFloat(j.priceChangePercent) || 0 };
+  } catch (_) {
+    try {
+      let j;
+      if (isLocalHosted()) {
+        try { j = await fetchJSON("/api/binance/price?symbol=" + symbol); }
+        catch (_) { j = await fetchJSON("https://api.binance.com/api/v3/ticker/price?symbol=" + symbol); }
+      } else {
+        j = await fetchJSON("https://api.binance.com/api/v3/ticker/price?symbol=" + symbol);
+      }
+      const last = parseFloat(j.price);
+      if (isNaN(last)) return null;
+      return { last, chg: 0 };
+    } catch (_) { return null; }
+  }
+}
+
+async function getPriceMap(neededBinance) {
+  const unique = [...new Set(neededBinance.filter(Boolean))];
+  const map = {};
+  let binanceHits = 0;
+  if (unique.length) {
+    const results = await Promise.all(unique.map(async s => [s, await fetchBinanceOne(s)]));
+    for (const [s, t] of results) {
+      if (t) { map[s] = t; binanceHits++; }
+    }
+  }
+  try {
+    const cc = await fetchCryptoComMap();
+    map.__cc = cc;
+    for (const s of unique) {
+      if (map[s]) continue;
+      const k = cryptoComKey(s);
+      const px = cc[k] ?? cc[k && k.replace("_USDT", "_USD")];
+      if (px != null) map[s] = { last: px, chg: 0 };
+    }
+  } catch (_) { /* optional */ }
+  if (binanceHits && binanceHits === unique.length) priceSource = "Binance";
+  else if (binanceHits) priceSource = "Binance+Crypto.com";
+  else priceSource = "Crypto.com";
+  return map;
+}
+
+function resolvePosPrice(p, map) {
+  const b = p.binance;
+  if (b && map[b] && map[b].last != null) return map[b].last;
+  const cc = map.__cc || {};
+  if (p.cryptocom && cc[p.cryptocom] != null) return cc[p.cryptocom];
+  if (b) {
+    const k = cryptoComKey(b);
+    if (k && cc[k] != null) return cc[k];
+    if (k && cc[k.replace("_USDT", "_USD")] != null) return cc[k.replace("_USDT", "_USD")];
+  }
+  if (p.symbol && cc[p.symbol + "_USD"] != null) return cc[p.symbol + "_USD"];
+  if (p.symbol && cc[p.symbol + "_USDT"] != null) return cc[p.symbol + "_USDT"];
+  // last resort: fabricated binance key that getPriceMap may have filled from CC
+  const fake = b || (p.symbol ? p.symbol + "USDT" : null);
+  if (fake && map[fake] && map[fake].last != null) return map[fake].last;
+  return null;
+}
+
+function positionCost(p) {
+  if (p.cost_usd != null && !isNaN(Number(p.cost_usd))) return Number(p.cost_usd);
+  if (p.notional_usd != null && !isNaN(Number(p.notional_usd))) return Number(p.notional_usd);
+  const qty = Number(p.qty) || 0;
+  const entry = Number(p.entry) || 0;
+  return qty * entry;
+}
+
+function realizedTotal() {
+  const closed = CFG.closed || [];
+  let sum = 0, known = 0;
+  for (const c of closed) {
+    if (c.realized_pnl_usd != null && !isNaN(Number(c.realized_pnl_usd))) {
+      sum += Number(c.realized_pnl_usd);
+      known++;
+    }
+  }
+  if (CFG.realized_pnl_usd != null && !isNaN(Number(CFG.realized_pnl_usd)) && !known) {
+    return Number(CFG.realized_pnl_usd);
+  }
+  return sum;
+}
+
+function renderClosed() {
+  const closed = CFG.closed || [];
+  const tbody = document.getElementById("closedRows");
+  const wrap = document.getElementById("closedWrap");
+  const empty = document.getElementById("closedEmpty");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+  const withPnl = closed.filter(c => c.realized_pnl_usd != null && !isNaN(Number(c.realized_pnl_usd)));
+  if (!withPnl.length) {
+    if (wrap) wrap.style.display = "none";
+    if (empty) empty.style.display = "block";
+    return;
+  }
+  if (wrap) wrap.style.display = "block";
+  if (empty) empty.style.display = "none";
+  for (const c of withPnl) {
+    const pnl = Number(c.realized_pnl_usd);
+    const tr = document.createElement("tr");
+    tr.innerHTML = [
+      c.symbol || "—",
+      c.qty != null ? Number(c.qty).toLocaleString("en-US") : "—",
+      fmtPrice(c.entry != null ? c.entry : c.entry_price),
+      fmtPrice(c.exit != null ? c.exit : c.exit_price),
+      fmtUsd(c.notional_usd != null ? c.notional_usd : c.cost_usd),
+      fmtUsd(c.exit_usd),
+      `<span class="${cls(pnl)}">${fmtUsd(pnl)}</span>`,
+      c.closed_at ? fmtET(c.closed_at) : (c.exit_time ? fmtET(c.exit_time) : "—"),
+    ].map(cell => `<td>${cell}</td>`).join("");
+    tbody.appendChild(tr);
+  }
+}
+
+async function refreshFx() {
+  try {
+    const direct = "https://open.er-api.com/v6/latest/USD";
+    let d;
+    if (isLocalHosted()) {
+      try { d = await fetchJSON("/api/fx"); }
+      catch (_) { d = await fetchJSON(direct); }
+    } else { d = await fetchJSON(direct); }
+    if (d.rates && d.rates.CAD) usdCad = d.rates.CAD;
+  } catch (_) {}
+}
+
+function gridNote(elId, name, price, g) {
+  const el = document.getElementById(elId);
+  if (!g || price == null) { el.textContent = ""; return; }
+  const where = price < g.range_low ? "below range" : price > g.range_high ? "above range" : "in range";
+  const aboveStop = ((price - g.stop) / price) * 100;
+  const atStop = price <= g.stop;
+  el.className = "note" + (atStop ? " danger" : aboveStop <= 3 ? " warn" : "");
+  el.innerHTML =
+    `<strong>${name} grid</strong> — range ${fmtPrice(g.range_low)}–${fmtPrice(g.range_high)} · stop ${fmtPrice(g.stop)} · spot ${fmtPrice(price)} · ${where} · ` +
+    `${aboveStop.toFixed(2)}% above stop` + (atStop ? " · AT/BELOW STOP" : "");
+}
+
+function resolveHoldingPrice(h, map) {
+  if (h.kind === "cash" || h.symbol === "USD") return 1;
+  const b = h.binance;
+  if (b && map[b]) return map[b].last;
+  const cc = map.__cc || {};
+  if (h.cryptocom && cc[h.cryptocom] != null) return cc[h.cryptocom];
+  if (b) {
+    const k = cryptoComKey(b);
+    if (k && cc[k] != null) return cc[k];
+    if (k && cc[k.replace("_USDT", "_USD")] != null) return cc[k.replace("_USDT", "_USD")];
+  }
+  return null;
+}
+
+function setView(name) {
+  activeView = name;
+  document.getElementById("viewDesk").classList.toggle("active", name === "desk");
+  document.getElementById("viewScan").classList.toggle("active", name === "scan");
+  document.getElementById("tabDesk").classList.toggle("active", name === "desk");
+  document.getElementById("tabScan").classList.toggle("active", name === "scan");
+  document.getElementById("viewChart").classList.toggle("active", name === "chart");
+  document.getElementById("tabChart").classList.toggle("active", name === "chart");
+  if (name === "chart") LiveDeskChart.show(document.getElementById("viewChart"));
+}
+
+function statusBadge(st) {
+  const s = String(st || "FAIL").toUpperCase();
+  let clsName = "fail";
+  if (s === "PASS") clsName = "pass";
+  else if (s === "BLOCKED" || s === "HELD") clsName = "blocked";
+  return `<span class="badge ${clsName}">${s}</span>`;
+}
+
+function expandWorking(r) {
+  const w = r.weights || { momentum: 0.3, trend: 0.25, rel_volume: 0.25, day_range: 0.2 };
+  const p = r.parts || {};
+  const lines = [];
+  lines.push(r.symbol + " — plain-English working");
+  lines.push("");
+  const keys = [
+    ["momentum", "Momentum (1h/4h sweet spot +2..+15% 4h; punish dump / parabolic)"],
+    ["trend", "Trend (price vs 1h EMA20 & EMA50; EMA20>EMA50)"],
+    ["rel_volume", "Relative volume (last completed 1h / 24h avg hourly; 2× = 1.0)"],
+    ["day_range", "Day-range position (near high good; chase cut if 24h >20–30%)"],
+  ];
+  let sum = 0;
+  for (const [k, label] of keys) {
+    const part = Number(p[k] || 0);
+    const wt = Number(w[k] || 0);
+    const contrib = part * wt;
+    sum += contrib;
+    lines.push(label);
+    lines.push(`  ${part.toFixed(4)} × ${wt.toFixed(2)} = ${contrib.toFixed(4)}`);
+  }
+  lines.push("");
+  lines.push(`Raw total = ${Number(r.raw_total != null ? r.raw_total : sum).toFixed(4)}`);
+  const mult = Number(r.regime_mult != null ? r.regime_mult : (r.btc_regime_ok ? 1 : 0.85));
+  lines.push(`BTC regime multiplier = ${mult.toFixed(2)}` + (r.btc_regime_ok ? " (OK)" : " (BTC below 1h EMA50)"));
+  lines.push(`Final score = ${Number(r.total).toFixed(4)}  (threshold ${Number(r.threshold != null ? r.threshold : 0.65).toFixed(2)})`);
+  lines.push(`Status: ${r.status} — ${r.reason || ""}`);
+  const tn = r.trend_notes || {};
+  if (tn.ema20 != null || tn.ema50 != null) {
+    lines.push("");
+    lines.push(`EMA20 = ${tn.ema20 != null ? tn.ema20 : "—"} · EMA50 = ${tn.ema50 != null ? tn.ema50 : "—"} · price = ${tn.price != null ? tn.price : r.price}`);
+  }
+  lines.push("");
+  lines.push(`Suggested entry ≈ ${fmtPrice(r.suggested_entry != null ? r.suggested_entry : r.price)}`);
+  lines.push(`Suggested stop (−6%) ≈ ${fmtPrice(r.suggested_stop)}`);
+  lines.push(`24h vol ≈ ${fmtUsd(r.vol_24h_usd)} · spread ${Number(r.spread_pct || 0).toFixed(3)}%`);
+  return lines.join("\n");
+}
+
+function renderScan() {
+  const meta = document.getElementById("scanMeta");
+  const tbody = document.getElementById("scanRows");
+  const empty = document.getElementById("scanEmpty");
+  const upd = document.getElementById("scanUpdated");
+  if (!scanData || !Array.isArray(scanData.results)) {
+    meta.innerHTML = "";
+    tbody.innerHTML = "";
+    empty.style.display = "block";
+    upd.textContent = "No scan.json yet";
+    return;
+  }
+  empty.style.display = "none";
+  const w = scanData.weights || {};
+  const thr = scanData.threshold != null ? scanData.threshold : 0.65;
+  const regimeOk = !!scanData.btc_regime_ok;
+  const mult = regimeOk ? 1 : (w.btc_regime_multiplier_if_below_ema50 || 0.85);
+  document.getElementById("scanFormula").innerHTML =
+    `<strong>All-coin score</strong> = ` +
+    `<code>${Number(w.momentum||0.3).toFixed(2)}·momentum + ${Number(w.trend||0.25).toFixed(2)}·trend + ` +
+    `${Number(w.rel_volume||0.25).toFixed(2)}·rel_volume + ${Number(w.day_range||0.2).toFixed(2)}·day_range</code>, ` +
+    `then × <code>${Number(w.btc_regime_multiplier_if_below_ema50||0.85).toFixed(2)}</code> if BTC is below its 1h EMA50. ` +
+    `Pass ≥ <strong>${Number(thr).toFixed(2)}</strong>. Hard gates: 24h vol ≥ $250K, spread ≤ 0.3%, not already held; max 3 open positions blocks new buys. ` +
+    `Suggested stop = −6%. Click a row for the full working.`;
+
+  meta.innerHTML = [
+    { label: "Scan time", value: fmtET(scanData.scanned_at), detail: scanData.tz || "America/Toronto" },
+    { label: "BTC regime", value: regimeOk ? "OK" : "SOFT", detail: "×" + Number(mult).toFixed(2), cls: regimeOk ? "pos" : "amber" },
+    { label: "Threshold", value: Number(thr).toFixed(2), detail: "pass / fail cut" },
+    { label: "Universe", value: String(scanData.universe_size || (scanData.results||[]).length), detail: "vol ≥ $250K" },
+    { label: "Open / held", value: (scanData.open_positions != null ? scanData.open_positions : "?") + "/3", detail: (scanData.held_symbols||[]).join(", ") || "none" },
+  ].map(m =>
+    `<div class="metric"><div class="label">${m.label}</div><div class="value ${m.cls||""}">${m.value}</div><div class="detail">${m.detail}</div></div>`
+  ).join("");
+
+  tbody.innerHTML = "";
+  (scanData.results || []).forEach((r, i) => {
+    const total = Number(r.total || 0);
+    const st = String(r.status || "FAIL").toUpperCase();
+    let rowCls = "scan-row";
+    if (st === "PASS" || st === "BLOCKED") rowCls += " scan-pass";
+    else if (total >= 0.55) rowCls += " scan-near";
+    const p = r.parts || {};
+    const tr = document.createElement("tr");
+    tr.className = rowCls;
+    tr.dataset.sym = r.symbol;
+    tr.innerHTML = [
+      i + 1,
+      r.symbol,
+      fmtPrice(r.price),
+      `<span class="${cls(r.pct_1h)}">${fmtPct(Number(r.pct_1h||0))}</span>`,
+      `<span class="${cls(r.pct_4h)}">${fmtPct(Number(r.pct_4h||0))}</span>`,
+      `<span class="${cls(r.pct_24h)}">${fmtPct(Number(r.pct_24h||0))}</span>`,
+      Number(r.relvol || 0).toFixed(2),
+      Number(r.spread_pct || 0).toFixed(3) + "%",
+      fmtScore(p.momentum),
+      fmtScore(p.trend),
+      fmtScore(p.rel_volume),
+      fmtScore(p.day_range),
+      fmtScore(r.raw_total),
+      Number(r.regime_mult != null ? r.regime_mult : 1).toFixed(2),
+      `<strong class="${st==="PASS"||st==="BLOCKED"?"pos":(total>=0.55?"amber":"")}">${fmtScore(total)}</strong>`,
+      statusBadge(st),
+    ].map(c => `<td>${c}</td>`).join("");
+    tr.addEventListener("click", () => {
+      scanExpanded = (scanExpanded === r.symbol) ? null : r.symbol;
+      renderScan();
+    });
+    tbody.appendChild(tr);
+    if (scanExpanded === r.symbol) {
+      const det = document.createElement("tr");
+      det.className = "scan-detail";
+      const td = document.createElement("td");
+      td.colSpan = 16;
+      td.textContent = expandWorking(r);
+      det.appendChild(td);
+      tbody.appendChild(det);
+    }
+  });
+  upd.textContent = "Scanner updated " + fmtET(scanData.scanned_at) + " · refresh every 60s · " + (scanData.results||[]).length + " coins";
+}
+
+async function loadScan() {
+  const urls = [];
+  if (isLocalHosted()) urls.push("/api/scan?_=" + Date.now());
+  urls.push("https://trihealth-livedesk-updates.onrender.com/scan.json?_=" + Date.now());
+  let lastErr = null;
+  for (const u of urls) {
+    try {
+      const d = await fetchJSON(u);
+      if (d && Array.isArray(d.results)) {
+        scanData = d;
+        renderScan();
+        return;
+      }
+    } catch (e) { lastErr = e; }
+  }
+  if (!scanData) {
+    document.getElementById("scanUpdated").textContent =
+      "Scanner fetch failed" + (lastErr && lastErr.message ? (": " + lastErr.message) : "");
+  }
+}
+
+async function tick() {
+  const errEl = document.getElementById("err");
+  const dot = document.getElementById("dot");
+  try {
+    await loadConfig();
+    const desk = CFG.positions || [];
+    const holds = CFG.holdings || [];
+    const needed = [
+      ...desk.map(p => p.binance).filter(Boolean),
+      ...CFG.watch.map(w => w.binance).filter(Boolean),
+      ...holds.map(h => h.binance).filter(Boolean),
+    ];
+    const map = await getPriceMap(needed);
+    if (!map.__cc) {
+      try { map.__cc = await fetchCryptoComMap(); if (priceSource === "…") priceSource = "Crypto.com"; } catch (_) {}
+    }
+
+    let totalPnl = 0, totalVal = 0, totalCost = 0, near = 0, atStopN = 0, priced = 0;
+    const tbody = document.getElementById("rows");
+    tbody.innerHTML = "";
+    const deskEmpty = document.getElementById("deskEmpty");
+    const deskWrap = document.getElementById("deskWrap");
+    if (!desk.length) {
+      deskWrap.style.display = "none";
+      deskEmpty.style.display = "block";
+    } else {
+      deskWrap.style.display = "block";
+      deskEmpty.style.display = "none";
+      for (const p of desk) {
+        const price = resolvePosPrice(p, map);
+        const qty = Number(p.qty) || 0;
+        const entry = Number(p.entry) || 0;
+        const stop = Number(p.stop) || 0;
+        const cost = positionCost(p);
+        if (price == null) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = [
+            p.symbol, qty.toLocaleString("en-US"), fmtPrice(entry), "—", "—",
+            "—", "—", fmtPrice(stop), "—",
+          ].map(c => `<td>${c}</td>`).join("");
+          tbody.appendChild(tr);
+          totalCost += cost;
+          continue;
+        }
+        const value = qty * price;
+        const pnl = value - cost;
+        const pnlPct = cost ? (pnl / cost) * 100 : 0;
+        const dist = price ? ((price - stop) / price) * 100 : 0;
+        const atStop = stop > 0 && price <= stop, nearStop = stop > 0 && dist <= 2;
+        totalPnl += pnl; totalVal += value; totalCost += cost; priced++;
+        if (nearStop) near++; if (atStop) atStopN++;
+        const tr = document.createElement("tr");
+        if (atStop) tr.className = "atstop"; else if (nearStop) tr.className = "near";
+        tr.innerHTML = [
+          p.symbol, qty.toLocaleString("en-US"), fmtPrice(entry), fmtPrice(price), fmtUsd(value),
+          `<span class="${cls(pnl)}">${fmtUsd(pnl)}</span>`,
+          `<span class="${cls(pnlPct)}">${fmtPct(pnlPct)}</span>`,
+          fmtPrice(stop),
+          `<span class="${nearStop || atStop ? "neg" : ""}">${dist.toFixed(2)}%</span>`,
+        ].map(c => `<td>${c}</td>`).join("");
+        tbody.appendChild(tr);
+      }
+      if (priced) {
+        const pnlPctTot = totalCost ? (totalPnl / totalCost) * 100 : 0;
+        const tr = document.createElement("tr");
+        tr.className = "total-row";
+        tr.innerHTML = [
+          "DESK TOTAL", String(desk.length) + " lots", "—", "—", fmtUsd(totalVal),
+          `<span class="${cls(totalPnl)}">${fmtUsd(totalPnl)}</span>`,
+          `<span class="${cls(pnlPctTot)}">${fmtPct(pnlPctTot)}</span>`,
+          "—", "—",
+        ].map(c => `<td>${c}</td>`).join("");
+        tbody.appendChild(tr);
+      }
+    }
+    renderClosed();
+
+    let holdTotal = 0;
+    const holdBody = document.getElementById("holdRows");
+    holdBody.innerHTML = "";
+    for (const h of holds) {
+      const qty = Number(h.qty) || 0;
+      const price = resolveHoldingPrice(h, map);
+      const value = price == null ? null : qty * price;
+      if (value != null) holdTotal += value;
+      const approx = h.qty_approx ? ' <span class="approx">approx</span>' : "";
+      const note = h.note || (h.qty_approx ? "value-implied qty" : "");
+      const tr = document.createElement("tr");
+      tr.innerHTML = [
+        h.symbol + approx,
+        qty.toLocaleString("en-US"),
+        h.kind === "cash" ? "—" : fmtPrice(price),
+        fmtUsd(value),
+        note,
+      ].map(c => `<td>${c}</td>`).join("");
+      holdBody.appendChild(tr);
+    }
+
+    const btcSym = (CFG.watch.find(w => w.symbol === "BTC") || {}).binance || "BTCUSDT";
+    const btc = map[btcSym] ? map[btcSym].last : 0;
+    const btcChg = map[btcSym] ? map[btcSym].chg : 0;
+    const btcCad = Math.round(btc * usdCad);
+    const btcStop = CFG.btc_cad_stop || 113000;
+    const btcVsStop = btcCad - btcStop;
+
+    const realized = realizedTotal();
+    const overall = totalPnl + realized;
+    const unPct = totalCost ? (totalPnl / totalCost) * 100 : 0;
+    const metrics = [
+      { label: "Desk cost", value: desk.length ? fmtUsd(totalCost) : "—", detail: desk.length + " open lots", cls: "" },
+      { label: "Desk value", value: desk.length ? fmtUsd(totalVal) : "—", detail: priced + " priced · live", cls: "" },
+      { label: "Unrealized P&L", value: desk.length ? fmtUsd(totalPnl) : "—", detail: desk.length ? fmtPct(unPct) + " since buy" : "0 open", cls: desk.length ? cls(totalPnl) : "" },
+      { label: "Realized P&L", value: fmtUsd(realized), detail: (CFG.closed||[]).filter(c => c.realized_pnl_usd != null).length + " closed", cls: cls(realized) },
+      { label: "Overall P&L", value: fmtUsd(overall), detail: "unrealized + realized", cls: cls(overall) },
+      { label: "Holdings total", value: fmtUsd(holdTotal), detail: "cash + coins · live", cls: "" },
+      { label: "Desk open", value: String(desk.length), detail: near || atStopN ? (`near/at stop ${near}/${atStopN}`) : "flat", cls: atStopN ? "neg" : (near ? "amber" : "") },
+      { label: "BTC CAD", value: "$" + btcCad.toLocaleString("en-US"), detail: "USD " + fmtPrice(btc) + " × " + usdCad.toFixed(4), cls: cls(btcChg) },
+    ];
+    document.getElementById("metrics").innerHTML = metrics.map(m =>
+      `<div class="metric"><div class="label">${m.label}</div><div class="value ${m.cls}">${m.value}</div><div class="detail">${m.detail}</div></div>`
+    ).join("");
+
+    document.getElementById("watch").innerHTML = CFG.watch.map(w => {
+      const sym = w.binance || (w.symbol + "USDT");
+      const t = map[sym]; if (!t) return "";
+      const cad = w.symbol === "BTC" ? `<div class="chg">CAD $${Math.round(t.last * usdCad).toLocaleString("en-US")}</div>` : "";
+      return `<div class="chip"><div class="sym">${w.symbol}</div><div class="px">${fmtPrice(t.last)}</div><div class="chg ${cls(t.chg)}">${fmtPct(t.chg)}</div>${cad}</div>`;
+    }).join("");
+
+    const btcEl = document.getElementById("btcNote");
+    btcEl.className = "note" + (btcCad <= btcStop ? " danger" : "");
+    btcEl.innerHTML =
+      `<strong>BTC vs Wealthsimple stop</strong> — CAD $${btcCad.toLocaleString("en-US")} · stop $${btcStop.toLocaleString("en-US")} CAD · ` +
+      `${btcVsStop >= 0 ? "+" : ""}$${btcVsStop.toLocaleString("en-US")} vs stop` +
+      (btcCad <= btcStop ? " · BELOW STOP — check if filled" : "");
+
+    gridNote("dogeNote", "DOGE", map.DOGEUSDT ? map.DOGEUSDT.last : null, CFG.grids && CFG.grids.DOGE);
+    gridNote("pepeNote", "PEPE", map.PEPEUSDT ? map.PEPEUSDT.last : null, CFG.grids && CFG.grids.PEPE);
+
+    const snap = CFG.snapshot_total_usd ? ` · snapshot ~${fmtUsd(CFG.snapshot_total_usd)}` + (CFG.snapshot_at ? ` @ ${CFG.snapshot_at}` : "") : "";
+    document.getElementById("sub").textContent =
+      (CFG.note || "Read-only") + " · poll " + ((CFG.poll_ms || 4000) / 1000) + "s · no keys" + snap;
+
+    const now = new Date().toLocaleString("en-CA", {
+      timeZone: "America/Toronto", weekday: "short", year: "numeric", month: "short",
+      day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true,
+    }) + " ET";
+    document.getElementById("updated").textContent =
+      "Last updated " + now + " · " + priceSource + " · holdings " + fmtUsd(holdTotal);
+    dot.className = "dot";
+    errEl.textContent = "";
+  } catch (e) {
+    dot.className = "dot err";
+    errEl.textContent = "Fetch failed: " + (e && e.message ? e.message : e);
+  }
+}
+
+function schedule() {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(tick, CFG.poll_ms || 4000);
+}
+
+LiveDeskChart.init(document.getElementById("viewChart"), {theme:"dark"});
+if (window.LiveDeskFavorites) LiveDeskFavorites.attach(document.getElementById("viewChart"));
+document.getElementById("tabChart").addEventListener("click", () => setView("chart"));
+document.getElementById("tabDesk").addEventListener("click", () => setView("desk"));
+document.getElementById("tabScan").addEventListener("click", () => { setView("scan"); renderScan(); });
+
+document.getElementById("btnRefresh").addEventListener("click", () => refreshHoldings(true));
+
+(async function boot() {
+  await loadConfig();
+  await refreshFx();
+  await tick();
+  schedule();
+  // Force a remote holdings pull on startup so Refresh / first paint aren't stuck on a stale local file
+  await refreshHoldings(false);
+  await loadScan();
+  setInterval(refreshFx, 300000);
+  setInterval(async () => { await loadConfig(); schedule(); }, 15000);
+  setInterval(loadScan, 60000);
+})();
+</script>
+</body>
+</html>

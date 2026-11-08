@@ -29,4 +29,4 @@ The page reads same-origin `/engine.json`. On the static site that file has `"ap
 
 The process listens on `0.0.0.0:$PORT` (`8787` locally). `GET /healthz` is the health check.
 
-The Windows exe embeds its own copy of the chart page and only updates when `version.json` points at a new binary. This repo does not contain that Go app, so this change does not bump `version.json`. Phone and desktop browser users get Analyze from the hosted pages. The installed Windows app keeps the chart it was built with until that app is rebuilt.
+The Windows app source lives in `windows-app/`. The exe embeds `windows-app/static/` (the desk UI plus the same `chart.js`, `analyze.js`, `analyze.css`, and `engine.json` the site uses). `engine.json` has `"api": false`, so Analyze runs in the page: crypto candles come from Binance (Crypto.com if that fails) and stock candles come from the CNBC chart feed. Those are the same public endpoints the static site uses when `/api/analyze` is absent. Favorites are stored in the browser profile next to the exe. This repo does not bump `public/version.json`; an installed copy updates only when that file points at a new binary.
