@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Tri-Health Live Desk updates</title>
+<link rel="stylesheet" href="analyze.css" />
 <style>
 body{font-family:system-ui,sans-serif;max-width:960px;margin:2rem auto;padding:0 1rem;color:#111}
 code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{background:#f4f4f4;padding:1rem;overflow:auto}
@@ -12,7 +13,7 @@ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{b
 }
 .pagetab.active{background:#111;color:#fff;border-color:#111}
 .view{display:none}.view.active{display:block}
-.chart-search{display:flex;gap:8px;margin:0 0 8px}
+.chart-search{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
 .chart-search input{
   flex:1;min-width:0;border:1px solid #ccc;border-radius:10px;padding:10px 12px;font-size:1rem
 }
@@ -62,17 +63,20 @@ The phone app has the same Chart tab (Desk and Scanner stay there too).
         autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
         aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
       <button type="button" class="chart-go" data-chart-go>Chart</button>
+      <button type="button" class="chart-go chart-analyze" data-chart-analyze>Analyze</button>
     </div>
     <div class="pills" data-chart-modes></div>
     <div class="pills" data-chart-quick></div>
     <div class="pills" data-chart-tfs></div>
     <div class="chart-status" data-chart-status></div>
-    <p class="hint">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Paste BINANCE:BTCUSDT or NASDAQ:AAPL to override.</p>
+    <p class="hint">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Paste BINANCE:BTCUSDT or NASDAQ:AAPL to override. Analyze is an educational read of recent candles for the ticker in the box. It never places a trade.</p>
+    <div class="chart-analysis" data-chart-analysis hidden></div>
     <div class="chart-host" data-chart-host></div>
   </div>
 </div>
 
 <script src="chart.js"></script>
+<script src="analyze.js"></script>
 <script>
 function setView(name) {
   document.getElementById("viewUpdates").classList.toggle("active", name === "updates");
