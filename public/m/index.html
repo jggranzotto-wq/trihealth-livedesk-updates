@@ -100,9 +100,9 @@
   .install-hint.show { display: block; }
   .tiny { font-size: 0.7rem; color: var(--muted); }
   .section-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; font-weight: 700; }
-  .chart-search { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .chart-search { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; align-items: center; }
   .chart-search input {
-    flex: 1; min-width: 0; background: var(--panel); color: var(--text);
+    flex: 1 1 100%; min-width: 0; background: var(--panel); color: var(--text);
     border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: 1rem;
   }
   .chart-search input::placeholder { color: var(--muted); }
@@ -115,6 +115,34 @@
   }
   .pill.on { color: var(--text); border-color: #3a5168; background: #182230; }
   .pill:active { filter: brightness(1.15); }
+  .chart-fav-add { white-space: nowrap; }
+  .chart-fav-add.on { color: var(--text); border-color: var(--amber); background: #243044; }
+  .chart-favs {
+    align-items: center; max-height: 6.75rem; overflow-y: auto;
+    -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  }
+  .chart-favs[hidden] { display: none !important; }
+  .fav-chip {
+    display: inline-flex; align-items: stretch; max-width: 100%;
+    background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 999px;
+  }
+  .fav-chip.on { color: var(--text); border-color: var(--amber); background: #243044; }
+  .fav-load {
+    border: 0; background: transparent; color: inherit; font-weight: 700;
+    font-size: 0.78rem; padding: 8px 2px 8px 12px; cursor: pointer;
+    max-width: 9.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fav-x {
+    border: 0; background: transparent; color: inherit; font-weight: 700;
+    padding: 8px 12px 8px 8px; font-size: 1.05rem; line-height: 1; cursor: pointer;
+    min-width: 2.25rem; -webkit-tap-highlight-color: transparent;
+    box-shadow: inset 1px 0 0 rgba(255,255,255,0.14);
+  }
+  .fav-chip, .fav-load, .fav-x {
+    user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  }
   .chart-quick-label {
     flex-basis: 100%; font-size: 0.68rem; color: var(--muted); text-transform: uppercase;
     letter-spacing: 0.04em; font-weight: 700; margin: 2px 0 0;
@@ -173,14 +201,16 @@
       <input data-chart-input type="text" inputmode="text" enterkeyhint="search"
         autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
         aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
+      <button type="button" class="btn chart-fav-add" data-chart-fav aria-pressed="false">☆ Favorite</button>
       <button type="button" class="btn" data-chart-go>Chart</button>
       <button type="button" class="btn chart-analyze" data-chart-analyze>Analyze</button>
     </div>
+    <div class="pills chart-favs" data-chart-favs hidden aria-label="Favorites"></div>
     <div class="pills" data-chart-modes></div>
     <div class="pills" data-chart-quick></div>
     <div class="pills" data-chart-tfs></div>
     <div class="chart-status" data-chart-status></div>
-    <p class="tiny" style="margin:0 0 8px">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Analyze is educational and never places a trade.</p>
+    <p class="tiny" style="margin:0 0 8px">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Analyze is educational and never places a trade. ☆ Favorite saves that symbol in this browser for the phone and desktop Chart tabs. × or a long-press removes one.</p>
     <div class="chart-analysis" data-chart-analysis hidden></div>
     <div class="chart-host" data-chart-host></div>
   </div>

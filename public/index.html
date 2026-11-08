@@ -13,9 +13,9 @@ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{b
 }
 .pagetab.active{background:#111;color:#fff;border-color:#111}
 .view{display:none}.view.active{display:block}
-.chart-search{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.chart-search{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px;align-items:center}
 .chart-search input{
-  flex:1;min-width:0;border:1px solid #ccc;border-radius:10px;padding:10px 12px;font-size:1rem
+  flex:1 1 12rem;min-width:9rem;border:1px solid #ccc;border-radius:10px;padding:10px 12px;font-size:1rem
 }
 .chart-search input:focus{outline:2px solid #111}
 .chart-go{
@@ -27,6 +27,31 @@ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{b
   padding:6px 12px;font-size:.8rem;font-weight:700;cursor:pointer
 }
 .pill.on{background:#111;color:#fff;border-color:#111}
+.chart-fav-add{
+  background:#fff;color:#111;border:1px solid #111;border-radius:999px;
+  padding:8px 14px;font-weight:700;cursor:pointer;white-space:nowrap
+}
+.chart-fav-add.on{background:#111;color:#fff}
+.chart-favs{align-items:center;max-height:8.5rem;overflow-y:auto}
+.chart-favs[hidden]{display:none !important}
+.fav-chip{
+  display:inline-flex;align-items:stretch;max-width:100%;
+  border:1px solid #ccc;border-radius:999px;background:#fff;color:#444
+}
+.fav-chip.on{background:#111;color:#fff;border-color:#111}
+.fav-load{
+  border:0;background:transparent;color:inherit;font-weight:700;font-size:.8rem;
+  padding:6px 2px 6px 12px;cursor:pointer;max-width:11rem;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap
+}
+.fav-x{
+  border:0;background:transparent;color:inherit;font-weight:700;cursor:pointer;
+  padding:6px 10px 6px 8px;font-size:1rem;line-height:1;opacity:.75;
+  box-shadow:inset 1px 0 0 rgba(0,0,0,.12)
+}
+.fav-chip.on .fav-x{box-shadow:inset 1px 0 0 rgba(255,255,255,.28)}
+.fav-x:hover,.fav-x:focus,.fav-load:hover,.fav-load:focus{opacity:1}
+.fav-chip,.fav-load,.fav-x{user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .chart-quick-label{flex-basis:100%;font-size:.68rem;color:#777;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-top:2px}
 .pills .chart-quick-label:first-child{margin-top:0}
 .chart-status{color:#555;font-size:.8rem;margin:2px 0 8px;min-height:1.1em}
@@ -62,14 +87,16 @@ The phone app has the same Chart tab (Desk and Scanner stay there too).
       <input data-chart-input type="text" inputmode="text" enterkeyhint="search"
         autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
         aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
+      <button type="button" class="chart-fav-add" data-chart-fav aria-pressed="false">☆ Favorite</button>
       <button type="button" class="chart-go" data-chart-go>Chart</button>
       <button type="button" class="chart-go chart-analyze" data-chart-analyze>Analyze</button>
     </div>
+    <div class="pills chart-favs" data-chart-favs hidden aria-label="Favorites"></div>
     <div class="pills" data-chart-modes></div>
     <div class="pills" data-chart-quick></div>
     <div class="pills" data-chart-tfs></div>
     <div class="chart-status" data-chart-status></div>
-    <p class="hint">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Paste BINANCE:BTCUSDT or NASDAQ:AAPL to override. Analyze is an educational read of recent candles for the ticker in the box. It never places a trade.</p>
+    <p class="hint">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Paste BINANCE:BTCUSDT or NASDAQ:AAPL to override. Analyze is an educational read of recent candles for the ticker in the box. It never places a trade. ☆ Favorite saves that symbol in this browser for this page and the phone Chart tab. × or a long-press removes one.</p>
     <div class="chart-analysis" data-chart-analysis hidden></div>
     <div class="chart-host" data-chart-host></div>
   </div>
