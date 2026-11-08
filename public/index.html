@@ -1,18 +1,93 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Tri-Health Live Desk updates</title>
-<style>body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#111}
+<style>
+body{font-family:system-ui,sans-serif;max-width:960px;margin:2rem auto;padding:0 1rem;color:#111}
 code{background:#f4f4f4;padding:.1rem .3rem;border-radius:4px}a{color:#0b5}pre{background:#f4f4f4;padding:1rem;overflow:auto}
 .card{border:1px solid #ddd;border-radius:12px;padding:1rem 1.2rem;margin:1rem 0;background:#fafafa}
+.pagetabs{display:flex;gap:8px;margin:0 0 4px}
+.pagetab{
+  border:1px solid #ddd;background:#fff;color:#444;border-radius:999px;
+  padding:8px 16px;font-weight:700;font-size:.92rem;cursor:pointer
+}
+.pagetab.active{background:#111;color:#fff;border-color:#111}
+.view{display:none}.view.active{display:block}
+.chart-search{display:flex;gap:8px;margin:0 0 8px}
+.chart-search input{
+  flex:1;min-width:0;border:1px solid #ccc;border-radius:10px;padding:10px 12px;font-size:1rem
+}
+.chart-search input:focus{outline:2px solid #111}
+.chart-go{
+  background:#111;color:#fff;border:0;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer
+}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px;align-items:center}
+.pill{
+  background:#fff;border:1px solid #ccc;color:#444;border-radius:999px;
+  padding:6px 12px;font-size:.8rem;font-weight:700;cursor:pointer
+}
+.pill.on{background:#111;color:#fff;border-color:#111}
+.chart-quick-label{flex-basis:100%;font-size:.68rem;color:#777;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-top:2px}
+.pills .chart-quick-label:first-child{margin-top:0}
+.chart-status{color:#555;font-size:.8rem;margin:2px 0 8px;min-height:1.1em}
+.chart-host{height:calc(100vh - 500px);min-height:360px;border:1px solid #ddd;border-radius:12px;overflow:hidden;background:#fff}
+.chart-fallback{padding:18px;color:#a33}
+.hint{color:#555;font-size:.82rem;margin:0 0 10px;line-height:1.4}
+.tradingview-widget-container__widget{
+  display:flex;align-items:center;justify-content:center;color:#777;font-size:.9rem
+}
 </style>
 </head><body>
 <h1>Tri-Health Live Desk — updates</h1>
+<div class="pagetabs" role="tablist">
+  <button type="button" class="pagetab active" id="tabUpdates">Updates</button>
+  <button type="button" class="pagetab" id="tabChart">Chart</button>
+</div>
+
+<div class="view active" id="viewUpdates">
 <div class="card">
 <strong>Phone / Android</strong><br/>
 Open the mobile app: <a href="/m/"><strong>https://trihealth-livedesk-updates.onrender.com/m/</strong></a><br/>
 Then Chrome menu → <em>Install app</em> or <em>Add to Home screen</em>.
+The phone app has the same Chart tab (Desk and Scanner stay there too).
 </div>
 <p>Current version: <strong>1.2.5</strong> · <a href="version.json">version.json</a> · <a href="positions.json">positions.json</a> · <a href="scan.json">scan.json</a></p>
 <p>Downloads: <a href="TriHealth-LiveDesk.exe">TriHealth-LiveDesk.exe</a> · <a href="TriHealth-LiveDesk-console.exe">console</a></p>
 <p>The Windows app checks <code>version.json</code> at startup and every 10 minutes, verifies SHA-256, swaps the exe, and restarts. Positions refresh from <code>positions.json</code> about every 30 seconds. Scanner pulls <code>scan.json</code> about every 60 seconds.</p>
+</div>
+
+<div class="view" id="viewChart">
+  <div class="card">
+    <div class="chart-search">
+      <input data-chart-input type="text" inputmode="text" enterkeyhint="search"
+        autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+        aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
+      <button type="button" class="chart-go" data-chart-go>Chart</button>
+    </div>
+    <div class="pills" data-chart-modes></div>
+    <div class="pills" data-chart-quick></div>
+    <div class="pills" data-chart-tfs></div>
+    <div class="chart-status" data-chart-status></div>
+    <p class="hint">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Paste BINANCE:BTCUSDT or NASDAQ:AAPL to override.</p>
+    <div class="chart-host" data-chart-host></div>
+  </div>
+</div>
+
+<script src="chart.js"></script>
+<script>
+function setView(name) {
+  document.getElementById("viewUpdates").classList.toggle("active", name === "updates");
+  document.getElementById("viewChart").classList.toggle("active", name === "chart");
+  document.getElementById("tabUpdates").classList.toggle("active", name === "updates");
+  document.getElementById("tabChart").classList.toggle("active", name === "chart");
+  var hash = name === "chart" ? "#chart" : "#updates";
+  if (location.hash !== hash) history.replaceState(null, "", hash);
+  if (name === "chart" && window.LiveDeskChart) LiveDeskChart.show(document.getElementById("viewChart"));
+}
+document.getElementById("tabUpdates").addEventListener("click", function () { setView("updates"); });
+document.getElementById("tabChart").addEventListener("click", function () { setView("chart"); });
+if (window.LiveDeskChart) {
+  LiveDeskChart.init(document.getElementById("viewChart"), { theme: "light", hideSideToolbar: false });
+}
+if ((location.hash || "") === "#chart") setView("chart");
+</script>
 </body></html>

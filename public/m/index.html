@@ -64,12 +64,18 @@
     display: flex; gap: 8px; z-index: 20;
   }
   .tab {
-    flex: 1; text-align: center; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
-    background: var(--panel); color: var(--muted); font-weight: 700; font-size: 0.9rem;
-    -webkit-tap-highlight-color: transparent;
+    flex: 1; text-align: center; padding: 12px 6px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--muted); font-weight: 700; font-size: 0.82rem;
+    -webkit-tap-highlight-color: transparent; white-space: nowrap;
   }
   .tab.active { color: var(--text); border-color: #3a5168; background: #182230; }
   .view { display: none; } .view.active { display: block; }
+  #viewChart.active {
+    display: flex; flex-direction: column;
+    height: calc(100dvh - 148px);
+  }
+  #viewChart.active ~ .status,
+  #viewChart.active ~ .err { display: none; }
   .scan-row {
     background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
     padding: 10px 12px; margin-bottom: 8px;
@@ -92,6 +98,35 @@
   .install-hint.show { display: block; }
   .tiny { font-size: 0.7rem; color: var(--muted); }
   .section-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; font-weight: 700; }
+  .chart-search { display: flex; gap: 8px; margin-bottom: 8px; }
+  .chart-search input {
+    flex: 1; min-width: 0; background: var(--panel); color: var(--text);
+    border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: 1rem;
+  }
+  .chart-search input::placeholder { color: var(--muted); }
+  .chart-search input:focus { outline: 2px solid #3a5168; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
+  .pill {
+    background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 999px; padding: 7px 12px; font-size: 0.78rem; font-weight: 700;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .pill.on { color: var(--text); border-color: #3a5168; background: #182230; }
+  .pill:active { filter: brightness(1.15); }
+  .chart-quick-label {
+    flex-basis: 100%; font-size: 0.68rem; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.04em; font-weight: 700; margin: 2px 0 0;
+  }
+  .pills .chart-quick-label:first-child { margin-top: 0; }
+  .chart-status { color: var(--muted); font-size: 0.75rem; margin: 2px 2px 8px; min-height: 1.1em; }
+  .chart-host {
+    flex: 1 1 auto; min-height: 220px; height: auto;
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: #0b0f14;
+  }
+  .chart-fallback { padding: 18px; color: var(--red); font-size: 0.85rem; }
+  .tradingview-widget-container__widget {
+    display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.85rem;
+  }
 </style>
 </head>
 <body>
@@ -122,14 +157,31 @@
     <div class="tiny" id="scanUpdated" style="margin-top:8px"></div>
   </div>
 
+  <div class="view" id="viewChart">
+    <div class="chart-search">
+      <input data-chart-input type="text" inputmode="text" enterkeyhint="search"
+        autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+        aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
+      <button type="button" class="btn" data-chart-go>Chart</button>
+    </div>
+    <div class="pills" data-chart-modes></div>
+    <div class="pills" data-chart-quick></div>
+    <div class="pills" data-chart-tfs></div>
+    <div class="chart-status" data-chart-status></div>
+    <p class="tiny" style="margin:0 0 8px">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX).</p>
+    <div class="chart-host" data-chart-host></div>
+  </div>
+
   <div class="status"><span class="dot" id="dot"></span><span id="updated">Starting…</span></div>
   <div class="err" id="err"></div>
 
   <div class="tabs">
     <button type="button" class="tab active" id="tabDesk" data-view="desk">Desk</button>
     <button type="button" class="tab" id="tabScan" data-view="scan">Scanner</button>
+    <button type="button" class="tab" id="tabChart" data-view="chart">Chart</button>
   </div>
 
+<script src="../chart.js"></script>
 <script>
 const POS_URL = "../positions.json";
 const SCAN_URL = "../scan.json";
@@ -310,8 +362,13 @@ function setView(name) {
   activeView = name;
   document.getElementById("viewDesk").classList.toggle("active", name === "desk");
   document.getElementById("viewScan").classList.toggle("active", name === "scan");
+  document.getElementById("viewChart").classList.toggle("active", name === "chart");
   document.getElementById("tabDesk").classList.toggle("active", name === "desk");
   document.getElementById("tabScan").classList.toggle("active", name === "scan");
+  document.getElementById("tabChart").classList.toggle("active", name === "chart");
+  if (location.hash !== "#" + name) history.replaceState(null, "", "#" + name);
+  if (name === "scan") renderScan();
+  if (name === "chart" && window.LiveDeskChart) LiveDeskChart.show(document.getElementById("viewChart"));
 }
 
 function statusBadge(st) {
@@ -460,8 +517,20 @@ async function tick(manual) {
 }
 
 document.getElementById("tabDesk").addEventListener("click", () => setView("desk"));
-document.getElementById("tabScan").addEventListener("click", () => { setView("scan"); renderScan(); });
+document.getElementById("tabScan").addEventListener("click", () => setView("scan"));
+document.getElementById("tabChart").addEventListener("click", () => setView("chart"));
 document.getElementById("btnRefresh").addEventListener("click", () => { tick(true); loadScan(); });
+if (window.LiveDeskChart) {
+  LiveDeskChart.init(document.getElementById("viewChart"), { theme: "dark", hideSideToolbar: true });
+}
+window.addEventListener("hashchange", () => {
+  const h = (location.hash || "").replace("#", "");
+  if (h === "desk" || h === "scan" || h === "chart") setView(h);
+});
+(function openHashedView() {
+  const h = (location.hash || "").replace("#", "");
+  if (h === "desk" || h === "scan" || h === "chart") setView(h);
+})();
 
 (function showInstallHint() {
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
