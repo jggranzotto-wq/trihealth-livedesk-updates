@@ -90,6 +90,26 @@
   .btn-refresh:hover { filter: brightness(1.12); }
   .btn-refresh:disabled { opacity: 0.55; cursor: wait; }
   .pull-meta { color: var(--muted); font-size: 0.75rem; margin-top: 4px; }
+  .hold-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .hold-head h2 { margin: 18px 0 8px; }
+  .hold-src { color: var(--muted); font-size: 0.8rem; margin: 0 0 8px; line-height: 1.4; }
+  .hold-editor {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; margin: 0 0 14px;
+  }
+  .hold-editor[hidden] { display: none !important; }
+  .hold-editor p { margin: 0 0 10px; }
+  .hold-editor table { margin-top: 8px; }
+  .hold-editor th, .hold-editor td { text-align: left; }
+  .hold-editor input {
+    width: 100%; min-width: 0; padding: 8px; background: #0b0f14; color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; user-select: text;
+    font: inherit; font-variant-numeric: tabular-nums;
+  }
+  .hold-editor input::placeholder { color: #6d7d90; }
+  .hold-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .btn-danger { color: var(--red); border-color: rgba(255, 107, 107, 0.45); }
+  tr.acct-head td { font-weight: 700; background: #0e141c; color: var(--text); }
 
 .chart-search { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; align-items:center; }
 .chart-search input { flex:1 1 220px; min-width:0; padding:10px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; user-select:text; }
@@ -131,6 +151,7 @@
 
   <div class="tabs">
     <button type="button" class="tab active" id="tabDesk" data-view="desk">Desk</button>
+    <button type="button" class="tab" id="tabHold" data-view="holdings">Holdings</button>
     <button type="button" class="tab" id="tabScan" data-view="scan">Scanner</button>
     <button type="button" class="tab" id="tabChart" data-view="chart">Chart</button>
   </div>
@@ -167,19 +188,48 @@
     </div>
     <div class="empty" id="closedEmpty" style="display:none">No closed desk trades with known P&amp;L</div>
 
-    <h2>Holdings</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Asset</th><th>Qty</th><th>Price</th><th>Value</th><th>Note</th>
-        </tr>
-      </thead>
-      <tbody id="holdRows"></tbody>
-    </table>
+    <div class="hold-head">
+      <h2>Holdings</h2>
+      <button type="button" class="btn-refresh" id="btnEditHoldings">Edit holdings</button>
+    </div>
+    <p class="hold-src" id="holdSource">Server holdings. Edit holdings to keep your own list on this PC.</p>
+    <div data-hold-tables></div>
 
     <div class="note" id="btcNote"></div>
     <div class="note" id="dogeNote"></div>
     <div class="note" id="pepeNote"></div>
+  </div>
+
+  <div class="view" id="viewHold">
+    <div class="hold-head">
+      <h2>Edit holdings</h2>
+    </div>
+    <div class="hold-editor" id="holdEditor">
+      <p class="hint" id="editPath">Rows you save stay on this PC. A refresh or app update does not replace them. No exchange keys.</p>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Account</th><th>Symbol</th><th>Quantity</th><th>Cost basis (USD total)</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="editRows"></tbody>
+        </table>
+      </div>
+      <div class="hold-actions">
+        <button type="button" class="btn-refresh" id="btnAddHolding">Add row</button>
+        <button type="button" class="btn-refresh" id="btnSaveHoldings">Save holdings</button>
+        <button type="button" class="btn-refresh" id="btnRevertHoldings">Use server holdings</button>
+      </div>
+      <div class="pull-meta" id="editStatus"></div>
+      <datalist id="accountNames">
+        <option value="Wealthsimple"></option>
+        <option value="Crypto.com"></option>
+        <option value="Binance"></option>
+      </datalist>
+    </div>
+    <h2>Live value</h2>
+    <div data-hold-tables></div>
   </div>
 
   <div class="view" id="viewScan">
@@ -348,8 +398,14 @@ async function refreshHoldings(manual) {
     const chg = j && j.changed ? "updated" : "unchanged";
     const err = j && j.error ? (" · " + j.error) : (!j.ok ? " · pull failed" : "");
     if (meta) {
-      meta.textContent = "Holdings " + chg + " from server · " + n + " desk lots · cash " + cash +
-        " · last pull " + when + " · app v" + (j.app_version || "?") + err;
+      if (CFG.holdings_source === "user") {
+        meta.textContent = "Your saved holdings were kept · server list not applied · " +
+          (CFG.holdings || []).length + " rows · last server check " + when +
+          " · app v" + (j.app_version || "?") + err;
+      } else {
+        meta.textContent = "Holdings " + chg + " from server · " + n + " desk lots · cash " + cash +
+          " · last pull " + when + " · app v" + (j.app_version || "?") + err;
+      }
     }
     await tick();
     return !!(j && j.ok);
@@ -578,9 +634,35 @@ function gridNote(elId, name, price, g) {
     `${aboveStop.toFixed(2)}% above stop` + (atStop ? " · AT/BELOW STOP" : "");
 }
 
-function resolveHoldingPrice(h, map) {
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+function isCashSym(sym) {
+  const s = String(sym || "").toUpperCase();
+  return s === "USD" || s === "USDT" || s === "USDC" || s === "CAD";
+}
+function looksLikeStock(sym) {
+  const s = String(sym || "").toUpperCase();
+  if (s.includes(".")) return true;
+  const i = s.indexOf("-");
+  return i > 0 && i === s.length - 2;
+}
+function inferBinance(h) {
+  if (!h || h.kind === "cash") return "";
+  const sym = String(h.symbol || "").toUpperCase();
+  if (!sym || isCashSym(sym) || looksLikeStock(sym)) return "";
+  if (h.binance) return h.binance;
+  let base = sym.replace(/[-_]/g, "");
+  if (base.endsWith("USDT")) base = base.slice(0, -4);
+  else if (base.endsWith("USDC")) base = base.slice(0, -4);
+  else if (base.endsWith("USD") && base.length > 3) base = base.slice(0, -3);
+  return base ? base + "USDT" : "";
+}
+function cryptoHoldingPrice(h, map) {
   if (h.kind === "cash" || h.symbol === "USD") return 1;
-  const b = h.binance;
+  const b = h.binance || inferBinance(h);
   if (b && map[b]) return map[b].last;
   const cc = map.__cc || {};
   if (h.cryptocom && cc[h.cryptocom] != null) return cc[h.cryptocom];
@@ -589,18 +671,200 @@ function resolveHoldingPrice(h, map) {
     if (k && cc[k] != null) return cc[k];
     if (k && cc[k.replace("_USDT", "_USD")] != null) return cc[k.replace("_USDT", "_USD")];
   }
+  const sym = String(h.symbol || "").toUpperCase();
+  if (sym && cc[sym + "_USD"] != null) return cc[sym + "_USD"];
+  if (sym && cc[sym + "_USDT"] != null) return cc[sym + "_USDT"];
   return null;
+}
+function resolveHoldingPrice(h, map) {
+  const sym = String(h.symbol || "").toUpperCase();
+  if (sym === "CAD") return usdCad ? 1 / usdCad : null;
+  if (h.kind === "cash" || sym === "USD" || sym === "USDT" || sym === "USDC") return 1;
+  if (!looksLikeStock(sym)) {
+    const px = cryptoHoldingPrice(h, map);
+    if (px != null) return px;
+  }
+  if (map.__stock && map.__stock[sym] != null) return map.__stock[sym];
+  return looksLikeStock(sym) ? null : cryptoHoldingPrice(h, map);
+}
+
+let stockQuoteCache = {};
+let stockFeed = "";
+async function fetchStockQuote(symbol) {
+  const key = String(symbol || "").toUpperCase();
+  const hit = stockQuoteCache[key];
+  if (hit && Date.now() - hit.at < 20000) {
+    if (hit.source) stockFeed = hit.source;
+    return hit.price;
+  }
+  let price = null;
+  let source = "";
+  if (isLocalHosted()) {
+    try {
+      const j = await fetchJSON("/api/stock/price?symbol=" + encodeURIComponent(key));
+      if (j && Number(j.price) > 0) { price = Number(j.price); source = j.source === "yahoo" ? "Yahoo" : "CNBC"; }
+    } catch (_) {}
+  }
+  if (price == null) {
+    try {
+      const j = await fetchJSON("https://ts-api.cnbc.com/harmony/app/charts/1D.json?symbol=" + encodeURIComponent(key));
+      const bars = j && j.barData && j.barData.priceBars;
+      if (bars && bars.length) {
+        const c = Number(bars[bars.length - 1].close);
+        if (c > 0) { price = c; source = "CNBC"; }
+      }
+    } catch (_) {}
+  }
+  if (price != null) {
+    stockQuoteCache[key] = { price, source, at: Date.now() };
+    if (source) stockFeed = source;
+  }
+  return price;
+}
+async function fillStockPrices(holds, map) {
+  map.__stock = {};
+  const want = [];
+  for (const h of holds) {
+    const sym = String(h.symbol || "").toUpperCase();
+    if (!sym || isCashSym(sym) || h.kind === "cash") continue;
+    if (!looksLikeStock(sym) && cryptoHoldingPrice(h, map) != null) continue;
+    want.push(sym);
+  }
+  await Promise.all([...new Set(want)].map(async sym => {
+    const px = await fetchStockQuote(sym);
+    if (px != null) map.__stock[sym] = px;
+  }));
+}
+
+function accountLabel(a) {
+  const s = String(a || "").trim();
+  return s || "Unassigned";
+}
+function holdingPnl(value, h) {
+  if (value == null || h.cost_basis == null || h.cost_basis === "" || isNaN(Number(h.cost_basis))) return null;
+  return value - Number(h.cost_basis);
+}
+function renderHoldings(holds, map) {
+  const src = document.getElementById("holdSource");
+  const grouped = CFG.holdings_source === "user" || holds.some(h => String(h.account || "").trim());
+  if (src) {
+    src.textContent = grouped && CFG.holdings_source === "user"
+      ? "Your list on this PC, valued with live prices and totaled by account. Server refresh does not replace it."
+      : "Server holdings. Edit holdings to keep your own list on this PC.";
+  }
+  const hosts = [...document.querySelectorAll("[data-hold-tables]")];
+  if (!hosts.length) return 0;
+  if (!holds.length) {
+    hosts.forEach(host => {
+      host.replaceChildren();
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = CFG.holdings_source === "user"
+        ? "No saved holdings. Add a row on the Holdings tab."
+        : "No holdings";
+      host.append(empty);
+    });
+    return 0;
+  }
+  let holdTotal = 0;
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const cols = grouped
+    ? ["Symbol", "Qty", "Price", "Value", "Cost basis", "P&L"]
+    : ["Asset", "Qty", "Price", "Value", "Note"];
+  thead.innerHTML = "<tr>" + cols.map(c => `<th>${c}</th>`).join("") + "</tr>";
+  table.append(thead);
+  const tbody = document.createElement("tbody");
+
+  function appendDataRow(h) {
+    const qty = Number(h.qty) || 0;
+    const price = resolveHoldingPrice(h, map);
+    const value = price == null ? null : qty * price;
+    if (value != null) holdTotal += value;
+    const sym = String(h.symbol || "");
+    const approx = h.qty_approx ? ' <span class="approx">approx</span>' : "";
+    const tr = document.createElement("tr");
+    let cells;
+    if (grouped) {
+      const pnl = holdingPnl(value, h);
+      cells = [
+        esc(sym) + approx,
+        qty.toLocaleString("en-US"),
+        isCashSym(sym) || h.kind === "cash" ? "—" : fmtPrice(price),
+        fmtUsd(value),
+        h.cost_basis == null || h.cost_basis === "" ? "—" : fmtUsd(Number(h.cost_basis)),
+        pnl == null ? "—" : `<span class="${cls(pnl)}">${fmtUsd(pnl)}</span>`,
+      ];
+    } else {
+      const note = h.note || (h.qty_approx ? "value-implied qty" : "");
+      cells = [
+        esc(sym) + approx,
+        qty.toLocaleString("en-US"),
+        h.kind === "cash" ? "—" : fmtPrice(price),
+        fmtUsd(value),
+        esc(note),
+      ];
+    }
+    tr.innerHTML = cells.map(c => `<td>${c}</td>`).join("");
+    tbody.append(tr);
+    return value;
+  }
+
+  if (!grouped) {
+    for (const h of holds) appendDataRow(h);
+  } else {
+    const order = [];
+    const buckets = new Map();
+    for (const h of holds) {
+      const label = accountLabel(h.account);
+      if (!buckets.has(label)) { buckets.set(label, []); order.push(label); }
+      buckets.get(label).push(h);
+    }
+    for (const label of order) {
+      const rows = buckets.get(label);
+      let sub = 0;
+      let pnlSum = 0;
+      let pnlN = 0;
+      const start = tbody.children.length;
+      const head = document.createElement("tr");
+      head.className = "acct-head";
+      tbody.append(head);
+      for (const h of rows) {
+        const value = appendDataRow(h);
+        if (value != null) sub += value;
+        const pnl = holdingPnl(value, h);
+        if (pnl != null) { pnlSum += pnl; pnlN++; }
+      }
+      const pnlCell = pnlN ? `<span class="${cls(pnlSum)}">${fmtUsd(pnlSum)}</span>` : "—";
+      head.innerHTML = `<td colspan="${cols.length}">${esc(label)} · ${fmtUsd(sub)}` +
+        (pnlN ? ` · P&amp;L ${pnlCell}` : "") + `</td>`;
+      if (tbody.children[start] !== head) tbody.insertBefore(head, tbody.children[start]);
+    }
+    const total = document.createElement("tr");
+    total.className = "total-row";
+    total.innerHTML = `<td>ALL ACCOUNTS</td><td>${holds.length}</td><td></td><td>${fmtUsd(holdTotal)}</td><td></td><td></td>`;
+    tbody.append(total);
+  }
+  table.append(tbody);
+  hosts.forEach((host, i) => {
+    host.replaceChildren();
+    host.append(i === hosts.length - 1 ? table : table.cloneNode(true));
+  });
+  return holdTotal;
 }
 
 function setView(name) {
   activeView = name;
   document.getElementById("viewDesk").classList.toggle("active", name === "desk");
+  document.getElementById("viewHold").classList.toggle("active", name === "holdings");
   document.getElementById("viewScan").classList.toggle("active", name === "scan");
   document.getElementById("tabDesk").classList.toggle("active", name === "desk");
+  document.getElementById("tabHold").classList.toggle("active", name === "holdings");
   document.getElementById("tabScan").classList.toggle("active", name === "scan");
   document.getElementById("viewChart").classList.toggle("active", name === "chart");
   document.getElementById("tabChart").classList.toggle("active", name === "chart");
   if (name === "chart") LiveDeskChart.show(document.getElementById("viewChart"));
+  if (name === "holdings") openEditor();
 }
 
 function statusBadge(st) {
@@ -763,11 +1027,16 @@ async function tick() {
     const needed = [
       ...desk.map(p => p.binance).filter(Boolean),
       ...CFG.watch.map(w => w.binance).filter(Boolean),
-      ...holds.map(h => h.binance).filter(Boolean),
+      ...holds.map(h => h.binance || inferBinance(h)).filter(Boolean),
     ];
     const map = await getPriceMap(needed);
     if (!map.__cc) {
       try { map.__cc = await fetchCryptoComMap(); if (priceSource === "…") priceSource = "Crypto.com"; } catch (_) {}
+    }
+    stockFeed = "";
+    await fillStockPrices(holds, map);
+    if (stockFeed && priceSource !== stockFeed && !String(priceSource).includes(stockFeed)) {
+      priceSource = priceSource === "…" ? stockFeed : priceSource + "+" + stockFeed;
     }
 
     let totalPnl = 0, totalVal = 0, totalCost = 0, near = 0, atStopN = 0, priced = 0;
@@ -830,26 +1099,8 @@ async function tick() {
     }
     renderClosed();
 
-    let holdTotal = 0;
-    const holdBody = document.getElementById("holdRows");
-    holdBody.innerHTML = "";
-    for (const h of holds) {
-      const qty = Number(h.qty) || 0;
-      const price = resolveHoldingPrice(h, map);
-      const value = price == null ? null : qty * price;
-      if (value != null) holdTotal += value;
-      const approx = h.qty_approx ? ' <span class="approx">approx</span>' : "";
-      const note = h.note || (h.qty_approx ? "value-implied qty" : "");
-      const tr = document.createElement("tr");
-      tr.innerHTML = [
-        h.symbol + approx,
-        qty.toLocaleString("en-US"),
-        h.kind === "cash" ? "—" : fmtPrice(price),
-        fmtUsd(value),
-        note,
-      ].map(c => `<td>${c}</td>`).join("");
-      holdBody.appendChild(tr);
-    }
+    const holdTotal = renderHoldings(holds, map);
+    const accountCount = new Set(holds.map(h => accountLabel(h.account))).size;
 
     const btcSym = (CFG.watch.find(w => w.symbol === "BTC") || {}).binance || "BTCUSDT";
     const btc = map[btcSym] ? map[btcSym].last : 0;
@@ -867,7 +1118,7 @@ async function tick() {
       { label: "Unrealized P&L", value: desk.length ? fmtUsd(totalPnl) : "—", detail: desk.length ? fmtPct(unPct) + " since buy" : "0 open", cls: desk.length ? cls(totalPnl) : "" },
       { label: "Realized P&L", value: fmtUsd(realized), detail: (CFG.closed||[]).filter(c => c.realized_pnl_usd != null).length + " closed", cls: cls(realized) },
       { label: "Overall P&L", value: fmtUsd(overall), detail: "unrealized + realized", cls: cls(overall) },
-      { label: "Holdings total", value: fmtUsd(holdTotal), detail: "cash + coins · live", cls: "" },
+      { label: "Holdings total", value: fmtUsd(holdTotal), detail: (CFG.holdings_source === "user" ? accountCount + " accounts · " : "cash + coins · ") + "live", cls: "" },
       { label: "Desk open", value: String(desk.length), detail: near || atStopN ? (`near/at stop ${near}/${atStopN}`) : "flat", cls: atStopN ? "neg" : (near ? "amber" : "") },
       { label: "BTC CAD", value: "$" + btcCad.toLocaleString("en-US"), detail: "USD " + fmtPrice(btc) + " × " + usdCad.toFixed(4), cls: cls(btcChg) },
     ];
@@ -896,6 +1147,20 @@ async function tick() {
     document.getElementById("sub").textContent =
       (CFG.note || "Read-only") + " · poll " + ((CFG.poll_ms || 4000) / 1000) + "s · no keys" + snap;
 
+    const pullMeta = document.getElementById("pullMeta");
+    if (pullMeta && CFG.holdings_source === "user") {
+      if (!pullMeta.dataset.serverNote && !pullMeta.textContent.startsWith("Your saved holdings")) {
+        pullMeta.dataset.serverNote = pullMeta.textContent;
+      }
+      const remembered = pullMeta.dataset.serverNote || "";
+      const tail = remembered.includes("last pull") ? remembered.slice(remembered.indexOf("last pull")) : "";
+      pullMeta.textContent = "Your saved holdings are on this PC · " + holds.length +
+        " rows · server list not applied" + (tail ? " · " + tail : "");
+    } else if (pullMeta && pullMeta.dataset.serverNote) {
+      pullMeta.textContent = pullMeta.dataset.serverNote;
+      delete pullMeta.dataset.serverNote;
+    }
+
     const now = new Date().toLocaleString("en-CA", {
       timeZone: "America/Toronto", weekday: "short", year: "numeric", month: "short",
       day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true,
@@ -922,6 +1187,198 @@ document.getElementById("tabDesk").addEventListener("click", () => setView("desk
 document.getElementById("tabScan").addEventListener("click", () => { setView("scan"); renderScan(); });
 
 document.getElementById("btnRefresh").addEventListener("click", () => refreshHoldings(true));
+
+let editModel = [];
+let editorReady = false;
+function setEditStatus(text) {
+  const el = document.getElementById("editStatus");
+  if (el) el.textContent = text || "";
+}
+function remoteToEdit(h) {
+  return {
+    id: "",
+    account: h.account || "",
+    symbol: h.symbol || "",
+    qty: h.qty != null ? String(h.qty) : "",
+    cost: h.cost_basis != null && h.cost_basis !== "" ? String(h.cost_basis) : ""
+  };
+}
+function renderEditor() {
+  const tb = document.getElementById("editRows");
+  if (!tb) return;
+  tb.replaceChildren();
+  if (!editModel.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 5;
+    td.textContent = "No rows yet. Add one, then save.";
+    tr.append(td);
+    tb.append(tr);
+    return;
+  }
+  editModel.forEach((row, i) => {
+    const tr = document.createElement("tr");
+    ["account", "symbol", "qty", "cost"].forEach(key => {
+      const td = document.createElement("td");
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = row[key] == null ? "" : String(row[key]);
+      input.autocomplete = "off";
+      input.spellcheck = false;
+      if (key === "account") {
+        input.setAttribute("list", "accountNames");
+        input.setAttribute("aria-label", "Account");
+        input.placeholder = "Account name";
+      } else if (key === "symbol") {
+        input.setAttribute("aria-label", "Symbol");
+        input.placeholder = "BTC or AAPL";
+        input.autocapitalize = "characters";
+      } else if (key === "qty") {
+        input.setAttribute("aria-label", "Quantity");
+        input.placeholder = "Quantity";
+        input.inputMode = "decimal";
+      } else {
+        input.setAttribute("aria-label", "Cost basis");
+        input.placeholder = "Optional";
+        input.inputMode = "decimal";
+      }
+      input.addEventListener("input", () => { editModel[i][key] = input.value; });
+      td.append(input);
+      tr.append(td);
+    });
+    const td = document.createElement("td");
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "btn-refresh btn-danger";
+    del.textContent = "Delete";
+    del.addEventListener("click", () => deleteEditRow(i));
+    td.append(del);
+    tr.append(td);
+    tb.append(tr);
+  });
+}
+function rowsForSave() {
+  const out = [];
+  for (const r of editModel) {
+    const symbol = String(r.symbol || "").trim();
+    const account = String(r.account || "").trim();
+    const qtyRaw = String(r.qty == null ? "" : r.qty).trim();
+    const costRaw = String(r.cost == null ? "" : r.cost).trim();
+    if (!symbol && !account && !qtyRaw && !costRaw) continue;
+    if (!symbol) return { error: "Each row needs a symbol." };
+    const qty = Number(qtyRaw.replace(/,/g, ""));
+    if (!qtyRaw || !isFinite(qty) || qty < 0) return { error: symbol + " needs a quantity of zero or more." };
+    const row = { account, symbol, qty };
+    if (r.id) row.id = r.id;
+    if (costRaw) {
+      const cost = Number(costRaw.replace(/[$,]/g, ""));
+      if (!isFinite(cost) || cost < 0) return { error: symbol + " cost basis must be zero or more." };
+      row.cost_basis = cost;
+    }
+    out.push(row);
+  }
+  return { rows: out };
+}
+async function saveHoldings(okText) {
+  if (!isLocalHosted()) {
+    setEditStatus("Open the Live Desk app to save holdings on this PC.");
+    return false;
+  }
+  const packed = rowsForSave();
+  if (packed.error) { setEditStatus(packed.error); return false; }
+  const btn = document.getElementById("btnSaveHoldings");
+  if (btn) btn.disabled = true;
+  try {
+    const r = await fetch("/api/user-holdings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ holdings: packed.rows })
+    });
+    const j = await r.json();
+    if (!r.ok) {
+      setEditStatus(j && j.error ? j.error : "Save failed.");
+      return false;
+    }
+    editModel = (j.holdings || []).map(h => ({
+      id: h.id || "",
+      account: h.account || "",
+      symbol: h.symbol || "",
+      qty: h.qty != null ? String(h.qty) : "",
+      cost: h.cost_basis != null ? String(h.cost_basis) : ""
+    }));
+    renderEditor();
+    const where = j.path ? " Saved at " + j.path + "." : "";
+    setEditStatus((okText || "Saved.") + where + " Refresh will not replace these rows.");
+    await tick();
+    return true;
+  } catch (e) {
+    setEditStatus("Save failed: " + (e && e.message ? e.message : e));
+    return false;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+async function deleteEditRow(i) {
+  const prev = editModel.map(r => Object.assign({}, r));
+  const gone = editModel[i];
+  editModel.splice(i, 1);
+  renderEditor();
+  const label = (gone && gone.symbol) ? gone.symbol : "Row";
+  const ok = await saveHoldings("Deleted " + label + ".");
+  if (!ok) { editModel = prev; renderEditor(); }
+}
+async function openEditor() {
+  if (editorReady) return;
+  editorReady = true;
+  editModel = [];
+  if (isLocalHosted()) {
+    try {
+      const j = await fetchJSON("/api/user-holdings?_=" + Date.now());
+      const pathEl = document.getElementById("editPath");
+      if (pathEl) {
+        pathEl.textContent = j && j.path
+          ? "Saved on this PC at " + j.path + ". A refresh or app update does not replace this list. No exchange keys."
+          : "Rows you save stay on this PC. No exchange keys.";
+      }
+      if (j && j.override) {
+        editModel = (j.holdings || []).map(h => ({
+          id: h.id || "",
+          account: h.account || "",
+          symbol: h.symbol || "",
+          qty: h.qty != null ? String(h.qty) : "",
+          cost: h.cost_basis != null ? String(h.cost_basis) : ""
+        }));
+      }
+    } catch (_) {}
+  }
+  if (!editModel.length && CFG.holdings_source !== "user") {
+    editModel = (CFG.holdings || []).map(remoteToEdit);
+  }
+  renderEditor();
+  setEditStatus(CFG.holdings_source === "user"
+    ? "Editing the list saved on this PC."
+    : "These rows start from the server list. Nothing is saved until you click Save holdings.");
+}
+async function revertHoldings() {
+  if (!isLocalHosted()) { setEditStatus("Open the Live Desk app to change holdings."); return; }
+  const r = await fetch("/api/user-holdings", { method: "DELETE" });
+  if (!r.ok) { setEditStatus("Could not switch back to server holdings."); return; }
+  await tick();
+  editModel = (CFG.holdings || []).map(remoteToEdit);
+  renderEditor();
+  setEditStatus("Using server holdings again. They update when the server list changes.");
+}
+document.getElementById("btnEditHoldings").addEventListener("click", () => setView("holdings"));
+document.getElementById("tabHold").addEventListener("click", () => setView("holdings"));
+document.getElementById("btnAddHolding").addEventListener("click", () => {
+  editModel.unshift({ id: "", account: "", symbol: "", qty: "", cost: "" });
+  renderEditor();
+  const first = document.querySelector("#editRows input[aria-label='Account']");
+  if (first) first.focus();
+  setEditStatus("New row added. Fill it in, then save.");
+});
+document.getElementById("btnSaveHoldings").addEventListener("click", () => saveHoldings("Saved."));
+document.getElementById("btnRevertHoldings").addEventListener("click", () => revertHoldings());
 
 (async function boot() {
   await loadConfig();
