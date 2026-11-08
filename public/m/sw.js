@@ -1,5 +1,5 @@
 /* Tri-Health Live Desk PWA — network-first for live data; cache only static chrome */
-const CACHE = "livedesk-m-v1";
+const CACHE = "livedesk-m-v2";
 const PRECACHE = [
   "./manifest.json",
   "./icons/icon-192.png",
@@ -23,7 +23,8 @@ self.addEventListener("activate", (event) => {
 
 function isLiveRequest(url) {
   const path = url.pathname;
-  // Never serve stale app shell or JSON/price responses from cache
+  // Never serve stale app shell, chart script, or JSON/price responses from cache
+  if (path.endsWith("/chart.js") || path.endsWith("chart.js")) return true;
   if (path.endsWith("/m/") || path.endsWith("/m/index.html") || path.endsWith("index.html")) return true;
   if (path.endsWith(".json")) return true;
   if (path.includes("positions.json") || path.includes("scan.json") || path.includes("version.json")) return true;
@@ -37,6 +38,9 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
   let url;
   try { url = new URL(req.url); } catch (_) { return; }
+  const host = url.hostname;
+  // Chart widget is a third-party iframe/script. Let the browser load it directly.
+  if (host.includes("tradingview.com") || host.includes("tradingview-widget.com")) return;
 
   if (isLiveRequest(url)) {
     // Network-only / network-first with no cache write for live payloads
