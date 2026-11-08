@@ -289,6 +289,22 @@
       }
     });
     if (go) go.addEventListener("click", function () { loadChart(true); });
+    var analyzeBtn = rootEl.querySelector("[data-chart-analyze]");
+    var panel = rootEl.querySelector("[data-chart-analysis]");
+    if (analyzeBtn) {
+      analyzeBtn.addEventListener("click", function () {
+        if (!window.LiveDeskAnalyze) {
+          if (status) status.textContent = "Analysis didn't load. Refresh the page.";
+          return;
+        }
+        loadChart(false);
+        LiveDeskAnalyze.open(panel, {
+          query: input.value,
+          mode: state.mode,
+          interval: state.interval
+        }, analyzeBtn);
+      });
+    }
     paint();
 
     rootEl._livedeskChartShow = function () { loadChart(false); };

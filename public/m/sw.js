@@ -1,5 +1,5 @@
 /* Tri-Health Live Desk PWA — network-first for live data; cache only static chrome */
-const CACHE = "livedesk-m-v2";
+const CACHE = "livedesk-m-v3";
 const PRECACHE = [
   "./manifest.json",
   "./icons/icon-192.png",
@@ -25,6 +25,9 @@ function isLiveRequest(url) {
   const path = url.pathname;
   // Never serve stale app shell, chart script, or JSON/price responses from cache
   if (path.endsWith("/chart.js") || path.endsWith("chart.js")) return true;
+  if (path.endsWith("/analyze.js") || path.endsWith("analyze.js")) return true;
+  if (path.endsWith("/analyze.css") || path.endsWith("analyze.css")) return true;
+  if (path.includes("/api/analyze") || path.endsWith("/engine.json")) return true;
   if (path.endsWith("/m/") || path.endsWith("/m/index.html") || path.endsWith("index.html")) return true;
   if (path.endsWith(".json")) return true;
   if (path.includes("positions.json") || path.includes("scan.json") || path.includes("version.json")) return true;

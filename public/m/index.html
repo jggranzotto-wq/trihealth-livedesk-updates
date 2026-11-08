@@ -10,6 +10,7 @@
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+<link rel="stylesheet" href="../analyze.css" />
 <title>Tri-Health Live Desk</title>
 <style>
   :root {
@@ -73,6 +74,7 @@
   #viewChart.active {
     display: flex; flex-direction: column;
     height: calc(100dvh - 148px);
+    overflow: auto; min-height: 0;
   }
   #viewChart.active ~ .status,
   #viewChart.active ~ .err { display: none; }
@@ -98,7 +100,7 @@
   .install-hint.show { display: block; }
   .tiny { font-size: 0.7rem; color: var(--muted); }
   .section-title { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; font-weight: 700; }
-  .chart-search { display: flex; gap: 8px; margin-bottom: 8px; }
+  .chart-search { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
   .chart-search input {
     flex: 1; min-width: 0; background: var(--panel); color: var(--text);
     border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; font-size: 1rem;
@@ -124,6 +126,15 @@
     border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: #0b0f14;
   }
   .chart-fallback { padding: 18px; color: var(--red); font-size: 0.85rem; }
+  .chart-analysis {
+    --an-bg: #121821; --an-text: #e8eef6; --an-muted: #8b9bb0; --an-line: #1e2a38;
+    --an-soft: #182230; --an-warn: #f0b429; --an-warn-bg: rgba(240,180,41,0.14);
+    --an-bad: #ff8d8d; --an-bad-bg: rgba(255,107,107,0.14); --an-ok: #3dd68c;
+    max-height: 42vh; font-size: 0.82rem;
+  }
+  .chart-analyze {
+    background: #182230 !important; color: var(--text) !important; border: 1px solid #3a5168 !important;
+  }
   .tradingview-widget-container__widget {
     display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.85rem;
   }
@@ -163,12 +174,14 @@
         autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
         aria-label="Coin or stock symbol" placeholder="BTC, QNT, SOL, BONK" />
       <button type="button" class="btn" data-chart-go>Chart</button>
+      <button type="button" class="btn chart-analyze" data-chart-analyze>Analyze</button>
     </div>
     <div class="pills" data-chart-modes></div>
     <div class="pills" data-chart-quick></div>
     <div class="pills" data-chart-tfs></div>
     <div class="chart-status" data-chart-status></div>
-    <p class="tiny" style="margin:0 0 8px">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX).</p>
+    <p class="tiny" style="margin:0 0 8px">Coins map to Binance USDT. Stocks pass through (SHOP.TO opens on the TSX). Analyze is educational and never places a trade.</p>
+    <div class="chart-analysis" data-chart-analysis hidden></div>
     <div class="chart-host" data-chart-host></div>
   </div>
 
@@ -182,6 +195,7 @@
   </div>
 
 <script src="../chart.js"></script>
+<script src="../analyze.js"></script>
 <script>
 const POS_URL = "../positions.json";
 const SCAN_URL = "../scan.json";
