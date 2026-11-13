@@ -1,5 +1,5 @@
 {
-  "scanned_at": "2026-11-13T04:49:29.518672-05:00",
+  "scanned_at": "2026-11-13T04:55:58.054191-05:00",
   "tz": "America/Toronto",
   "threshold": 0.65,
   "weights": {
@@ -23,18 +23,18 @@
     {
       "symbol": "ICP",
       "instrument": "ICP_USD",
-      "price": 2.6118,
-      "pct_1h": 0.154,
-      "pct_4h": 2.22,
-      "pct_24h": 1.58,
-      "vol_24h_usd": 143492.71,
-      "spread_pct": 0.0842,
+      "price": 2.5984,
+      "pct_1h": 0.042,
+      "pct_4h": 2.106,
+      "pct_24h": 0.58,
+      "vol_24h_usd": 143413.52,
+      "spread_pct": 0.0847,
       "relvol": 2.807,
       "parts": {
-        "momentum": 0.6557,
+        "momentum": 0.6504,
         "trend": 1.0,
         "rel_volume": 1.0,
-        "day_range": 0.772
+        "day_range": 0.6854
       },
       "weights": {
         "momentum": 0.3,
@@ -44,17 +44,17 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.8511,
-      "total": 0.7234,
+      "raw_total": 0.8322,
+      "total": 0.7074,
       "threshold": 0.65,
       "status": "PASS",
       "reason": "pass; btc regime soft (x0.85)",
-      "suggested_entry": 2.6118,
-      "suggested_stop": 2.455092,
+      "suggested_entry": 2.5984,
+      "suggested_stop": 2.442496,
       "trend_notes": {
-        "ema20": 2.57029925,
-        "ema50": 2.54755486,
-        "price": 2.6013
+        "ema20": 2.57002306,
+        "ema50": 2.54744113,
+        "price": 2.5984
       }
     },
     {
@@ -63,9 +63,9 @@
       "price": 7.595,
       "pct_1h": 0.357,
       "pct_4h": 5.136,
-      "pct_24h": 1.99,
-      "vol_24h_usd": 161323.29,
-      "spread_pct": 0.1843,
+      "pct_24h": 1.95,
+      "vol_24h_usd": 161180.68,
+      "spread_pct": 0.1975,
       "relvol": 0.802,
       "parts": {
         "momentum": 0.7058,
@@ -97,18 +97,18 @@
     {
       "symbol": "HYPE",
       "instrument": "HYPE_USD",
-      "price": 72.159,
-      "pct_1h": 0.314,
-      "pct_4h": 1.263,
-      "pct_24h": 1.04,
-      "vol_24h_usd": 395227.57,
-      "spread_pct": 0.492,
+      "price": 72.269,
+      "pct_1h": 0.467,
+      "pct_4h": 1.417,
+      "pct_24h": 1.19,
+      "vol_24h_usd": 395424.57,
+      "spread_pct": 0.1342,
       "relvol": 0.48,
       "parts": {
-        "momentum": 0.5736,
-        "trend": 0.7597,
+        "momentum": 0.5959,
+        "trend": 0.7621,
         "rel_volume": 0.2399,
-        "day_range": 0.7335
+        "day_range": 0.7644
       },
       "weights": {
         "momentum": 0.3,
@@ -118,71 +118,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.5687,
-      "total": 0.4834,
+      "raw_total": 0.5822,
+      "total": 0.4948,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "spread 0.492% > 0.3%; btc regime soft (x0.85)",
-      "suggested_entry": 72.159,
-      "suggested_stop": 67.82946,
+      "reason": "score 0.495 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 72.269,
+      "suggested_stop": 67.93286,
       "trend_notes": {
-        "ema20": 71.7396831,
-        "ema50": 72.00761731,
-        "price": 72.159
-      }
-    },
-    {
-      "symbol": "NEAR",
-      "instrument": "NEAR_USD",
-      "price": 3.4911,
-      "pct_1h": -0.688,
-      "pct_4h": 4.558,
-      "pct_24h": -0.01,
-      "vol_24h_usd": 740106.18,
-      "spread_pct": 0.0745,
-      "relvol": 1.093,
-      "parts": {
-        "momentum": 0.4593,
-        "trend": 0.4232,
-        "rel_volume": 0.5467,
-        "day_range": 0.7653
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.5333,
-      "total": 0.4533,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.453 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 3.4911,
-      "suggested_stop": 3.281634,
-      "trend_notes": {
-        "ema20": 3.44321811,
-        "ema50": 3.49333404,
-        "price": 3.4911
+        "ema20": 71.75015929,
+        "ema50": 72.01193104,
+        "price": 72.269
       }
     },
     {
       "symbol": "SUI",
       "instrument": "SUI_USD",
-      "price": 0.80104,
-      "pct_1h": 0.263,
-      "pct_4h": 3.283,
-      "pct_24h": -1.64,
-      "vol_24h_usd": 648697.35,
-      "spread_pct": 0.0137,
+      "price": 0.80125,
+      "pct_1h": 0.289,
+      "pct_4h": 3.31,
+      "pct_24h": -1.75,
+      "vol_24h_usd": 649601.93,
+      "spread_pct": 0.02,
       "relvol": 0.697,
       "parts": {
-        "momentum": 0.675,
-        "trend": 0.4098,
+        "momentum": 0.6763,
+        "trend": 0.4102,
         "rel_volume": 0.3486,
-        "day_range": 0.6746
+        "day_range": 0.6785
       },
       "weights": {
         "momentum": 0.3,
@@ -192,34 +155,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.527,
-      "total": 0.448,
+      "raw_total": 0.5283,
+      "total": 0.449,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.448 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.80104,
-      "suggested_stop": 0.7529776,
+      "reason": "score 0.449 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.80125,
+      "suggested_stop": 0.753175,
       "trend_notes": {
-        "ema20": 0.79633757,
-        "ema50": 0.80759172,
-        "price": 0.80104
+        "ema20": 0.79635757,
+        "ema50": 0.80759996,
+        "price": 0.80125
       }
     },
     {
-      "symbol": "XLM",
-      "instrument": "XLM_USD",
-      "price": 0.14631,
-      "pct_1h": 0.178,
-      "pct_4h": 2.53,
-      "pct_24h": -0.26,
-      "vol_24h_usd": 492400.72,
-      "spread_pct": 0.041,
-      "relvol": 0.159,
+      "symbol": "NEAR",
+      "instrument": "NEAR_USD",
+      "price": 3.4845,
+      "pct_1h": -0.876,
+      "pct_4h": 4.361,
+      "pct_24h": 0.01,
+      "vol_24h_usd": 740252.12,
+      "spread_pct": 0.0689,
+      "relvol": 1.093,
       "parts": {
-        "momentum": 0.6611,
-        "trend": 0.7564,
-        "rel_volume": 0.0797,
-        "day_range": 0.5804
+        "momentum": 0.4497,
+        "trend": 0.4203,
+        "rel_volume": 0.5467,
+        "day_range": 0.7432
       },
       "weights": {
         "momentum": 0.3,
@@ -229,91 +192,17 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.5234,
-      "total": 0.4449,
+      "raw_total": 0.5253,
+      "total": 0.4465,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.445 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.14631,
-      "suggested_stop": 0.1375314,
+      "reason": "score 0.447 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 3.4845,
+      "suggested_stop": 3.27543,
       "trend_notes": {
-        "ema20": 0.14575397,
-        "ema50": 0.1462574,
-        "price": 0.14631
-      }
-    },
-    {
-      "symbol": "CASHCAT",
-      "instrument": "CASHCAT_USD",
-      "price": 0.05164,
-      "pct_1h": 0.938,
-      "pct_4h": 3.841,
-      "pct_24h": -2.25,
-      "vol_24h_usd": 102596.09,
-      "spread_pct": 0.1549,
-      "relvol": 0.496,
-      "parts": {
-        "momentum": 0.7047,
-        "trend": 0.4195,
-        "rel_volume": 0.248,
-        "day_range": 0.6355
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.5054,
-      "total": 0.4296,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.430 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.05164,
-      "suggested_stop": 0.0485416,
-      "trend_notes": {
-        "ema20": 0.05104277,
-        "ema50": 0.05433466,
-        "price": 0.05164
-      }
-    },
-    {
-      "symbol": "AVAX",
-      "instrument": "AVAX_USD",
-      "price": 8.345,
-      "pct_1h": 0.809,
-      "pct_4h": 3.42,
-      "pct_24h": -3.62,
-      "vol_24h_usd": 446911.96,
-      "spread_pct": 0.012,
-      "relvol": 0.733,
-      "parts": {
-        "momentum": 0.6943,
-        "trend": 0.4098,
-        "rel_volume": 0.3665,
-        "day_range": 0.4957
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.5015,
-      "total": 0.4263,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.426 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 8.345,
-      "suggested_stop": 7.8443,
-      "trend_notes": {
-        "ema20": 8.29618708,
-        "ema50": 8.38012518,
-        "price": 8.345
+        "ema20": 3.44258953,
+        "ema50": 3.49307521,
+        "price": 3.4845
       }
     },
     {
@@ -323,8 +212,8 @@
       "pct_1h": 0.071,
       "pct_4h": 3.372,
       "pct_24h": -1.5,
-      "vol_24h_usd": 109886.33,
-      "spread_pct": 0.0807,
+      "vol_24h_usd": 108855.04,
+      "spread_pct": 0.0475,
       "relvol": 0.423,
       "parts": {
         "momentum": 0.6703,
@@ -354,13 +243,87 @@
       }
     },
     {
+      "symbol": "AVAX",
+      "instrument": "AVAX_USD",
+      "price": 8.329,
+      "pct_1h": 0.616,
+      "pct_4h": 3.222,
+      "pct_24h": -3.73,
+      "vol_24h_usd": 446337.56,
+      "spread_pct": 0.024,
+      "relvol": 0.733,
+      "parts": {
+        "momentum": 0.6852,
+        "trend": 0.4069,
+        "rel_volume": 0.3665,
+        "day_range": 0.473
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.4935,
+      "total": 0.4195,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.419 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 8.329,
+      "suggested_stop": 7.82926,
+      "trend_notes": {
+        "ema20": 8.29466327,
+        "ema50": 8.37949772,
+        "price": 8.329
+      }
+    },
+    {
+      "symbol": "CASHCAT",
+      "instrument": "CASHCAT_USD",
+      "price": 0.05134,
+      "pct_1h": 0.352,
+      "pct_4h": 3.237,
+      "pct_24h": -3.1,
+      "vol_24h_usd": 102955.6,
+      "spread_pct": 0.1169,
+      "relvol": 0.496,
+      "parts": {
+        "momentum": 0.6771,
+        "trend": 0.4106,
+        "rel_volume": 0.248,
+        "day_range": 0.5888
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.4856,
+      "total": 0.4127,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.413 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.05134,
+      "suggested_stop": 0.0482596,
+      "trend_notes": {
+        "ema20": 0.0510142,
+        "ema50": 0.0543229,
+        "price": 0.05134
+      }
+    },
+    {
       "symbol": "FET",
       "instrument": "FET_USD",
       "price": 0.1467,
       "pct_1h": -0.811,
       "pct_4h": 3.602,
-      "pct_24h": 0.0,
-      "vol_24h_usd": 131007.65,
+      "pct_24h": -0.2,
+      "vol_24h_usd": 130862.59,
       "spread_pct": 0.1363,
       "relvol": 0.084,
       "parts": {
@@ -391,20 +354,20 @@
       }
     },
     {
-      "symbol": "XRP",
-      "instrument": "XRP_USD",
-      "price": 1.0279,
-      "pct_1h": 0.107,
-      "pct_4h": 1.662,
-      "pct_24h": -2.11,
-      "vol_24h_usd": 15121836.53,
-      "spread_pct": 0.0097,
-      "relvol": 0.568,
+      "symbol": "XLM",
+      "instrument": "XLM_USD",
+      "price": 0.14613,
+      "pct_1h": 0.055,
+      "pct_4h": 2.404,
+      "pct_24h": -0.13,
+      "vol_24h_usd": 493612.73,
+      "spread_pct": 0.0479,
+      "relvol": 0.159,
       "parts": {
-        "momentum": 0.6124,
-        "trend": 0.4007,
-        "rel_volume": 0.2839,
-        "day_range": 0.5254
+        "momentum": 0.6553,
+        "trend": 0.4045,
+        "rel_volume": 0.0797,
+        "day_range": 0.5603
       },
       "weights": {
         "momentum": 0.3,
@@ -414,34 +377,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.46,
-      "total": 0.391,
+      "raw_total": 0.4297,
+      "total": 0.3652,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.391 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 1.0279,
-      "suggested_stop": 0.966226,
+      "reason": "score 0.365 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.14613,
+      "suggested_stop": 0.1373622,
       "trend_notes": {
-        "ema20": 1.02746133,
-        "ema50": 1.04049586,
-        "price": 1.0279
+        "ema20": 0.14573683,
+        "ema50": 0.14625035,
+        "price": 0.14613
       }
     },
     {
       "symbol": "QNT",
       "instrument": "QNT_USD",
-      "price": 159.353,
-      "pct_1h": 1.267,
-      "pct_4h": 2.198,
-      "pct_24h": -2.76,
-      "vol_24h_usd": 618047.83,
+      "price": 158.931,
+      "pct_1h": 0.999,
+      "pct_4h": 1.928,
+      "pct_24h": -2.96,
+      "vol_24h_usd": 617955.38,
       "spread_pct": 0.0132,
       "relvol": 1.09,
       "parts": {
-        "momentum": 0.6904,
+        "momentum": 0.6708,
         "trend": 0.0,
         "rel_volume": 0.5448,
-        "day_range": 0.4031
+        "day_range": 0.3684
       },
       "weights": {
         "momentum": 0.3,
@@ -451,17 +414,17 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.4239,
-      "total": 0.3603,
+      "raw_total": 0.4111,
+      "total": 0.3494,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.360 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 159.353,
-      "suggested_stop": 149.79182,
+      "reason": "score 0.349 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 158.931,
+      "suggested_stop": 149.39514,
       "trend_notes": {
-        "ema20": 161.01353183,
-        "ema50": 167.3252349,
-        "price": 159.353
+        "ema20": 160.97334135,
+        "ema50": 167.30868588,
+        "price": 158.931
       }
     },
     {
@@ -471,8 +434,8 @@
       "pct_1h": 0.352,
       "pct_4h": 1.472,
       "pct_24h": -1.0,
-      "vol_24h_usd": 244417.47,
-      "spread_pct": 0.0468,
+      "vol_24h_usd": 244406.2,
+      "spread_pct": 0.0234,
       "relvol": 0.94,
       "parts": {
         "momentum": 0.5986,
@@ -504,18 +467,18 @@
     {
       "symbol": "DOGE",
       "instrument": "DOGE_USD",
-      "price": 0.064702,
-      "pct_1h": 0.326,
-      "pct_4h": 1.564,
-      "pct_24h": -3.56,
-      "vol_24h_usd": 2491411.14,
-      "spread_pct": 0.0139,
+      "price": 0.064651,
+      "pct_1h": 0.261,
+      "pct_4h": 1.498,
+      "pct_24h": -3.64,
+      "vol_24h_usd": 2494357.77,
+      "spread_pct": 0.0015,
       "relvol": 1.025,
       "parts": {
-        "momentum": 0.6081,
+        "momentum": 0.5986,
         "trend": 0.0,
         "rel_volume": 0.5124,
-        "day_range": 0.3961
+        "day_range": 0.3847
       },
       "weights": {
         "momentum": 0.3,
@@ -525,34 +488,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3898,
-      "total": 0.3313,
+      "raw_total": 0.3846,
+      "total": 0.3269,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.331 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.064702,
-      "suggested_stop": 0.06081988,
+      "reason": "score 0.327 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.064651,
+      "suggested_stop": 0.06077194,
       "trend_notes": {
-        "ema20": 0.06522283,
-        "ema50": 0.06636572,
-        "price": 0.064693
+        "ema20": 0.06521883,
+        "ema50": 0.06636407,
+        "price": 0.064651
       }
     },
     {
       "symbol": "ALGO",
       "instrument": "ALGO_USD",
-      "price": 0.08715,
-      "pct_1h": -0.297,
-      "pct_4h": 2.157,
-      "pct_24h": -1.66,
-      "vol_24h_usd": 108650.47,
-      "spread_pct": 0.0459,
+      "price": 0.08706,
+      "pct_1h": -0.4,
+      "pct_4h": 2.051,
+      "pct_24h": -2.06,
+      "vol_24h_usd": 108760.98,
+      "spread_pct": 0.1149,
       "relvol": 0.226,
       "parts": {
-        "momentum": 0.4369,
-        "trend": 0.4026,
+        "momentum": 0.4318,
+        "trend": 0.401,
         "rel_volume": 0.1128,
-        "day_range": 0.5929
+        "day_range": 0.573
       },
       "weights": {
         "momentum": 0.3,
@@ -562,71 +525,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3785,
-      "total": 0.3217,
+      "raw_total": 0.3726,
+      "total": 0.3167,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.322 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.08715,
-      "suggested_stop": 0.081921,
+      "reason": "score 0.317 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.08706,
+      "suggested_stop": 0.0818364,
       "trend_notes": {
-        "ema20": 0.08701637,
-        "ema50": 0.08821108,
-        "price": 0.08715
-      }
-    },
-    {
-      "symbol": "HBAR",
-      "instrument": "HBAR_USD",
-      "price": 0.06215,
-      "pct_1h": 0.04,
-      "pct_4h": 1.532,
-      "pct_24h": -5.91,
-      "vol_24h_usd": 654440.48,
-      "spread_pct": 0.0161,
-      "relvol": 1.15,
-      "parts": {
-        "momentum": 0.5956,
-        "trend": 0.0,
-        "rel_volume": 0.5749,
-        "day_range": 0.273
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.377,
-      "total": 0.3204,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.320 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.06215,
-      "suggested_stop": 0.058421,
-      "trend_notes": {
-        "ema20": 0.0629093,
-        "ema50": 0.0641769,
-        "price": 0.06215
+        "ema20": 0.0870078,
+        "ema50": 0.08820755,
+        "price": 0.08706
       }
     },
     {
       "symbol": "SOL",
       "instrument": "SOL_USD",
-      "price": 79.93,
-      "pct_1h": 0.276,
-      "pct_4h": 1.874,
-      "pct_24h": -3.73,
-      "vol_24h_usd": 20779171.4,
-      "spread_pct": 0.025,
+      "price": 79.92,
+      "pct_1h": 0.263,
+      "pct_4h": 1.861,
+      "pct_24h": -3.65,
+      "vol_24h_usd": 20789040.45,
+      "spread_pct": 0.0125,
       "relvol": 0.815,
       "parts": {
-        "momentum": 0.6418,
+        "momentum": 0.64,
         "trend": 0.0,
         "rel_volume": 0.4074,
-        "day_range": 0.3734
+        "day_range": 0.3716
       },
       "weights": {
         "momentum": 0.3,
@@ -636,71 +562,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3691,
-      "total": 0.3137,
+      "raw_total": 0.3682,
+      "total": 0.3129,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.314 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 79.93,
-      "suggested_stop": 75.1342,
+      "reason": "score 0.313 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 79.92,
+      "suggested_stop": 75.1248,
       "trend_notes": {
-        "ema20": 80.52643631,
-        "ema50": 81.93728377,
-        "price": 79.93
-      }
-    },
-    {
-      "symbol": "LTC",
-      "instrument": "LTC_USD",
-      "price": 48.921,
-      "pct_1h": 0.262,
-      "pct_4h": 1.294,
-      "pct_24h": -1.35,
-      "vol_24h_usd": 398631.79,
-      "spread_pct": 0.0409,
-      "relvol": 0.76,
-      "parts": {
-        "momentum": 0.5755,
-        "trend": 0.0,
-        "rel_volume": 0.3801,
-        "day_range": 0.4589
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.3595,
-      "total": 0.3055,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.306 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 48.921,
-      "suggested_stop": 45.98574,
-      "trend_notes": {
-        "ema20": 49.20039457,
-        "ema50": 49.73872343,
-        "price": 48.921
+        "ema20": 80.52548393,
+        "ema50": 81.93689161,
+        "price": 79.92
       }
     },
     {
       "symbol": "LINK",
       "instrument": "LINK_USD",
-      "price": 9.908,
-      "pct_1h": 0.081,
-      "pct_4h": 1.84,
-      "pct_24h": -1.88,
-      "vol_24h_usd": 496492.91,
-      "spread_pct": 0.0303,
+      "price": 9.92,
+      "pct_1h": 0.202,
+      "pct_4h": 1.963,
+      "pct_24h": -1.61,
+      "vol_24h_usd": 496336.91,
+      "spread_pct": 0.0202,
       "relvol": 0.399,
       "parts": {
-        "momentum": 0.6318,
+        "momentum": 0.6497,
         "trend": 0.0,
         "rel_volume": 0.1997,
-        "day_range": 0.5455
+        "day_range": 0.5677
       },
       "weights": {
         "momentum": 0.3,
@@ -710,34 +599,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3486,
-      "total": 0.2963,
+      "raw_total": 0.3584,
+      "total": 0.3046,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.296 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 9.908,
-      "suggested_stop": 9.31352,
+      "reason": "score 0.305 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 9.92,
+      "suggested_stop": 9.3248,
       "trend_notes": {
-        "ema20": 9.94590537,
-        "ema50": 10.08773368,
-        "price": 9.908
+        "ema20": 9.94704823,
+        "ema50": 10.08820427,
+        "price": 9.92
       }
     },
     {
-      "symbol": "FLR",
-      "instrument": "FLR_USD",
-      "price": 0.00513,
-      "pct_1h": -0.078,
-      "pct_4h": 2.049,
-      "pct_24h": -4.04,
-      "vol_24h_usd": 171064.77,
-      "spread_pct": 0.0195,
-      "relvol": 1.186,
+      "symbol": "XRP",
+      "instrument": "XRP_USD",
+      "price": 1.0269,
+      "pct_1h": 0.01,
+      "pct_4h": 1.563,
+      "pct_24h": -2.3,
+      "vol_24h_usd": 15119665.05,
+      "spread_pct": 0.0097,
+      "relvol": 0.568,
       "parts": {
-        "momentum": 0.443,
+        "momentum": 0.5981,
         "trend": 0.0,
-        "rel_volume": 0.5928,
-        "day_range": 0.2863
+        "rel_volume": 0.2839,
+        "day_range": 0.5085
       },
       "weights": {
         "momentum": 0.3,
@@ -747,34 +636,71 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3384,
-      "total": 0.2876,
+      "raw_total": 0.3521,
+      "total": 0.2993,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.288 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.00513,
-      "suggested_stop": 0.0048222,
+      "reason": "score 0.299 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 1.0269,
+      "suggested_stop": 0.965286,
       "trend_notes": {
-        "ema20": 0.00518432,
-        "ema50": 0.00526924,
-        "price": 0.00513
+        "ema20": 1.02736609,
+        "ema50": 1.04045664,
+        "price": 1.0269
+      }
+    },
+    {
+      "symbol": "LTC",
+      "instrument": "LTC_USD",
+      "price": 48.873,
+      "pct_1h": 0.164,
+      "pct_4h": 1.195,
+      "pct_24h": -1.31,
+      "vol_24h_usd": 398548.2,
+      "spread_pct": 0.043,
+      "relvol": 0.76,
+      "parts": {
+        "momentum": 0.5611,
+        "trend": 0.0,
+        "rel_volume": 0.3801,
+        "day_range": 0.4408
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.3515,
+      "total": 0.2988,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.299 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 48.873,
+      "suggested_stop": 45.94062,
+      "trend_notes": {
+        "ema20": 49.19582314,
+        "ema50": 49.73684108,
+        "price": 48.873
       }
     },
     {
       "symbol": "CRO",
       "instrument": "CRO_USD",
-      "price": 0.04711,
-      "pct_1h": 0.042,
-      "pct_4h": 1.116,
-      "pct_24h": -3.15,
-      "vol_24h_usd": 1643952.42,
+      "price": 0.04713,
+      "pct_1h": 0.085,
+      "pct_4h": 1.159,
+      "pct_24h": -3.12,
+      "vol_24h_usd": 1641905.82,
       "spread_pct": 0.0212,
       "relvol": 0.72,
       "parts": {
-        "momentum": 0.5483,
+        "momentum": 0.5545,
         "trend": 0.0,
         "rel_volume": 0.3598,
-        "day_range": 0.412
+        "day_range": 0.4195
       },
       "weights": {
         "momentum": 0.3,
@@ -784,34 +710,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3368,
-      "total": 0.2863,
+      "raw_total": 0.3402,
+      "total": 0.2892,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.286 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.04711,
-      "suggested_stop": 0.0442834,
+      "reason": "score 0.289 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.04713,
+      "suggested_stop": 0.0443022,
       "trend_notes": {
-        "ema20": 0.0473237,
-        "ema50": 0.0476605,
-        "price": 0.04711
+        "ema20": 0.0473256,
+        "ema50": 0.04766129,
+        "price": 0.04713
       }
     },
     {
-      "symbol": "W",
-      "instrument": "W_USD",
-      "price": 0.009841,
-      "pct_1h": -0.304,
-      "pct_4h": 2.148,
-      "pct_24h": -2.58,
-      "vol_24h_usd": 144224.14,
-      "spread_pct": 0.0406,
-      "relvol": 0.68,
+      "symbol": "FLR",
+      "instrument": "FLR_USD",
+      "price": 0.005121,
+      "pct_1h": -0.253,
+      "pct_4h": 1.87,
+      "pct_24h": -4.17,
+      "vol_24h_usd": 170834.5,
+      "spread_pct": 0.0586,
+      "relvol": 1.186,
       "parts": {
-        "momentum": 0.4366,
+        "momentum": 0.4213,
         "trend": 0.0,
-        "rel_volume": 0.3399,
-        "day_range": 0.5977
+        "rel_volume": 0.5928,
+        "day_range": 0.2674
       },
       "weights": {
         "momentum": 0.3,
@@ -821,34 +747,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3355,
-      "total": 0.2852,
+      "raw_total": 0.3281,
+      "total": 0.2789,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.285 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.009841,
-      "suggested_stop": 0.00925054,
+      "reason": "score 0.279 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.005121,
+      "suggested_stop": 0.00481374,
       "trend_notes": {
-        "ema20": 0.00985502,
-        "ema50": 0.01008751,
-        "price": 0.009844
+        "ema20": 0.00518346,
+        "ema50": 0.00526888,
+        "price": 0.005121
       }
     },
     {
       "symbol": "ADA",
       "instrument": "ADA_USD",
-      "price": 0.17065,
-      "pct_1h": 0.312,
-      "pct_4h": 1.553,
-      "pct_24h": -1.64,
-      "vol_24h_usd": 2733689.26,
-      "spread_pct": 0.0234,
+      "price": 0.17049,
+      "pct_1h": 0.217,
+      "pct_4h": 1.458,
+      "pct_24h": -1.74,
+      "vol_24h_usd": 2738081.19,
+      "spread_pct": 0.0176,
       "relvol": 0.421,
       "parts": {
-        "momentum": 0.6065,
+        "momentum": 0.5927,
         "trend": 0.0,
         "rel_volume": 0.2104,
-        "day_range": 0.4979
+        "day_range": 0.4813
       },
       "weights": {
         "momentum": 0.3,
@@ -858,34 +784,145 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.3341,
-      "total": 0.284,
+      "raw_total": 0.3267,
+      "total": 0.2777,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.284 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.17065,
-      "suggested_stop": 0.160411,
+      "reason": "score 0.278 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.17049,
+      "suggested_stop": 0.1602606,
       "trend_notes": {
-        "ema20": 0.17119104,
-        "ema50": 0.17279026,
-        "price": 0.17065
+        "ema20": 0.1711758,
+        "ema50": 0.17278399,
+        "price": 0.17049
+      }
+    },
+    {
+      "symbol": "W",
+      "instrument": "W_USD",
+      "price": 0.009816,
+      "pct_1h": -0.567,
+      "pct_4h": 1.878,
+      "pct_24h": -3.03,
+      "vol_24h_usd": 143952.4,
+      "spread_pct": 0.0306,
+      "relvol": 0.68,
+      "parts": {
+        "momentum": 0.4113,
+        "trend": 0.0,
+        "rel_volume": 0.3399,
+        "day_range": 0.5623
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.3208,
+      "total": 0.2727,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.273 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.009816,
+      "suggested_stop": 0.00922704,
+      "trend_notes": {
+        "ema20": 0.00985254,
+        "ema50": 0.01008649,
+        "price": 0.009818
+      }
+    },
+    {
+      "symbol": "HBAR",
+      "instrument": "HBAR_USD",
+      "price": 0.061967,
+      "pct_1h": -0.254,
+      "pct_4h": 1.233,
+      "pct_24h": -6.08,
+      "vol_24h_usd": 658581.45,
+      "spread_pct": 0.0323,
+      "relvol": 1.15,
+      "parts": {
+        "momentum": 0.3489,
+        "trend": 0.0,
+        "rel_volume": 0.5749,
+        "day_range": 0.2406
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.2965,
+      "total": 0.252,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.252 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.061967,
+      "suggested_stop": 0.05824898,
+      "trend_notes": {
+        "ema20": 0.06289187,
+        "ema50": 0.06416972,
+        "price": 0.061967
+      }
+    },
+    {
+      "symbol": "PAXG",
+      "instrument": "PAXG_USD",
+      "price": 3885.82,
+      "pct_1h": 0.082,
+      "pct_4h": -0.109,
+      "pct_24h": -1.25,
+      "vol_24h_usd": 362839.01,
+      "spread_pct": 0.0008,
+      "relvol": 0.686,
+      "parts": {
+        "momentum": 0.4191,
+        "trend": 0.0,
+        "rel_volume": 0.3431,
+        "day_range": 0.3672
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.2849,
+      "total": 0.2422,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.242 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 3885.82,
+      "suggested_stop": 3652.6708,
+      "trend_notes": {
+        "ema20": 3897.37194318,
+        "ema50": 3936.74187434,
+        "price": 3887.94
       }
     },
     {
       "symbol": "BCH",
       "instrument": "BCH_USD",
-      "price": 220.01,
-      "pct_1h": -0.104,
-      "pct_4h": 2.055,
-      "pct_24h": -3.52,
-      "vol_24h_usd": 121816.03,
-      "spread_pct": 0.0455,
+      "price": 220.0,
+      "pct_1h": -0.109,
+      "pct_4h": 2.05,
+      "pct_24h": -3.48,
+      "vol_24h_usd": 121807.09,
+      "spread_pct": 0.0045,
       "relvol": 0.584,
       "parts": {
-        "momentum": 0.4422,
+        "momentum": 0.4419,
         "trend": 0.0,
         "rel_volume": 0.2921,
-        "day_range": 0.364
+        "day_range": 0.3634
       },
       "weights": {
         "momentum": 0.3,
@@ -895,34 +932,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.2785,
-      "total": 0.2367,
+      "raw_total": 0.2783,
+      "total": 0.2365,
       "threshold": 0.65,
       "status": "FAIL",
       "reason": "score 0.237 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 220.01,
-      "suggested_stop": 206.8094,
+      "suggested_entry": 220.0,
+      "suggested_stop": 206.8,
       "trend_notes": {
-        "ema20": 222.00050595,
-        "ema50": 226.0524377,
-        "price": 220.01
+        "ema20": 221.99955357,
+        "ema50": 226.05204554,
+        "price": 220.0
       }
     },
     {
       "symbol": "BTC",
       "instrument": "BTC_USD",
-      "price": 69000.31,
-      "pct_1h": 0.484,
-      "pct_4h": 1.331,
-      "pct_24h": -5.94,
-      "vol_24h_usd": 478672930.65,
+      "price": 69020.47,
+      "pct_1h": 0.514,
+      "pct_4h": 1.361,
+      "pct_24h": -5.91,
+      "vol_24h_usd": 479813711.56,
       "spread_pct": 0.0,
       "relvol": 0.38,
       "parts": {
-        "momentum": 0.5867,
+        "momentum": 0.5909,
         "trend": 0.0,
         "rel_volume": 0.19,
-        "day_range": 0.2442
+        "day_range": 0.2476
       },
       "weights": {
         "momentum": 0.3,
@@ -932,34 +969,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.2723,
-      "total": 0.2315,
+      "raw_total": 0.2743,
+      "total": 0.2331,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.231 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 69000.31,
-      "suggested_stop": 64860.2914,
+      "reason": "score 0.233 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 69020.47,
+      "suggested_stop": 64879.2418,
       "trend_notes": {
-        "ema20": 70255.79277053,
-        "ema50": 71797.90501537,
-        "price": 69000.31
+        "ema20": 70257.71277053,
+        "ema50": 71798.6956036,
+        "price": 69020.47
       }
     },
     {
       "symbol": "ETH",
       "instrument": "ETH_USD",
-      "price": 1937.25,
-      "pct_1h": 0.32,
-      "pct_4h": 1.39,
-      "pct_24h": -5.18,
-      "vol_24h_usd": 184721177.35,
+      "price": 1938.42,
+      "pct_1h": 0.381,
+      "pct_4h": 1.451,
+      "pct_24h": -5.12,
+      "vol_24h_usd": 184732266.88,
       "spread_pct": 0.0005,
       "relvol": 0.279,
       "parts": {
-        "momentum": 0.5881,
+        "momentum": 0.597,
         "trend": 0.0,
         "rel_volume": 0.1396,
-        "day_range": 0.2745
+        "day_range": 0.2819
       },
       "weights": {
         "momentum": 0.3,
@@ -969,34 +1006,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.2663,
-      "total": 0.2263,
+      "raw_total": 0.2704,
+      "total": 0.2298,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.226 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 1937.25,
-      "suggested_stop": 1821.015,
+      "reason": "score 0.230 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 1938.42,
+      "suggested_stop": 1822.1148,
       "trend_notes": {
-        "ema20": 1974.21994332,
-        "ema50": 2014.17035777,
-        "price": 1937.25
+        "ema20": 1974.33137189,
+        "ema50": 2014.21624013,
+        "price": 1938.42
       }
     },
     {
       "symbol": "PEPE",
       "instrument": "PEPE_USD",
-      "price": 4.498e-06,
-      "pct_1h": -0.752,
-      "pct_4h": 0.089,
-      "pct_24h": 1.47,
-      "vol_24h_usd": 349880.43,
-      "spread_pct": 0.1779,
+      "price": 4.487e-06,
+      "pct_1h": -0.796,
+      "pct_4h": 0.045,
+      "pct_24h": 1.58,
+      "vol_24h_usd": 360053.35,
+      "spread_pct": 0.156,
       "relvol": 0.726,
       "parts": {
-        "momentum": 0.2013,
+        "momentum": 0.1947,
         "trend": 0.0,
         "rel_volume": 0.363,
-        "day_range": 0.5263
+        "day_range": 0.4974
       },
       "weights": {
         "momentum": 0.3,
@@ -1006,34 +1043,34 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.2564,
-      "total": 0.218,
+      "raw_total": 0.2486,
+      "total": 0.2113,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.218 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 4.498e-06,
-      "suggested_stop": 4.23e-06,
+      "reason": "score 0.211 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 4.487e-06,
+      "suggested_stop": 4.22e-06,
       "trend_notes": {
         "ema20": 4.52e-06,
         "ema50": 4.64e-06,
-        "price": 4.489e-06
+        "price": 4.487e-06
       }
     },
     {
       "symbol": "DOT",
       "instrument": "DOT_USD",
-      "price": 0.8221,
-      "pct_1h": -0.496,
-      "pct_4h": 1.406,
-      "pct_24h": -2.42,
-      "vol_24h_usd": 284943.49,
-      "spread_pct": 0.0973,
+      "price": 0.822,
+      "pct_1h": -0.508,
+      "pct_4h": 1.394,
+      "pct_24h": -2.5,
+      "vol_24h_usd": 283578.76,
+      "spread_pct": 0.0608,
       "relvol": 0.261,
       "parts": {
-        "momentum": 0.3601,
+        "momentum": 0.3583,
         "trend": 0.0,
         "rel_volume": 0.1305,
-        "day_range": 0.5364
+        "day_range": 0.5343
       },
       "weights": {
         "momentum": 0.3,
@@ -1043,17 +1080,17 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.2479,
-      "total": 0.2107,
+      "raw_total": 0.247,
+      "total": 0.2099,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.211 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.8221,
-      "suggested_stop": 0.772774,
+      "reason": "score 0.210 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.822,
+      "suggested_stop": 0.77268,
       "trend_notes": {
-        "ema20": 0.82545258,
-        "ema50": 0.83453891,
-        "price": 0.8221
+        "ema20": 0.82544306,
+        "ema50": 0.83453499,
+        "price": 0.822
       }
     },
     {
@@ -1062,8 +1099,8 @@
       "price": 3888.48,
       "pct_1h": 0.123,
       "pct_4h": 0.149,
-      "pct_24h": -1.17,
-      "vol_24h_usd": 184980.22,
+      "pct_24h": -1.15,
+      "vol_24h_usd": 184927.1,
       "spread_pct": 0.0008,
       "relvol": 0.083,
       "parts": {
@@ -1096,18 +1133,18 @@
     {
       "symbol": "ARB",
       "instrument": "ARB_USD",
-      "price": 0.144111,
-      "pct_1h": -0.928,
-      "pct_4h": 0.899,
-      "pct_24h": -3.22,
-      "vol_24h_usd": 1052352.56,
-      "spread_pct": 0.0951,
+      "price": 0.144037,
+      "pct_1h": -0.979,
+      "pct_4h": 0.847,
+      "pct_24h": -2.98,
+      "vol_24h_usd": 1052903.14,
+      "spread_pct": 0.0778,
       "relvol": 0.724,
       "parts": {
-        "momentum": 0.2873,
+        "momentum": 0.2796,
         "trend": 0.0,
         "rel_volume": 0.3619,
-        "day_range": 0.241
+        "day_range": 0.2337
       },
       "weights": {
         "momentum": 0.3,
@@ -1117,91 +1154,17 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.2249,
-      "total": 0.1911,
+      "raw_total": 0.2211,
+      "total": 0.1879,
       "threshold": 0.65,
       "status": "FAIL",
-      "reason": "score 0.191 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 0.144111,
-      "suggested_stop": 0.13546434,
+      "reason": "score 0.188 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 0.144037,
+      "suggested_stop": 0.13539478,
       "trend_notes": {
-        "ema20": 0.14723639,
-        "ema50": 0.15179956,
-        "price": 0.144111
-      }
-    },
-    {
-      "symbol": "PAXG",
-      "instrument": "PAXG_USD",
-      "price": 3883.05,
-      "pct_1h": -0.044,
-      "pct_4h": -0.235,
-      "pct_24h": -1.35,
-      "vol_24h_usd": 362814.23,
-      "spread_pct": 0.0003,
-      "relvol": 0.686,
-      "parts": {
-        "momentum": 0.2084,
-        "trend": 0.0,
-        "rel_volume": 0.3431,
-        "day_range": 0.3383
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.2159,
-      "total": 0.1836,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.184 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 3883.05,
-      "suggested_stop": 3650.067,
-      "trend_notes": {
-        "ema20": 3896.9062289,
-        "ema50": 3936.55010963,
-        "price": 3883.05
-      }
-    },
-    {
-      "symbol": "UNI",
-      "instrument": "UNI_USD",
-      "price": 5.7675,
-      "pct_1h": -0.553,
-      "pct_4h": 1.407,
-      "pct_24h": -6.72,
-      "vol_24h_usd": 114754.94,
-      "spread_pct": 0.0191,
-      "relvol": 0.253,
-      "parts": {
-        "momentum": 0.3581,
-        "trend": 0.0,
-        "rel_volume": 0.1263,
-        "day_range": 0.2307
-      },
-      "weights": {
-        "momentum": 0.3,
-        "trend": 0.25,
-        "rel_volume": 0.25,
-        "day_range": 0.2
-      },
-      "btc_regime_ok": false,
-      "regime_mult": 0.85,
-      "raw_total": 0.1851,
-      "total": 0.1574,
-      "threshold": 0.65,
-      "status": "FAIL",
-      "reason": "score 0.157 < 0.65; btc regime soft (x0.85)",
-      "suggested_entry": 5.7675,
-      "suggested_stop": 5.42145,
-      "trend_notes": {
-        "ema20": 5.92035399,
-        "ema50": 6.14762149,
-        "price": 5.7675
+        "ema20": 0.14722934,
+        "ema50": 0.15179666,
+        "price": 0.144037
       }
     },
     {
@@ -1212,7 +1175,7 @@
       "pct_4h": 0.271,
       "pct_24h": -7.25,
       "vol_24h_usd": 236352.06,
-      "spread_pct": 0.1568,
+      "spread_pct": 0.1307,
       "relvol": 0.066,
       "parts": {
         "momentum": 0.4713,
@@ -1240,24 +1203,22 @@
         "ema50": 1.1631823,
         "price": 1.1476
       }
-    }
-  ],
-  "passers": [
+    },
     {
-      "symbol": "ICP",
-      "instrument": "ICP_USD",
-      "price": 2.6118,
-      "pct_1h": 0.154,
-      "pct_4h": 2.22,
-      "pct_24h": 1.58,
-      "vol_24h_usd": 143492.71,
-      "spread_pct": 0.0842,
-      "relvol": 2.807,
+      "symbol": "UNI",
+      "instrument": "UNI_USD",
+      "price": 5.7592,
+      "pct_1h": -0.736,
+      "pct_4h": 1.22,
+      "pct_24h": -6.57,
+      "vol_24h_usd": 116210.56,
+      "spread_pct": 0.0347,
+      "relvol": 0.253,
       "parts": {
-        "momentum": 0.6557,
-        "trend": 1.0,
-        "rel_volume": 1.0,
-        "day_range": 0.772
+        "momentum": 0.3305,
+        "trend": 0.0,
+        "rel_volume": 0.1263,
+        "day_range": 0.2159
       },
       "weights": {
         "momentum": 0.3,
@@ -1267,17 +1228,56 @@
       },
       "btc_regime_ok": false,
       "regime_mult": 0.85,
-      "raw_total": 0.8511,
-      "total": 0.7234,
+      "raw_total": 0.1739,
+      "total": 0.1478,
+      "threshold": 0.65,
+      "status": "FAIL",
+      "reason": "score 0.148 < 0.65; btc regime soft (x0.85)",
+      "suggested_entry": 5.7592,
+      "suggested_stop": 5.413648,
+      "trend_notes": {
+        "ema20": 5.91934447,
+        "ema50": 6.1472058,
+        "price": 5.7569
+      }
+    }
+  ],
+  "passers": [
+    {
+      "symbol": "ICP",
+      "instrument": "ICP_USD",
+      "price": 2.5984,
+      "pct_1h": 0.042,
+      "pct_4h": 2.106,
+      "pct_24h": 0.58,
+      "vol_24h_usd": 143413.52,
+      "spread_pct": 0.0847,
+      "relvol": 2.807,
+      "parts": {
+        "momentum": 0.6504,
+        "trend": 1.0,
+        "rel_volume": 1.0,
+        "day_range": 0.6854
+      },
+      "weights": {
+        "momentum": 0.3,
+        "trend": 0.25,
+        "rel_volume": 0.25,
+        "day_range": 0.2
+      },
+      "btc_regime_ok": false,
+      "regime_mult": 0.85,
+      "raw_total": 0.8322,
+      "total": 0.7074,
       "threshold": 0.65,
       "status": "PASS",
       "reason": "pass; btc regime soft (x0.85)",
-      "suggested_entry": 2.6118,
-      "suggested_stop": 2.455092,
+      "suggested_entry": 2.5984,
+      "suggested_stop": 2.442496,
       "trend_notes": {
-        "ema20": 2.57029925,
-        "ema50": 2.54755486,
-        "price": 2.6013
+        "ema20": 2.57002306,
+        "ema50": 2.54744113,
+        "price": 2.5984
       }
     }
   ],
