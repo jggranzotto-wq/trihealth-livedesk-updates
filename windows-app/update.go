@@ -20,7 +20,7 @@ import (
 )
 
 // AppVersion is the embedded build version. Overridden at build via -ldflags.
-var AppVersion = "1.2.7"
+var AppVersion = "1.2.8"
 
 // updateBaseURL is the public host for version.json / positions.json / exes.
 // Overridden at build via -ldflags if the Render URL differs.
@@ -353,9 +353,15 @@ func pullRemotePositions() positionsPullResult {
 			return res
 		}
 	}
+	// Remote bytes stay in positions.json. A saved user list is applied only
+	// in memory, so this pull cannot put the server holdings back.
+	served := applyUserHoldings(body)
 	cfgMu.Lock()
-	cachedCfg = body
+	cachedCfg = served
 	cfgMu.Unlock()
+	if _, userOwned := readUserHoldings(); userOwned {
+		log.Printf("user holdings kept; remote holdings were not applied to the desk")
+	}
 	now := time.Now()
 	lastPositionsPullAt = now
 	lastPositionsPullURL = base

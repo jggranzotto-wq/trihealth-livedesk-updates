@@ -47,14 +47,16 @@ type Grid struct {
 }
 
 type Holding struct {
-	Symbol           string  `json:"symbol"`
-	Kind             string  `json:"kind,omitempty"`
-	Binance          string  `json:"binance,omitempty"`
-	CryptoCom        string  `json:"cryptocom,omitempty"`
-	Qty              float64 `json:"qty"`
-	QtyApprox        bool    `json:"qty_approx,omitempty"`
-	ValueSnapshotUSD float64 `json:"value_snapshot_usd,omitempty"`
-	Note             string  `json:"note,omitempty"`
+	Symbol           string   `json:"symbol"`
+	Kind             string   `json:"kind,omitempty"`
+	Account          string   `json:"account,omitempty"`
+	Binance          string   `json:"binance,omitempty"`
+	CryptoCom        string   `json:"cryptocom,omitempty"`
+	Qty              float64  `json:"qty"`
+	QtyApprox        bool     `json:"qty_approx,omitempty"`
+	ValueSnapshotUSD float64  `json:"value_snapshot_usd,omitempty"`
+	CostBasis        *float64 `json:"cost_basis,omitempty"`
+	Note             string   `json:"note,omitempty"`
 }
 
 type Config struct {
@@ -67,6 +69,7 @@ type Config struct {
 	Note             string          `json:"note,omitempty"`
 	Positions        []Position      `json:"positions"`
 	Holdings         []Holding       `json:"holdings"`
+	HoldingsSource   string          `json:"holdings_source,omitempty"`
 	Watch            []Watch         `json:"watch"`
 	Grids            map[string]Grid `json:"grids"`
 }
@@ -162,6 +165,10 @@ func setupLog() {
 }
 
 func loadConfigBytes() []byte {
+	return applyUserHoldings(readPositionsBytes())
+}
+
+func readPositionsBytes() []byte {
 	path := filepath.Join(exeDir, "positions.json")
 	b, err := os.ReadFile(path)
 	if err != nil {
@@ -455,6 +462,7 @@ func main() {
 		proxyGet(w, "https://open.er-api.com/v6/latest/USD")
 	})
 	mux.HandleFunc("/api/scan", handleScan)
+	registerHoldingsRoutes(mux)
 	// Static UI last so /api/* wins on Go 1.22+ mux
 	mux.Handle("/", http.FileServer(http.FS(sub)))
 
